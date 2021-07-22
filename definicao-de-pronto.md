@@ -1,0 +1,3 @@
+# Definição de pronto
+
+## Checklist

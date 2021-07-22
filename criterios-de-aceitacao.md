@@ -1,0 +1,3 @@
+# Critérios de aceitação
+
+## Checklist
