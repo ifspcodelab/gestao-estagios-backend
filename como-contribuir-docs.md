@@ -57,5 +57,5 @@ git commit -m "docs: add task description"
 Fazer push para o github
 
 ```bash
-git push
+git push --set-upstream origin docs-how-to
 ```
