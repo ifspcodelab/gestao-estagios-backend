@@ -1,3 +1,22 @@
-# Headline
+# Gestão de Estágios
 
-> An awesome project.
+> Sistema para Gestão de Estágio do IFSP
+
+## Objetivo
+
+Essa documentação tem como objetivo servir de guia para a equipe de desenvolvimento do projeto gestão de 
+estágios do laboratório de desenvolvimento [IFSP Codelab](https://github.com/ifspcodelab).
+
+## Colaboradores
+
+### Coordenadores de estágio
+- [Vagner Mendonça Gonçalves](https://github.com/vagnerifsp)
+
+### Product Owner
+- [Leonardo Motta]()
+
+### Lider Técnico/Scrum Master
+- [Domingos Latorre](https://github.com/domingoslatorre)
+
+### Time de Desenvolvimento
+- ...
