@@ -1,5 +1,6 @@
 * [Home](/)
 * [Ambiente de desenvolvimento](ambiente-desenvolvimento.md)
+* [Como contribuir com a documentação](como-contribuir-docs.md)
 * [Workflow Git, GitHub e ZenHub](workflow-git-github-zenhub.md)
 * [Arquitetura do projeto](arquitetura.md)
 * [Estrutura do projeto](estrutura-do-projeto.md)
