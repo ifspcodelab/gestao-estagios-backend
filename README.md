@@ -22,4 +22,3 @@ estágios do laboratório de desenvolvimento [IFSP Codelab](https://github.com/i
 - [Erick Poiati](https://github.com/epoiati)
 - [José Claudino](https://github.com/Soraaslon)
 - [Marcelo Junior](https://github.com/junnmu)
-- 
