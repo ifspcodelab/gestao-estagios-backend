@@ -1,0 +1,6 @@
+CREATE TABLE users(
+    id UUID NOT NULL,
+    email VARCHAR NOT NULL UNIQUE,
+    password VARCHAR NOT NULL,
+    CONSTRAINT users_pk PRIMARY KEY (id)
+);
