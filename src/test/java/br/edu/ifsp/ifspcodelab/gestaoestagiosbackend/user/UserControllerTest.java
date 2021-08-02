@@ -54,4 +54,18 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.violations[0].reason").value("User already exists with email john@email.com"))
             .andDo(print());
     }
+
+    @Test
+    public void createUserBadRequestValidation() throws Exception {
+        mockMvc.perform(post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{ \"email\": \"johnemail.com\", \"password\": \"123456\" }")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.title").value("Your request parameters didn't validate"))
+            .andExpect(jsonPath("$.violations[0].name").value("email"))
+            .andExpect(jsonPath("$.violations[0].reason").value("must be a well-formed email address"))
+            .andDo(print());
+    }
 }
