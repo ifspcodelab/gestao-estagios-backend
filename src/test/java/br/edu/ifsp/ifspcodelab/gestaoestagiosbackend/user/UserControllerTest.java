@@ -38,4 +38,20 @@ public class UserControllerTest {
             .andExpect(jsonPath("$.id").exists())
             .andDo(print());
     }
+
+    @Test
+    public void createUserConflict() throws Exception {
+        userRepository.save(new User("john@email.com", "123456"));
+
+        mockMvc.perform(post("/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{ \"email\": \"john@email.com\", \"password\": \"123456\" }")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.title").value("User already exists"))
+            .andExpect(jsonPath("$.violations[0].name").value("email"))
+            .andExpect(jsonPath("$.violations[0].reason").value("User already exists with email john@email.com"))
+            .andDo(print());
+    }
 }
