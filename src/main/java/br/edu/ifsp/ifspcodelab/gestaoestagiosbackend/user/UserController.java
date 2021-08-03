@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ProblemDetail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.Violation;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
+@AllArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping
     public ResponseEntity<UserDto> create(@Valid @RequestBody UserCreateDto userCreateDto) {
