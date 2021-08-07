@@ -1,32 +1,16 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.util.UUID;
 
-@Entity
-@Table(name = "departments")
-public class Department {
-    @Id
+public class DepartmentDto {
     private UUID id;
     private String name;
     private String abbreviation;
 
-    @ManyToOne
-    private Campus campus;
-    //private Campus campus;
-
-    public Department(){}
-
-    public Department(String name, String abbreviation, Campus campus) {
-        this.id = UUID.randomUUID();
+    public DepartmentDto(UUID id, String name, String abbreviation) {
+        this.id = id;
         this.name = name;
         this.abbreviation = abbreviation;
-        this.campus = campus;
     }
 
     public UUID getId() {
