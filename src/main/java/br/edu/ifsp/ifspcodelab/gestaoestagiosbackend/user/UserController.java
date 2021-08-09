@@ -22,14 +22,14 @@ public class UserController {
         return new ResponseEntity<>(new UserDto(user.getId(), user.getEmail()), HttpStatus.CREATED);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ProblemDetail> alreadyExists(UserAlreadyExistsException exception) {
-        return new ResponseEntity<>(
-            new ProblemDetail(
-                "User already exists",
-                List.of(new Violation("email", "User already exists with email " + exception.getEmail()))
-            ),
-            HttpStatus.CONFLICT
-        );
-    }
+//    @ExceptionHandler(UserAlreadyExistsException.class)
+//    public ResponseEntity<ProblemDetail> alreadyExists(UserAlreadyExistsException exception) {
+//        return new ResponseEntity<>(
+//            new ProblemDetail(
+//                "User already exists",
+//                List.of(new Violation("email", "User already exists with email " + exception.getEmail()))
+//            ),
+//            HttpStatus.CONFLICT
+//        );
+//    }
 }

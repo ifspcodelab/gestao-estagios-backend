@@ -5,7 +5,7 @@ spring:
     driver-class-name: ${DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
     url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/gestao_estagio_backend}
     username: ${DATASOURCE_USERNAME:postgres}
-    password: ${DATASOURCE_PASSWORD:postgres}
+    password: ${DATASOURCE_PASSWORD:102031}
   jpa:
     hibernate:
       ddl-auto: none
