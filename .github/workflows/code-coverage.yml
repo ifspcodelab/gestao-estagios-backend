@@ -1,8 +1,6 @@
 name: Send test coverage reports to codacy
 
 on:
-  push:
-    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
