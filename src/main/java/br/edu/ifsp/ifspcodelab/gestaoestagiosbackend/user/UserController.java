@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/v1/users")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;

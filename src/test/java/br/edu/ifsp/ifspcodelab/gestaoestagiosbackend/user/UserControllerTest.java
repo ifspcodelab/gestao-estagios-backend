@@ -28,7 +28,7 @@ public class UserControllerTest {
 
     @Test
     public void createUser() throws Exception {
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{ \"email\": \"john@email.com\", \"password\": \"123456\" }")
             .accept(MediaType.APPLICATION_JSON))
@@ -43,7 +43,7 @@ public class UserControllerTest {
     public void createUserConflict() throws Exception {
         userRepository.save(new User("john@email.com", "123456"));
 
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{ \"email\": \"john@email.com\", \"password\": \"123456\" }")
             .accept(MediaType.APPLICATION_JSON))
@@ -57,7 +57,7 @@ public class UserControllerTest {
 
     @Test
     public void createUserBadRequestValidation() throws Exception {
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/api/v1/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{ \"email\": \"johnemail.com\", \"password\": \"123456\" }")
             .accept(MediaType.APPLICATION_JSON))
