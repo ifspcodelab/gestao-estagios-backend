@@ -15,39 +15,15 @@ public class CampusRepositoryTest {
     @Autowired
     private CampusRepository campusRepository;
 
-    private String name;
-    private String abbreviation;
-    private String postalCode;
-    private String street;
-    private String neighborhood;
-    private String city;
-    private String state;
-    private String number;
-    private String complement;
-    private String telephone;
-    private String email;
-    private String website;
+    private Campus campus;
 
     @BeforeEach
     public void setUp() {
-        name = "Test Campus";
-        abbreviation = "TCS";
-        postalCode = "123456";
-        street = "Test Street";
-        neighborhood = "Test Neighborhood";
-        city = "Test City";
-        state = "Test State";
-        number = "123456";
-        complement = "Test Complement";
-        telephone = "1234-5678";
-        email = "testcampus@email.com";
-        website = "https://testcampus.com";
+        campus = CampusFactory.sampleCampus();
     }
 
     @Test
     public void saveNewCampus() {
-        Address address = new Address(postalCode, street, neighborhood, city, state, number, complement);
-        Campus campus = new Campus(name, abbreviation, address, telephone, email, website);
         campusRepository.save(campus);
         Campus campusFound = entityManager.find(Campus.class, campus.getId());
 
@@ -62,8 +38,8 @@ public class CampusRepositoryTest {
         assertThat(campusFound.getAddress().getState()).isEqualTo(campus.getAddress().getState());
         assertThat(campusFound.getAddress().getNumber()).isEqualTo(campus.getAddress().getNumber());
         assertThat(campusFound.getAddress().getComplement()).isEqualTo(campus.getAddress().getComplement());
-        assertThat(campusFound.getTelephone()).isEqualTo(campus.getTelephone());
-        assertThat(campusFound.getEmail()).isEqualTo(campus.getEmail());
-        assertThat(campusFound.getWebsite()).isEqualTo(campus.getWebsite());
+        assertThat(campusFound.getInternshipSector().getTelephone()).isEqualTo(campus.getInternshipSector().getTelephone());
+        assertThat(campusFound.getInternshipSector().getEmail()).isEqualTo(campus.getInternshipSector().getEmail());
+        assertThat(campusFound.getInternshipSector().getWebsite()).isEqualTo(campus.getInternshipSector().getWebsite());
     }
 }
