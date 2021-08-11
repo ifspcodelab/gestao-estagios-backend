@@ -1,7 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import org.hibernate.validator.constraints.URL;
 
@@ -11,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Data
+@Value
 public class CampusCreateDto {
     @NotNull
     @NotBlank
