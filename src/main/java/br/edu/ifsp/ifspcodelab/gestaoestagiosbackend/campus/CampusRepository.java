@@ -9,9 +9,9 @@ import java.util.UUID;
 @Repository
 public interface CampusRepository extends JpaRepository<Campus, UUID> {
     boolean existsByAbbreviation(String abbreviation);
-    boolean existsByEmail(String email);
-    @Query(value = "select count(c) > 0 from Campus c where c.email = ?1 and c.id <> ?2", nativeQuery = true)
+    boolean existsByInternshipSectorEmail(String email);
+    @Query("select count(c) > 0 from Campus c where c.internshipSector.email = ?1 and c.id <> ?2")
     boolean existsByEmailExcludedId(String email, UUID id);
-    @Query(value = "select count(c) > 0 from Campus c where c.abbreviation = ?1 and c.id <> ?2", nativeQuery = true)
+    @Query("select count(c) > 0 from Campus c where c.abbreviation = ?1 and c.id <> ?2")
     boolean existsByAbbreviationExcludedId(String abbreviation, UUID id);
 }

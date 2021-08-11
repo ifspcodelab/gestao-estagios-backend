@@ -1,15 +1,13 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
 @Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Address {

@@ -24,17 +24,14 @@ public class Campus {
     private String abbreviation;
     @Embedded
     private Address address;
-    private String telephone;
-    private String email;
-    private String website;
+    @Embedded
+    private InternshipSector internshipSector;
 
-    public Campus(String name, String abbreviation, Address address, String telephone, String email, String website) {
+    public Campus(String name, String abbreviation, Address address, InternshipSector internshipSector) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.abbreviation = abbreviation;
         this.address = address;
-        this.telephone = telephone;
-        this.email = email;
-        this.website = website;
+        this.internshipSector = internshipSector;
     }
 }
