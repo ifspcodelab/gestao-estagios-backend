@@ -7,4 +7,6 @@ import java.util.UUID;
 
 @Repository
 public interface CampusRepository extends PagingAndSortingRepository<Campus, UUID> {
+    boolean existsByAbbreviation(String abbreviation);
+    boolean existsByEmail(String email);
 }

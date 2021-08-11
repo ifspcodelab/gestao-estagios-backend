@@ -10,6 +10,12 @@ public class CampusServiceImpl implements CampusService {
 
     @Override
     public Campus create(CampusCreateDto campusCreateDto) {
+        if (campusRepository.existsByAbbreviation(campusCreateDto.getAbbreviation())) {
+            throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
+        }
+        if (campusRepository.existsByEmail(campusCreateDto.getEmail())) {
+            throw new CampusAlreadyExistsByEmailException(campusCreateDto.getEmail());
+        }
         return campusRepository.save(toCampus(campusCreateDto));
     }
 
