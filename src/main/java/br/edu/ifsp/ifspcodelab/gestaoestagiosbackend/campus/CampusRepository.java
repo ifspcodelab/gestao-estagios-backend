@@ -1,12 +1,17 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface CampusRepository extends PagingAndSortingRepository<Campus, UUID> {
+public interface CampusRepository extends JpaRepository<Campus, UUID> {
     boolean existsByAbbreviation(String abbreviation);
     boolean existsByEmail(String email);
+    @Query(value = "select count(c) > 0 from Campus c where c.email = ?1 and c.id <> ?2", nativeQuery = true)
+    boolean existsByEmailExcludedId(String email, UUID id);
+    @Query(value = "select count(c) > 0 from Campus c where c.abbreviation = ?1 and c.id <> ?2", nativeQuery = true)
+    boolean existsByAbbreviationExcludedId(String abbreviation, UUID id);
 }
