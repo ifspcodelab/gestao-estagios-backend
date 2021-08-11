@@ -8,7 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,9 +48,11 @@ public class CampusControllerTest {
                     " \"number\": \"123456\"," +
                     " \"complement\": \"Test Complement\"" +
                 " }," +
-                " \"telephone\": \"1234-5678\"," +
-                " \"email\": \"testcampus@email.com\"," +
-                " \"website\": \"https://testcampus.com\"" +
+                " \"internshipSector\": {" +
+                    " \"telephone\": \"1234-5678\"," +
+                    " \"email\": \"testcampus@email.com\"," +
+                    " \"website\": \"https://testcampus.com\"" +
+                " }" +
             " }")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
@@ -58,9 +66,9 @@ public class CampusControllerTest {
             .andExpect(jsonPath("$.address.state").value("Test State"))
             .andExpect(jsonPath("$.address.number").value("123456"))
             .andExpect(jsonPath("$.address.complement").value("Test Complement"))
-            .andExpect(jsonPath("$.telephone").value("1234-5678"))
-            .andExpect(jsonPath("$.email").value("testcampus@email.com"))
-            .andExpect(jsonPath("$.website").value("https://testcampus.com"))
+            .andExpect(jsonPath("$.internshipSector.telephone").value("1234-5678"))
+            .andExpect(jsonPath("$.internshipSector.email").value("testcampus@email.com"))
+            .andExpect(jsonPath("$.internshipSector.website").value("https://testcampus.com"))
             .andExpect(jsonPath("$.id").exists())
             .andDo(print());
     }
@@ -73,18 +81,20 @@ public class CampusControllerTest {
                 " \"name\": \"Test Campus\"," +
                 " \"abbreviation\": \"TCSS\"," +
                 " \"address\": {" +
-                " \"postalCode\": \"123456\"," +
-                " \"street\": \"Test Street\"," +
-                " \"neighborhood\": \"Test Neighborhood\"," +
-                " \"city\": \"Test City\"," +
-                " \"state\": \"Test State\"," +
-                " \"number\": \"123456\"," +
-                " \"complement\": \"Test Complement\"" +
+                    " \"postalCode\": \"123456\"," +
+                    " \"street\": \"Test Street\"," +
+                    " \"neighborhood\": \"Test Neighborhood\"," +
+                    " \"city\": \"Test City\"," +
+                    " \"state\": \"Test State\"," +
+                    " \"number\": \"123456\"," +
+                    " \"complement\": \"Test Complement\"" +
                 " }," +
-                " \"telephone\": \"1234-5678\"," +
-                " \"email\": \"testcampus@email.com\"," +
-                " \"website\": \"https://testcampus.com\"" +
-                " }")
+                " \"internshipSector\": {" +
+                    " \"telephone\": \"1234-5678\"," +
+                    " \"email\": \"testcampus@email.com\"," +
+                    " \"website\": \"https://testcampus.com\"" +
+                " }" +
+            " }")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -92,5 +102,17 @@ public class CampusControllerTest {
             .andExpect(jsonPath("$.violations[0].name").value("abbreviation"))
             .andExpect(jsonPath("$.violations[0].reason").value("size must be between 3 and 3"))
             .andDo(print());
+    }
+
+    @Test
+    public void getCampus() throws Exception {
+        Campus campus = campusRepository.save(CampusFactory.sampleCampus());
+        mockMvc.perform(get("/api/v1/campuses")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.*", isA(ArrayList.class)))
+            .andExpect(jsonPath("$.*", hasSize(1)))
+            .andExpect(jsonPath("$[0].id").value(campus.getId().toString()));
     }
 }
