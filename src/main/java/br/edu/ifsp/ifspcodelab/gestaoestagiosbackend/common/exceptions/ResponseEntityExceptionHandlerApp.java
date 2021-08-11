@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,31 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
 
         return new ResponseEntity<>(
             new ProblemDetail("Your request parameters didn't validate", violations), HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ProblemDetail> resourceNotFound(ResourceNotFoundException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                exception.getResourceName().getName() + " not found with id " + exception.getResourceId(),
+                Collections.emptyList()
+            ),
+            HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ProblemDetail> resourceAlreadyExists(ResourceAlreadyExistsException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                exception.getResourceName().getName() +
+                    " already exists with " +
+                    exception.getResourceField() +
+                    " " + exception.getResourceValue(),
+                Collections.emptyList()
+            ),
+            HttpStatus.CONFLICT
         );
     }
 }
