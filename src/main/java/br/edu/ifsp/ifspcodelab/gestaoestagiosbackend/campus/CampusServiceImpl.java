@@ -18,8 +18,8 @@ public class CampusServiceImpl implements CampusService {
         if (campusRepository.existsByAbbreviation(campusCreateDto.getAbbreviation())) {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
         }
-        if (campusRepository.existsByEmail(campusCreateDto.getEmail())) {
-            throw new CampusAlreadyExistsByEmailException(campusCreateDto.getEmail());
+        if (campusRepository.existsByInternshipSectorEmail(campusCreateDto.getInternshipSector().getEmail())) {
+            throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
         return campusRepository.save(toCampus(campusCreateDto));
     }
@@ -40,8 +40,8 @@ public class CampusServiceImpl implements CampusService {
         if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation(), id)) {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
         }
-        if (campusRepository.existsByEmailExcludedId(campusCreateDto.getEmail(), id)) {
-            throw new CampusAlreadyExistsByEmailException(campusCreateDto.getEmail());
+        if (campusRepository.existsByEmailExcludedId(campusCreateDto.getInternshipSector().getEmail(), id)) {
+            throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
         Campus campusUpdated = toCampus(campusCreateDto);
         campusUpdated.setId(id);
@@ -62,9 +62,7 @@ public class CampusServiceImpl implements CampusService {
             campusCreateDto.getName(),
             campusCreateDto.getAbbreviation(),
             toAddress(campusCreateDto.getAddress()),
-            campusCreateDto.getTelephone(),
-            campusCreateDto.getEmail(),
-            campusCreateDto.getWebsite()
+            toInternshipSector(campusCreateDto.getInternshipSector())
         );
     }
 
@@ -77,6 +75,14 @@ public class CampusServiceImpl implements CampusService {
             addressDto.getState(),
             addressDto.getNumber(),
             addressDto.getComplement()
+        );
+    }
+
+    private InternshipSector toInternshipSector(InternshipSectorDto internshipSectorDto) {
+        return new InternshipSector(
+            internshipSectorDto.getTelephone(),
+            internshipSectorDto.getEmail(),
+            internshipSectorDto.getWebsite()
         );
     }
 }
