@@ -1,7 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +22,39 @@ public class CampusServiceImpl implements CampusService {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getEmail());
         }
         return campusRepository.save(toCampus(campusCreateDto));
+    }
+
+    @Override
+    public List<Campus> findAll() {
+        return campusRepository.findAll();
+    }
+
+    @Override
+    public Campus findById(UUID id) {
+        return getCampus(id);
+    }
+
+    @Override
+    public Campus update(UUID id, CampusCreateDto campusCreateDto) {
+        Campus campus = getCampus(id);
+        if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation(), id)) {
+            throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
+        }
+        if (campusRepository.existsByEmailExcludedId(campusCreateDto.getEmail(), id)) {
+            throw new CampusAlreadyExistsByEmailException(campusCreateDto.getEmail());
+        }
+        Campus campusUpdated = toCampus(campusCreateDto);
+        campusUpdated.setId(id);
+        return campusRepository.save(campusUpdated);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        campusRepository.deleteById(getCampus(id).getId());
+    }
+
+    private Campus getCampus(UUID id) {
+        return campusRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ResourceName.CAMPUS, id));
     }
 
     private Campus toCampus(CampusCreateDto campusCreateDto) {
