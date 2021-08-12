@@ -36,7 +36,7 @@ public class CampusServiceImpl implements CampusService {
 
     @Override
     public Campus update(UUID id, CampusCreateDto campusCreateDto) {
-        Campus campus = getCampus(id);
+        getCampus(id);
         if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation(), id)) {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
         }

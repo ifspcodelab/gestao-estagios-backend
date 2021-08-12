@@ -1,11 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -19,7 +20,8 @@ public class CampusRestController {
     @PostMapping
     public ResponseEntity<CampusDto> create(@Valid @RequestBody CampusCreateDto campusCreateDto) {
         Campus campus = campusService.create(campusCreateDto);
-        return new ResponseEntity<>(new CampusDto(campus), HttpStatus.CREATED);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(campus.getId()).toUri();
+        return ResponseEntity.created(uri).body(new CampusDto(campus));
     }
 
     @GetMapping
@@ -43,6 +45,6 @@ public class CampusRestController {
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         campusService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

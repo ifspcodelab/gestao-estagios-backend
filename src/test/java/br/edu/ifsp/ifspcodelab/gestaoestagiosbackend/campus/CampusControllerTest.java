@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
