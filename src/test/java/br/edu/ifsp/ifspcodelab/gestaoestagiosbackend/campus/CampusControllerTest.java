@@ -105,7 +105,7 @@ public class CampusControllerTest {
 
     @Test
     public void getCampus() throws Exception {
-        Campus campus = campusRepository.save(CampusFactory.sampleCampus());
+        Campus campus = campusRepository.save(CampusFactoryUtils.sampleCampus());
         mockMvc.perform(get("/api/v1/campuses")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

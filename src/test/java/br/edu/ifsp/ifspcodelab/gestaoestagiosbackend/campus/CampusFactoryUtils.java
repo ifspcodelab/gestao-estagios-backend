@@ -1,6 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
-public class CampusFactory {
+public class CampusFactoryUtils {
     public static Campus sampleCampus() {
         String name = "Test Campus";
         String abbreviation = "TCS";

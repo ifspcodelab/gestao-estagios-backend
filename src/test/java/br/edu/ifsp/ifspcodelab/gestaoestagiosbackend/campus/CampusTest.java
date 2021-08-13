@@ -8,7 +8,7 @@ public class CampusTest {
 
     @Test
     public void shouldGenerateIdWhenParameterizedConstructorIsCalled() {
-        Campus campus = CampusFactory.sampleCampus();
+        Campus campus = CampusFactoryUtils.sampleCampus();
 
         assertThat(campus.getId()).isNotNull();
     }
