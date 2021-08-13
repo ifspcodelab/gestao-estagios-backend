@@ -7,9 +7,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.ArrayList;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,7 +35,7 @@ public class CampusControllerTest {
 
     @Test
     public void createCampus() throws Exception{
-        mockMvc.perform(post("/api/v1/campuses")
+        MvcResult result = mockMvc.perform(post("/api/v1/campuses")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{ " +
                 " \"name\": \"Test Campus\"," +
@@ -69,12 +71,15 @@ public class CampusControllerTest {
             .andExpect(jsonPath("$.internshipSector.email").value("testcampus@email.com"))
             .andExpect(jsonPath("$.internshipSector.website").value("https://testcampus.com"))
             .andExpect(jsonPath("$.id").exists())
-            .andDo(print());
+            .andDo(print())
+            .andReturn();
+
+        assertThat(result).isNotNull();
     }
 
     @Test
     public void createCampusBadRequest() throws Exception {
-        mockMvc.perform(post("/api/v1/campuses")
+        MvcResult result = mockMvc.perform(post("/api/v1/campuses")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{ " +
                 " \"name\": \"Test Campus\"," +
@@ -100,18 +105,24 @@ public class CampusControllerTest {
             .andExpect(jsonPath("$.title").value("Your request parameters didn't validate"))
             .andExpect(jsonPath("$.violations[0].name").value("abbreviation"))
             .andExpect(jsonPath("$.violations[0].reason").value("size must be between 3 and 3"))
-            .andDo(print());
+            .andDo(print())
+            .andReturn();
+
+        assertThat(result).isNotNull();
     }
 
     @Test
     public void getCampus() throws Exception {
         Campus campus = campusRepository.save(CampusFactoryUtils.sampleCampus());
-        mockMvc.perform(get("/api/v1/campuses")
+        MvcResult result = mockMvc.perform(get("/api/v1/campuses")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.*", isA(ArrayList.class)))
             .andExpect(jsonPath("$.*", hasSize(1)))
-            .andExpect(jsonPath("$[0].id").value(campus.getId().toString()));
+            .andExpect(jsonPath("$[0].id").value(campus.getId().toString()))
+            .andReturn();
+
+        assertThat(result).isNotNull();
     }
 }
