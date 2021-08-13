@@ -19,7 +19,7 @@ public class CampusRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        campus = CampusFactory.sampleCampus();
+        campus = CampusFactoryUtils.sampleCampus();
     }
 
     @Test

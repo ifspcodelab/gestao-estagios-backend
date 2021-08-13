@@ -28,12 +28,12 @@ public class CampusServiceTest {
 
     @BeforeEach
     public void setUp() {
-        campus = CampusFactory.sampleCampus();
+        campus = CampusFactoryUtils.sampleCampus();
     }
 
     @Test
     public void createCampus() {
-        when(campusRepository.save(any(Campus.class))).thenReturn(CampusFactory.sampleCampus());
+        when(campusRepository.save(any(Campus.class))).thenReturn(CampusFactoryUtils.sampleCampus());
 
         Campus campusCreated = campusService.create(sampleCampusCreateDto(campus));
 
@@ -118,8 +118,20 @@ public class CampusServiceTest {
         return new CampusCreateDto(
             campus.getName(),
             campus.getAbbreviation(),
-            new AddressDto(campus.getAddress()),
-            new InternshipSectorDto(campus.getInternshipSector())
+            AddressDto.builder()
+                .postalCode(campus.getAddress().getPostalCode())
+                .street(campus.getAddress().getStreet())
+                .neighborhood(campus.getAddress().getNeighborhood())
+                .city(campus.getAddress().getCity())
+                .state(campus.getAddress().getState())
+                .number(campus.getAddress().getNumber())
+                .complement(campus.getAddress().getComplement())
+                .build(),
+            InternshipSectorDto.builder()
+                .telephone(campus.getInternshipSector().getTelephone())
+                .email(campus.getInternshipSector().getEmail())
+                .website(campus.getInternshipSector().getWebsite())
+                .build()
         );
     }
 
