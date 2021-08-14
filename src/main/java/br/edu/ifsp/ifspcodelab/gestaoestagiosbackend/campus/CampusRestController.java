@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/campuses")
+@CrossOrigin
 @AllArgsConstructor
 public class CampusRestController {
     private final CampusService campusService;
