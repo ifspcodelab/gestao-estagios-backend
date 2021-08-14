@@ -3,6 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,13 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHandler {
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new ResponseEntity<>(
+            new ProblemDetail("Your JSON format is not valid", Collections.emptyList()), HttpStatus.BAD_REQUEST
+        );
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -51,6 +59,22 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
                     " already exists with " +
                     exception.getResourceField() +
                     " " + exception.getResourceValue(),
+                Collections.emptyList()
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsTwoFieldsException.class)
+    public ResponseEntity<ProblemDetail> resourceAlreadyExistsTwoFields(ResourceAlreadyExistsTwoFieldsException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                exception.getResourceName().getName() +
+                    " already exists with " +
+                    exception.getFirstResourceField() +
+                    " " + exception.getFirstResourceValue() +
+                    " for " + exception.getSecondResourceField() +
+                    " " + exception.getSecondResourceValue(),
                 Collections.emptyList()
             ),
             HttpStatus.CONFLICT
