@@ -8,7 +8,7 @@ CREATE TABLE campuses(
     city VARCHAR NOT NULL,
     state VARCHAR NOT NULL,
     number VARCHAR NOT NULL,
-    complement VARCHAR NOT NULL,
+    complement VARCHAR,
     telephone VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
     website VARCHAR NOT NULL,
