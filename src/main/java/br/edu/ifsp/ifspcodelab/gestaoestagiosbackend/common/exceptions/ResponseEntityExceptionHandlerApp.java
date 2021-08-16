@@ -59,7 +59,7 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
                     " already exists with " +
                     exception.getResourceField() +
                     " " + exception.getResourceValue(),
-                Collections.emptyList()
+                List.of(new Violation(exception.getResourceField(), exception.getResourceValue().toString()))
             ),
             HttpStatus.CONFLICT
         );
