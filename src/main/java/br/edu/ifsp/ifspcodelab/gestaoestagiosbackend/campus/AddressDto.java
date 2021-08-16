@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Data
 @Builder
@@ -27,7 +28,6 @@ public class AddressDto {
     @NotNull
     @NotBlank
     String number;
-    @NotNull
-    @NotBlank
+    @Pattern(regexp = "^(?!\\s*$).+", message = "must not be blank")
     String complement;
 }
