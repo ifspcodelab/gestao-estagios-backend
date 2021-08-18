@@ -2,6 +2,8 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CampusServiceImpl implements CampusService {
     private final CampusRepository campusRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public Campus create(CampusCreateDto campusCreateDto) {
@@ -50,6 +53,9 @@ public class CampusServiceImpl implements CampusService {
 
     @Override
     public void delete(UUID id) {
+        if (departmentRepository.countAllByCampusId(id) != 0) {
+            throw new ResourceReferentialIntegrityException(ResourceName.DEPARTMENT, ResourceName.CAMPUS);
+        }
         campusRepository.deleteById(getCampus(id).getId());
     }
 
