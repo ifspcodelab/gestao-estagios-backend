@@ -80,4 +80,18 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(ResourceReferentialIntegrityException.class)
+    public ResponseEntity<ProblemDetail> resourceReferentialIntegrity(ResourceReferentialIntegrityException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                "Referential integrity exception",
+                List.of(
+                    new Violation(exception.getPrimary().getName(), "Primary resource"),
+                    new Violation(exception.getRelated().getName(), "Related resource")
+                )
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
 }
