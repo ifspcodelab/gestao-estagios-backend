@@ -1,5 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,5 +42,25 @@ public class DepartmentRepositoryTest {
         assertThat(departmentFound.getCampus().getAbbreviation()).isEqualTo(department.getCampus().getAbbreviation());
         assertThat(departmentFound.getCampus().getAddress()).isEqualTo(department.getCampus().getAddress());
         assertThat(departmentFound.getCampus().getInternshipSector()).isEqualTo(department.getCampus().getInternshipSector());
+    }
+
+    @Test
+    public void countAllDepartmentsByCampusId_ZeroDepartments() {
+        Campus campus = campusRepository.save(CampusFactoryUtils.sampleCampus());
+
+        long numberOfDepartments = departmentRepository.countAllByCampusId(campus.getId());
+
+        assertThat(numberOfDepartments).isEqualTo(0L);
+    }
+
+    @Test
+    public void countAllDepartmentsByCampusId_TwoDepartments() {
+        Campus campus = campusRepository.save(CampusFactoryUtils.sampleCampus());
+        departmentRepository.save(DepartmentFactoryUtils.sampleDepartment("Department A", "DPA", campus));
+        departmentRepository.save(DepartmentFactoryUtils.sampleDepartment("Department B", "DPB", campus));
+
+        long numberOfDepartments = departmentRepository.countAllByCampusId(campus.getId());
+
+        assertThat(numberOfDepartments).isEqualTo(2L);
     }
 }

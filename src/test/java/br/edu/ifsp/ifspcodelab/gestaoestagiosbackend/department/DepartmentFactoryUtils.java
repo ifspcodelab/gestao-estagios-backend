@@ -9,4 +9,8 @@ public class DepartmentFactoryUtils {
         return new Department("Test Department", "TDP", campus);
     }
 
+    public static Department sampleDepartment(String name, String abbreviation, Campus campus) {
+        return new Department(name, abbreviation, campus);
+    }
+
 }

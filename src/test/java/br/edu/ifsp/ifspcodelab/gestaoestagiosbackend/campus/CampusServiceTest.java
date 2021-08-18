@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,8 @@ import static org.mockito.Mockito.*;
 public class CampusServiceTest {
     @Mock
     private CampusRepository campusRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
     @InjectMocks
     private CampusServiceImpl campusService;
 
@@ -102,6 +105,7 @@ public class CampusServiceTest {
     @Test
     public void deleteCampus() {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+        when(departmentRepository.countAllByCampusId(any(UUID.class))).thenReturn(0L);
         campusService.delete(campus.getId());
         verify(campusRepository, times(1)).deleteById(campus.getId());
     }
