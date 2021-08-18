@@ -27,12 +27,7 @@ public class CourseServiceImpl implements CourseService {
             );
         }
 
-        Department department = departmentRepository
-            .findById(courseCreateDto.getDepartmentId())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                ResourceName.DEPARTMENT,
-                courseCreateDto.getDepartmentId()
-            ));
+        Department department = getDepartment(courseCreateDto);
 
         return courseRepository.save(new Course(
             courseCreateDto.getName(),
@@ -44,21 +39,56 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findAll() {
-        return null;
+        return courseRepository.findAll();
     }
 
     @Override
     public Course findById(UUID courseId) {
-        return null;
+        return getCourse(courseId);
     }
 
     @Override
     public Course update(UUID courseId, CourseCreateDto courseCreateDto) {
-        return null;
+        getCourse(courseId);
+        Department department = getDepartment(courseCreateDto);
+
+        if (courseRepository.existsByAbbreviationAndDepartmentIdExcludedId(
+            courseCreateDto.getAbbreviation(),
+            courseCreateDto.getDepartmentId(),
+            courseId)) {
+            throw new CourseAlreadyExistsByAbbreviationAndDepartmentIdException(
+                courseCreateDto.getAbbreviation(),
+                courseCreateDto.getDepartmentId()
+            );
+        }
+
+        Course courseUpdated = new Course(
+            courseCreateDto.getName(),
+            courseCreateDto.getAbbreviation(),
+            courseCreateDto.getNumberOfPeriods(),
+            department
+        );
+        courseUpdated.setId(courseId);
+        return courseRepository.save(courseUpdated);
     }
 
     @Override
     public void delete(UUID courseId) {
+        getCourse(courseId);
+        courseRepository.deleteById(courseId);
+    }
 
+    private Department getDepartment(CourseCreateDto courseCreateDto) {
+        return departmentRepository
+            .findById(courseCreateDto.getDepartmentId())
+            .orElseThrow(() -> new ResourceNotFoundException(
+                ResourceName.DEPARTMENT,
+                courseCreateDto.getDepartmentId()
+            ));
+    }
+
+    private Course getCourse(UUID courseId) {
+        return courseRepository.findById(courseId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.COURSE, courseId));
     }
 }
