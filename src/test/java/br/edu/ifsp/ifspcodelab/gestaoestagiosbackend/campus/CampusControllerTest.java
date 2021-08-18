@@ -1,5 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.isA;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -28,8 +31,12 @@ public class CampusControllerTest {
     @Autowired
     private CampusRepository campusRepository;
 
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
     @BeforeEach
     void setUp() {
+        departmentRepository.deleteAll();
         campusRepository.deleteAll();
     }
 
@@ -121,6 +128,35 @@ public class CampusControllerTest {
             .andExpect(jsonPath("$.*", isA(ArrayList.class)))
             .andExpect(jsonPath("$.*", hasSize(1)))
             .andExpect(jsonPath("$[0].id").value(campus.getId().toString()))
+            .andReturn();
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void deleteCampus() throws Exception {
+        Campus campus = campusRepository.save(CampusFactoryUtils.sampleCampus());
+
+        MvcResult result = mockMvc.perform(delete("/api/v1/campuses/" + campus.getId())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
+            .andReturn();
+
+        assertThat(result).isNotNull();
+    }
+
+    @Test
+    public void deleteCampusReferentialIntegrityException() throws Exception {
+        Campus campus = campusRepository.save(CampusFactoryUtils.sampleCampus());
+        departmentRepository.save(DepartmentFactoryUtils.sampleDepartment("Department A", "DPA", campus));
+        departmentRepository.save(DepartmentFactoryUtils.sampleDepartment("Department B", "DPB", campus));
+
+        MvcResult result = mockMvc.perform(delete("/api/v1/campuses/" + campus.getId())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.title").value("Referential integrity exception"))
+            .andDo(print())
             .andReturn();
 
         assertThat(result).isNotNull();
