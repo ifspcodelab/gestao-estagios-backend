@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Constraint(validatedBy = CepValidator.class)
 public @interface Cep {
-    String message() default "deve conter um formato de CEP válido";
+    String message() default "{cep.msg}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
