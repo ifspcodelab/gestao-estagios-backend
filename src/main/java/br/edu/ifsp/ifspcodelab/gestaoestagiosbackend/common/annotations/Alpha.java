@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Constraint(validatedBy = AlphaValidator.class)
 public @interface Alpha {
-    String message() default "deve conter apenas letras";
+    String message() default "{alpha.msg}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
