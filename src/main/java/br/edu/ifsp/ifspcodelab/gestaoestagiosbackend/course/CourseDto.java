@@ -1,6 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentDto;
 import lombok.Value;
 
 import java.util.UUID;
@@ -11,5 +11,5 @@ public class CourseDto {
     String name;
     String abbreviation;
     Integer numberOfPeriods;
-    Department department;
+    DepartmentDto department;
 }
