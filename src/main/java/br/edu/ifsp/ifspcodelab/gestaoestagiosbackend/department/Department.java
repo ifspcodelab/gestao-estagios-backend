@@ -18,7 +18,8 @@ public class Department {
     private UUID id;
     private String name;
     private String abbreviation;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "campus_id", nullable = false)
     private Campus campus;
 
     public Department(String name, String abbreviation, Campus campus) {
