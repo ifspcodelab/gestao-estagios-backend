@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class AlphaValidator implements ConstraintValidator<Alpha, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        Pattern pattern = Pattern.compile("^[A-Za-z]*$");
+        Pattern pattern = Pattern.compile("^[a-zA-Z\\s]*$");
         Matcher matcher = pattern.matcher(value);
         boolean result = matcher.find();
         return result;
