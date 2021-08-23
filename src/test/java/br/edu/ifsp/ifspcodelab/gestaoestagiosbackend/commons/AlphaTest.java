@@ -30,7 +30,7 @@ public class AlphaTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Test", "Another Test", ""})
+    @ValueSource(strings = {"Test", "Another Test", "", "Bragança"})
     public void alphaIsValid(String name) {
         assertThat(validator.validate(new AlphaTestObject(name))).isEmpty();
     }
