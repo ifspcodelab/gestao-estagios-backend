@@ -18,6 +18,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course create(CourseCreateDto courseCreateDto) {
+        Department department = getDepartment(courseCreateDto);
+
         if (courseRepository.existsByAbbreviationAndDepartmentId(
             courseCreateDto.getAbbreviation(),
             courseCreateDto.getDepartmentId())) {
@@ -26,8 +28,6 @@ public class CourseServiceImpl implements CourseService {
                 courseCreateDto.getDepartmentId()
             );
         }
-
-        Department department = getDepartment(courseCreateDto);
 
         return courseRepository.save(new Course(
             courseCreateDto.getName(),
