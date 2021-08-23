@@ -48,7 +48,7 @@ public class CampusControllerTest {
                 " \"name\": \"Test Campus\"," +
                 " \"abbreviation\": \"TCS\"," +
                 " \"address\": {" +
-                    " \"postalCode\": \"123456\"," +
+                    " \"postalCode\": \"07813-070\"," +
                     " \"street\": \"Test Street\"," +
                     " \"neighborhood\": \"Test Neighborhood\"," +
                     " \"city\": \"Test City\"," +
@@ -67,7 +67,7 @@ public class CampusControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.name").value("Test Campus"))
             .andExpect(jsonPath("$.abbreviation").value("TCS"))
-            .andExpect(jsonPath("$.address.postalCode").value("123456"))
+            .andExpect(jsonPath("$.address.postalCode").value("07813-070"))
             .andExpect(jsonPath("$.address.street").value("Test Street"))
             .andExpect(jsonPath("$.address.neighborhood").value("Test Neighborhood"))
             .andExpect(jsonPath("$.address.city").value("Test City"))
@@ -92,7 +92,7 @@ public class CampusControllerTest {
                 " \"name\": \"Test Campus\"," +
                 " \"abbreviation\": \"TCSS\"," +
                 " \"address\": {" +
-                    " \"postalCode\": \"123456\"," +
+                    " \"postalCode\": \"07813-070\"," +
                     " \"street\": \"Test Street\"," +
                     " \"neighborhood\": \"Test Neighborhood\"," +
                     " \"city\": \"Test City\"," +
