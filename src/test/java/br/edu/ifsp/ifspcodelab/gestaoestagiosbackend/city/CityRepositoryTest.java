@@ -1,7 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,17 +17,8 @@ public class CityRepositoryTest {
     @Autowired
     private CityRepository cityRepository;
 
-    private State state;
-    private City city;
-
-    @BeforeEach
-    public void setUp() {
-        state = new State("TS", "Test State");
-        city = new City("Test City", state);
-    }
-
     @Test
-    public void findAllByStateAbbreviation_returnOneCity() {
+    public void findAllByStateAbbreviationReturnOneCity() {
         State state = new State("TS", "Test State");
         City city = new City("City A", state);
 
@@ -42,7 +32,7 @@ public class CityRepositoryTest {
     }
 
     @Test
-    public void findAllByStateAbbreviation_returnMoreThanOneCity() {
+    public void findAllByStateAbbreviationReturnMoreThanOneCity() {
         State state = new State("TS", "Test State");
         City city = new City("City A", state);
         City city2 = new City("City B", state);
@@ -59,7 +49,7 @@ public class CityRepositoryTest {
     }
 
     @Test
-    public void findAllByStateAbbreviation_returnByState() {
+    public void findAllByStateAbbreviationReturnByState() {
         State state = new State("TS", "Test State");
         State state2 = new State("TB", "Test State 2");
         City city = new City("City A", state);
@@ -77,7 +67,7 @@ public class CityRepositoryTest {
     }
 
     @Test
-    public void findAllByStateAbbreviation_returnEmptyList() {
+    public void findAllByStateAbbreviationReturnEmptyList() {
         State state = new State("TS", "Test State");
 
         entityManager.persistAndFlush(state);
