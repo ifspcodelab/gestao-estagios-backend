@@ -17,7 +17,7 @@ public class StateRestController {
     private StateRepository stateRepository;
 
     @GetMapping
-    private ResponseEntity<List<State>> index() {
+    public ResponseEntity<List<State>> index() {
         List<State> states = stateRepository.findAll();
         return ResponseEntity.ok(states);
     }

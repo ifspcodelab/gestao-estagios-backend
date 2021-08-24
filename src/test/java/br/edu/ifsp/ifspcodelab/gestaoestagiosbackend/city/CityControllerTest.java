@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class CityControllerTest {
     private CityRepository cityRepository;
 
     @BeforeEach
+    @AfterEach
     public void setUp() {
         cityRepository.deleteAll();
         stateRepository.deleteAll();
