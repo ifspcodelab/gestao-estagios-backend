@@ -6,9 +6,11 @@ spring:
     password: ${DATASOURCE_PASSWORD:sa}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     show-sql: true
     database: H2
     database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
     generate-ddl: false
+  flyway:
+    enabled: false
