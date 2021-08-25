@@ -50,4 +50,9 @@ public class CourseRestController {
         courseService.delete(courseId);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("{courseId}")
+    public ResponseEntity<CourseDto> patch(@PathVariable UUID courseId, @Valid @RequestBody CourseUpdateStatusDto courseUpdateStatusDto) {
+        return ResponseEntity.ok(courseMapper.to(courseService.setStatus(courseId, courseUpdateStatusDto)));
+    }
 }

@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
@@ -7,7 +8,9 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentReposi
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -73,6 +76,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course setStatus(UUID courseId, CourseUpdateStatusDto courseUpdateStatusDto) {
+        Course course = getCourse(courseId);
+        Department department = getDepartment(courseUpdateStatusDto);
+
+        Course courseUpdated = new Course(
+            course.getName(),
+            course.getAbbreviation(),
+            course.getNumberOfPeriods(),
+            courseUpdateStatusDto.getStatus(),
+            department
+        );
+        courseUpdated.setId(courseId);
+        return courseRepository.save(courseUpdated);
+    }
+
+    @Override
     public void delete(UUID courseId) {
         getCourse(courseId);
         courseRepository.deleteById(courseId);
@@ -84,6 +103,15 @@ public class CourseServiceImpl implements CourseService {
             .orElseThrow(() -> new ResourceNotFoundException(
                 ResourceName.DEPARTMENT,
                 courseCreateDto.getDepartmentId()
+            ));
+    }
+
+    private Department getDepartment(CourseUpdateStatusDto courseUpdateStatusDto) {
+        return departmentRepository
+            .findById(courseUpdateStatusDto.getDepartmentId())
+            .orElseThrow(() -> new ResourceNotFoundException(
+                ResourceName.DEPARTMENT,
+                courseUpdateStatusDto.getDepartmentId()
             ));
     }
 

@@ -8,5 +8,6 @@ public interface CourseService {
     List<Course> findAll();
     Course findById(UUID courseId);
     Course update(UUID courseId, CourseCreateDto courseCreateDto);
+    Course setStatus(UUID courseId, CourseUpdateStatusDto courseUpdateStatusDto);
     void delete(UUID courseId);
 }
