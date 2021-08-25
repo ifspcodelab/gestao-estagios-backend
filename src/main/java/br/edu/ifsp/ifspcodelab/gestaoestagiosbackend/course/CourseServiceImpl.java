@@ -77,17 +77,10 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course setStatus(UUID courseId, CourseUpdateStatusDto courseUpdateStatusDto) {
-        Course course = getCourse(courseId);
-        Department department = getDepartment(courseUpdateStatusDto);
+        Course courseUpdated = getCourse(courseId);
 
-        Course courseUpdated = new Course(
-            course.getName(),
-            course.getAbbreviation(),
-            course.getNumberOfPeriods(),
-            courseUpdateStatusDto.getStatus(),
-            department
-        );
-        courseUpdated.setId(courseId);
+        courseUpdated.setStatus(courseUpdateStatusDto.getStatus());
+
         return courseRepository.save(courseUpdated);
     }
 
@@ -103,15 +96,6 @@ public class CourseServiceImpl implements CourseService {
             .orElseThrow(() -> new ResourceNotFoundException(
                 ResourceName.DEPARTMENT,
                 courseCreateDto.getDepartmentId()
-            ));
-    }
-
-    private Department getDepartment(CourseUpdateStatusDto courseUpdateStatusDto) {
-        return departmentRepository
-            .findById(courseUpdateStatusDto.getDepartmentId())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                ResourceName.DEPARTMENT,
-                courseUpdateStatusDto.getDepartmentId()
             ));
     }
 
