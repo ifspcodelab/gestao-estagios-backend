@@ -1,5 +1,11 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +25,9 @@ public class CampusRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        campus = CampusFactoryUtils.sampleCampus();
+        State state = entityManager.persistAndFlush(StateFactoryUtils.sampleState());
+        City city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
+        campus = CampusFactoryUtils.sampleCampus(city);
     }
 
     @Test
@@ -35,7 +43,6 @@ public class CampusRepositoryTest {
         assertThat(campusFound.getAddress().getStreet()).isEqualTo(campus.getAddress().getStreet());
         assertThat(campusFound.getAddress().getNeighborhood()).isEqualTo(campus.getAddress().getNeighborhood());
         assertThat(campusFound.getAddress().getCity()).isEqualTo(campus.getAddress().getCity());
-        assertThat(campusFound.getAddress().getState()).isEqualTo(campus.getAddress().getState());
         assertThat(campusFound.getAddress().getNumber()).isEqualTo(campus.getAddress().getNumber());
         assertThat(campusFound.getAddress().getComplement()).isEqualTo(campus.getAddress().getComplement());
         assertThat(campusFound.getInternshipSector().getTelephone()).isEqualTo(campus.getInternshipSector().getTelephone());
