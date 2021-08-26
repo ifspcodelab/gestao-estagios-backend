@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -20,11 +21,7 @@ public class AddressDto {
     @NotBlank
     String neighborhood;
     @NotNull
-    @NotBlank
-    String city;
-    @NotNull
-    @NotBlank
-    String state;
+    UUID cityId;
     @NotNull
     @NotBlank
     String number;
