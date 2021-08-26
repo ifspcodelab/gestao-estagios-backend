@@ -8,6 +8,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,19 +43,19 @@ public class CurriculumServiceImpl implements CurriculumService {
     @Override
     public List<Curriculum> findAll(UUID courseId) {
         courseService.findById(courseId);
-        return curriculumRepository.findAll();
+        return curriculumRepository.findAllByCourseId(courseId);
     }
 
     @Override
     public Curriculum findById(UUID courseId, UUID curriculumId) {
         courseService.findById(courseId);
-        return getCurriculum(curriculumId);
+        return getCurriculum(courseId, curriculumId);
     }
 
     @Override
     public Curriculum update(UUID courseId, UUID curriculumId, CurriculumCreateDto curriculumCreateDto) {
         Course course = courseService.findById(courseId);
-        getCurriculum(curriculumId);
+        getCurriculum(courseId, curriculumId);
 
         Curriculum curriculumUpdated = new Curriculum(
             curriculumCreateDto.getCode(),
@@ -68,10 +69,11 @@ public class CurriculumServiceImpl implements CurriculumService {
         return curriculumRepository.save(curriculumUpdated);
     }
 
+    @Transactional
     @Override
     public Curriculum setStatus(UUID courseId, UUID curriculumId, EntityUpdateStatusDto curriculumUpdateStatusDto) {
         courseService.findById(courseId);
-        Curriculum curriculumUpdated = getCurriculum(curriculumId);
+        Curriculum curriculumUpdated = getCurriculum(courseId, curriculumId);
 
         curriculumUpdated.setStatus(curriculumUpdateStatusDto.getStatus());
 
@@ -85,14 +87,19 @@ public class CurriculumServiceImpl implements CurriculumService {
     }
 
     @Override
+    public boolean existsByCourseId(UUID courseId) {
+        return curriculumRepository.existsByCourseId(courseId);
+    }
+
+    @Override
     public void delete(UUID courseId, UUID curriculumId) {
         courseService.findById(courseId);
-        getCurriculum(curriculumId);
+        getCurriculum(courseId, curriculumId);
         curriculumRepository.deleteById(curriculumId);
     }
 
-    private Curriculum getCurriculum(UUID curriculumId) {
-        return curriculumRepository.findById(curriculumId)
+    private Curriculum getCurriculum(UUID courseId, UUID curriculumId) {
+        return curriculumRepository.findAllByCourseIdAndId(courseId, curriculumId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.CURRICULUM, curriculumId));
     }
 }
