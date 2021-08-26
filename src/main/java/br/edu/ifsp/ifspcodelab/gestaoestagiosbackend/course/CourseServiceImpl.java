@@ -5,19 +5,31 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
     private DepartmentRepository departmentRepository;
     private CourseRepository courseRepository;
+
+    private CurriculumService curriculumService;
+
+    public CourseServiceImpl(DepartmentRepository departmentRepository, CourseRepository courseRepository) {
+        this.departmentRepository = departmentRepository;
+        this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    public void setCurriculumService(CurriculumService curriculumService) {
+        this.curriculumService = curriculumService;
+    }
 
     @Override
     public Course create(CourseCreateDto courseCreateDto) {
