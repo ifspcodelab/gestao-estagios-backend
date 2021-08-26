@@ -11,6 +11,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentReposi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,6 +92,7 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.save(courseUpdated);
     }
 
+    @Transactional
     @Override
     public Course setStatus(UUID courseId, EntityUpdateStatusDto courseUpdateStatusDto) {
         Course courseUpdated = getCourse(courseId);
@@ -106,6 +108,9 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void delete(UUID courseId) {
         getCourse(courseId);
+        if (curriculumService.existsByCourseId(courseId)) {
+            throw new ResourceReferentialIntegrityException(ResourceName.COURSE, ResourceName.CURRICULUM);
+        }
         courseRepository.deleteById(courseId);
     }
 
