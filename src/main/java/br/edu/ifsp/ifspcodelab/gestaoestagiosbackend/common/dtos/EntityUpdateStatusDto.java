@@ -1,4 +1,4 @@
-package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class CourseUpdateStatusDto {
+public class EntityUpdateStatusDto {
     @NotNull
     EntityStatus status;
 }

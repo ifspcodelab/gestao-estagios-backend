@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class CourseRestController {
     }
 
     @PatchMapping("{courseId}")
-    public ResponseEntity<CourseDto> patch(@PathVariable UUID courseId, @Valid @RequestBody CourseUpdateStatusDto courseUpdateStatusDto) {
+    public ResponseEntity<CourseDto> patch(@PathVariable UUID courseId, @Valid @RequestBody EntityUpdateStatusDto courseUpdateStatusDto) {
         return ResponseEntity.ok(courseMapper.to(courseService.setStatus(courseId, courseUpdateStatusDto)));
     }
 }
