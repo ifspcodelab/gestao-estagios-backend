@@ -11,5 +11,6 @@ public interface CurriculumService {
     Curriculum findById(UUID courseId, UUID curriculumId);
     Curriculum update(UUID courseId, UUID curriculumId, CurriculumCreateDto curriculumCreateDto);
     Curriculum setStatus(UUID courseId, UUID curriculumId, EntityUpdateStatusDto curriculumUpdateStatusDto);
+    void disableAllByCourseId(UUID courseId);
     void delete(UUID courseId, UUID curriculumId);
 }
