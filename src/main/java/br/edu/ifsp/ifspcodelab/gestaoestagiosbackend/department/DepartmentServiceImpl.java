@@ -2,8 +2,11 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.UUID;
 public class DepartmentServiceImpl implements DepartmentService {
     private final CampusRepository campusRepository;
     private final DepartmentRepository departmentRepository;
+    private final CourseRepository courseRepository;
 
     @Override
     public Department create(UUID campusId, DepartmentCreateDto departmentCreateDto) {
@@ -61,6 +65,19 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
         Department departmentUpdated = new Department(departmentCreateDto.getName(), departmentCreateDto.getAbbreviation(), campus);
         departmentUpdated.setId(departmentId);
+        return departmentRepository.save(departmentUpdated);
+    }
+
+    @Override
+    public Department setStatus(UUID campusId, UUID id, EntityUpdateStatusDto departmentUpdateStatusDto) {
+        getCampus(campusId);
+        Department departmentUpdated = getDepartment(campusId, id);
+
+        departmentUpdated.setStatus(departmentUpdateStatusDto.getStatus());
+
+        if (departmentUpdated.getStatus() == EntityStatus.DISABLED) {
+            courseRepository.disableAllByDepartmentId(id);
+        }
         return departmentRepository.save(departmentUpdated);
     }
 

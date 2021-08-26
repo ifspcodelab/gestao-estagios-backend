@@ -1,16 +1,16 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -22,6 +22,10 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course create(CourseCreateDto courseCreateDto) {
         Department department = getDepartment(courseCreateDto);
+
+        if (department.getStatus().equals(EntityStatus.DISABLED)) {
+            throw new ResourceReferentialIntegrityException(ResourceName.COURSE, ResourceName.DEPARTMENT);
+        }
 
         if (courseRepository.existsByAbbreviationAndDepartmentId(
             courseCreateDto.getAbbreviation(),
@@ -76,7 +80,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course setStatus(UUID courseId, CourseUpdateStatusDto courseUpdateStatusDto) {
+    public Course setStatus(UUID courseId, EntityUpdateStatusDto courseUpdateStatusDto) {
         Course courseUpdated = getCourse(courseId);
 
         courseUpdated.setStatus(courseUpdateStatusDto.getStatus());
