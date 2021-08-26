@@ -1,0 +1,48 @@
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum;
+
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.UUID;
+
+@Entity
+@Table(name = "curriculums")
+@NoArgsConstructor
+@Getter
+@Setter
+public class Curriculum {
+    @Id
+    private UUID id;
+    private String code;
+    private Integer courseLoad;
+    private Integer internshipCourseLoad;
+    private String internshipStartCriteria;
+    private String internshipAllowedActivities;
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status;
+
+    @ManyToOne
+    private Course course;
+
+    public Curriculum(
+        String code,
+        Integer courseLoad,
+        Integer internshipCourseLoad,
+        String internshipStartCriteria,
+        String internshipAllowedActivities,
+        Course course
+    ) {
+        this.id = UUID.randomUUID();
+        this.code = code;
+        this.courseLoad = courseLoad;
+        this.internshipCourseLoad = internshipCourseLoad;
+        this.internshipStartCriteria = internshipStartCriteria;
+        this.internshipAllowedActivities = internshipAllowedActivities;
+        this.status = EntityStatus.ENABLED;
+        this.course = course;
+    }
+}
