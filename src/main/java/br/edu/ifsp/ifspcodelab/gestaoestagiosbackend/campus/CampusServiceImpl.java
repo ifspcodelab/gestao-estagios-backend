@@ -1,5 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityRepository;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
@@ -8,12 +10,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class CampusServiceImpl implements CampusService {
     private final CampusRepository campusRepository;
+    private final CityRepository cityRepository;
     private final DepartmentRepository departmentRepository;
 
     @Override
@@ -24,7 +28,12 @@ public class CampusServiceImpl implements CampusService {
         if (campusRepository.existsByInternshipSectorEmail(campusCreateDto.getInternshipSector().getEmail())) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
-        return campusRepository.save(toCampus(campusCreateDto));
+        UUID cityId = campusCreateDto.getAddress().getCityId();
+        Optional<City> cityOptional = cityRepository.findById(cityId);
+        if (cityOptional.isEmpty()){
+            throw new ResourceNotFoundException(ResourceName.CITY, cityId);
+        }
+        return campusRepository.save(toCampus(campusCreateDto, cityOptional.get()));
     }
 
     @Override
@@ -46,7 +55,12 @@ public class CampusServiceImpl implements CampusService {
         if (campusRepository.existsByEmailExcludedId(campusCreateDto.getInternshipSector().getEmail(), id)) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
-        Campus campusUpdated = toCampus(campusCreateDto);
+        UUID cityId = campusCreateDto.getAddress().getCityId();
+        Optional<City> cityOptional = cityRepository.findById(cityId);
+        if (cityOptional.isEmpty()){
+            throw new ResourceNotFoundException(ResourceName.CITY, cityId);
+        }
+        Campus campusUpdated = toCampus(campusCreateDto, cityOptional.get());
         campusUpdated.setId(id);
         return campusRepository.save(campusUpdated);
     }
@@ -63,24 +77,23 @@ public class CampusServiceImpl implements CampusService {
         return campusRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ResourceName.CAMPUS, id));
     }
 
-    private Campus toCampus(CampusCreateDto campusCreateDto) {
+    private Campus toCampus(CampusCreateDto campusCreateDto, City city) {
         return new Campus(
             campusCreateDto.getName(),
             campusCreateDto.getAbbreviation(),
-            toAddress(campusCreateDto.getAddress()),
+            toAddress(campusCreateDto.getAddress(), city),
             toInternshipSector(campusCreateDto.getInternshipSector())
         );
     }
 
-    private Address toAddress(AddressDto addressDto) {
+    private Address toAddress(AddressCreateDto addressDto, City city) {
         return new Address(
             addressDto.getPostalCode(),
             addressDto.getStreet(),
             addressDto.getNeighborhood(),
-            addressDto.getCity(),
-            addressDto.getState(),
             addressDto.getNumber(),
-            addressDto.getComplement()
+            addressDto.getComplement(),
+            city
         );
     }
 

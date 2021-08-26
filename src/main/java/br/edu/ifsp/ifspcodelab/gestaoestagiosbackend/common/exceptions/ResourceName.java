@@ -9,7 +9,8 @@ public enum ResourceName {
     USER("User"),
     CAMPUS("Campus"),
     DEPARTMENT("Department"),
-    COURSE("Course");
+    COURSE("Course"),
+    CITY("City");
 
     private String name;
 }

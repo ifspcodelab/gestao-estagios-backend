@@ -18,7 +18,7 @@ public class CampusCreateDto {
     String abbreviation;
     @NotNull
     @Valid
-    AddressDto address;
+    AddressCreateDto address;
     @NotNull
     @Valid
     InternshipSectorDto internshipSector;
