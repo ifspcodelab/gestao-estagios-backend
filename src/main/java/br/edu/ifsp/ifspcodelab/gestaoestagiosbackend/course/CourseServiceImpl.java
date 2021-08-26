@@ -97,6 +97,9 @@ public class CourseServiceImpl implements CourseService {
 
         courseUpdated.setStatus(courseUpdateStatusDto.getStatus());
 
+        if (courseUpdated.getStatus().equals(EntityStatus.DISABLED)) {
+            curriculumService.disableAllByCourseId(courseId);
+        }
         return courseRepository.save(courseUpdated);
     }
 

@@ -53,12 +53,35 @@ public class CurriculumServiceImpl implements CurriculumService {
 
     @Override
     public Curriculum update(UUID courseId, UUID curriculumId, CurriculumCreateDto curriculumCreateDto) {
-        return null;
+        Course course = courseService.findById(courseId);
+        getCurriculum(curriculumId);
+
+        Curriculum curriculumUpdated = new Curriculum(
+            curriculumCreateDto.getCode(),
+            curriculumCreateDto.getCourseLoad(),
+            curriculumCreateDto.getInternshipCourseLoad(),
+            curriculumCreateDto.getInternshipStartCriteria(),
+            curriculumCreateDto.getInternshipAllowedActivities(),
+            course
+        );
+        curriculumUpdated.setId(curriculumId);
+        return curriculumRepository.save(curriculumUpdated);
     }
 
     @Override
     public Curriculum setStatus(UUID courseId, UUID curriculumId, EntityUpdateStatusDto curriculumUpdateStatusDto) {
-        return null;
+        courseService.findById(courseId);
+        Curriculum curriculumUpdated = getCurriculum(curriculumId);
+
+        curriculumUpdated.setStatus(curriculumUpdateStatusDto.getStatus());
+
+        return curriculumRepository.save(curriculumUpdated);
+    }
+
+    @Override
+    public void disableAllByCourseId(UUID courseId) {
+        courseService.findById(courseId);
+        curriculumRepository.disableAllByCourseId(courseId);
     }
 
     @Override

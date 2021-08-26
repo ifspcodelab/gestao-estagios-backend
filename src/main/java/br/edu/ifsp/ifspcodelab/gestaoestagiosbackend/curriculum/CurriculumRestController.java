@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,15 +37,47 @@ public class CurriculumRestController {
     ) {
         return ResponseEntity.ok(curriculumService.findAll(courseId)
             .stream()
-            .map(c -> new CurriculumDto(
-                c.getId(),
-                c.getCode(),
-                c.getCourseLoad(),
-                c.getInternshipCourseLoad(),
-                c.getInternshipStartCriteria(),
-                c.getInternshipAllowedActivities(),
-                c.getStatus()
-            )).collect(Collectors.toList())
+            .map(curriculumMapper::to)
+            .collect(Collectors.toList())
         );
+    }
+
+    @GetMapping("{curriculumId}")
+    public ResponseEntity<CurriculumDto> show(
+        @PathVariable UUID courseId,
+        @PathVariable UUID curriculumId
+    ) {
+        return ResponseEntity.ok(curriculumMapper.to(curriculumService.findById(courseId, curriculumId)));
+    }
+
+    @PutMapping("{curriculumId}")
+    public ResponseEntity<CurriculumDto> update(
+        @PathVariable UUID courseId,
+        @PathVariable UUID curriculumId,
+        @Valid @RequestBody CurriculumCreateDto curriculumCreateDto
+    ) {
+        return ResponseEntity.ok(curriculumMapper.to(
+            curriculumService.update(courseId, curriculumId, curriculumCreateDto)
+        ));
+    }
+
+    @DeleteMapping("{curriculumId}")
+    public ResponseEntity<Void> delete(
+        @PathVariable UUID courseId,
+        @PathVariable UUID curriculumId
+    ) {
+        curriculumService.delete(courseId, curriculumId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{curriculumId}")
+    public ResponseEntity<CurriculumDto> patch(
+        @PathVariable UUID courseId,
+        @PathVariable UUID curriculumId,
+        @Valid @RequestBody EntityUpdateStatusDto curriculumUpdateStatusDto
+    ) {
+        return ResponseEntity.ok(curriculumMapper.to(
+            curriculumService.setStatus(courseId, curriculumId, curriculumUpdateStatusDto)
+        ));
     }
 }
