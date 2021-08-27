@@ -1,5 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.annotations.Cep;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.annotations.Optional;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ import java.util.UUID;
 public class AddressCreateDto {
     @NotNull
     @NotBlank
+    @Cep
     String postalCode;
     @NotNull
     @NotBlank
@@ -25,6 +28,6 @@ public class AddressCreateDto {
     @NotNull
     @NotBlank
     String number;
-    @Pattern(regexp = "^(?!\\s*$).+", message = "must not be blank")
+    @Optional
     String complement;
 }
