@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResourceName {
     USER("User"),
+    CITY("City"),
     CAMPUS("Campus"),
     DEPARTMENT("Department"),
     COURSE("Course"),
