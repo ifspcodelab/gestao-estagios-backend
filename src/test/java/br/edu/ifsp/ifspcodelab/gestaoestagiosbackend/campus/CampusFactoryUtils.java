@@ -1,7 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 
 public class CampusFactoryUtils {
     public static Campus sampleCampus(City city) {
