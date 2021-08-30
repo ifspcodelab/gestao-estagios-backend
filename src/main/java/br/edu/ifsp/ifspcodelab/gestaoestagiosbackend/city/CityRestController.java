@@ -17,7 +17,7 @@ public class CityRestController {
     @GetMapping
     public ResponseEntity<List<CityDto>> index(@PathVariable String stateAbbreviation) {
         List<CityDto> cities = cityRepository.findAllByStateAbbreviation(stateAbbreviation.toUpperCase()).stream()
-            .map(city -> new CityDto(city.getId(), city.getName())).collect(Collectors.toList());
+            .map(city -> new CityDto(city.getId(), city.getName(), city.getState())).collect(Collectors.toList());
         return ResponseEntity.ok(cities);
     }
 }
