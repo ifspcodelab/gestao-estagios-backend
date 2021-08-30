@@ -18,7 +18,7 @@ public class City {
     private UUID id;
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     private State state;
 
     public City(String name, State state) {
