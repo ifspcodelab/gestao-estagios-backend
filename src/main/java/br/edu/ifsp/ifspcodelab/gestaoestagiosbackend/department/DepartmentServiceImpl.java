@@ -59,7 +59,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department findById(UUID campusId, UUID departmentId) {
+    public Department findById(UUID departmentId) {
+        return departmentRepository.findById(departmentId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.DEPARTMENT, departmentId)
+        );
+    }
+
+    @Override
+    public Department findByCampusIdAndId(UUID campusId, UUID departmentId) {
         campusService.findById(campusId);
         return departmentRepository.findByCampusIdAndId(campusId, departmentId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.DEPARTMENT, departmentId)
