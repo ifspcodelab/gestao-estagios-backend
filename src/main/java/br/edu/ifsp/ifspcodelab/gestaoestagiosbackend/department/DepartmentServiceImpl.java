@@ -1,28 +1,39 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
-    private final CampusRepository campusRepository;
-    private final DepartmentRepository departmentRepository;
-    private final CourseRepository courseRepository;
+    private DepartmentRepository departmentRepository;
+    private CourseRepository courseRepository;
+
+    private CampusService campusService;
+
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, CourseRepository courseRepository) {
+        this.departmentRepository = departmentRepository;
+        this.courseRepository = courseRepository;
+    }
+
+    @Autowired
+    public void setCampusService(CampusService campusService) {
+        this.campusService = campusService;
+    }
 
     @Override
     public Department create(UUID campusId, DepartmentCreateDto departmentCreateDto) {
-        Campus campus = getCampus(campusId);
+        Campus campus = campusService.findById(campusId);
         if (departmentRepository.existsByAbbreviationAndCampusId(
             departmentCreateDto.getAbbreviation(),
             campusId)) {
@@ -38,13 +49,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<Department> findAll(UUID campusId) {
-        getCampus(campusId);
+        campusService.findById(campusId);
         return departmentRepository.findAllByCampusId(campusId);
     }
 
     @Override
     public Department findById(UUID campusId, UUID departmentId) {
-        getCampus(campusId);
+        campusService.findById(campusId);
         return departmentRepository.findByCampusIdAndId(campusId, departmentId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.DEPARTMENT, departmentId)
         );
@@ -52,7 +63,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department update(UUID campusId, UUID departmentId, DepartmentCreateDto departmentCreateDto) {
-        Campus campus = getCampus(campusId);
+        Campus campus = campusService.findById(campusId);
         getDepartment(campusId, departmentId);
         if (departmentRepository.existsByAbbreviationAndCampusIdExcludedId(
             departmentCreateDto.getAbbreviation(),
@@ -69,8 +80,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public Department setStatus(UUID campusId, UUID id, EntityUpdateStatusDto departmentUpdateStatusDto) {
-        getCampus(campusId);
+        campusService.findById(campusId);
         Department departmentUpdated = getDepartment(campusId, id);
 
         departmentUpdated.setStatus(departmentUpdateStatusDto.getStatus());
@@ -83,7 +95,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void delete(UUID campusId, UUID departmentId) {
-        getCampus(campusId);
+        campusService.findById(campusId);
         getDepartment(campusId, departmentId);
         departmentRepository.deleteById(departmentId);
     }
@@ -91,12 +103,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public boolean existsByCampusId(UUID campusId) {
         return departmentRepository.existsByCampusId(campusId);
-    }
-
-    private Campus getCampus(UUID campusId) {
-        return campusRepository
-            .findById(campusId)
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.CAMPUS, campusId));
     }
 
     private Department getDepartment(UUID campusId, UUID departmentId) {
