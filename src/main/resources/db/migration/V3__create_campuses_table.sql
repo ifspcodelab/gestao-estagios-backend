@@ -11,6 +11,7 @@ CREATE TABLE campuses(
     telephone VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
     website VARCHAR NOT NULL,
+    status VARCHAR NOT NULL,
     CONSTRAINT campuses_pk PRIMARY KEY (id),
     CONSTRAINT cities_fk FOREIGN KEY (city_id) REFERENCES cities(id)
 );
