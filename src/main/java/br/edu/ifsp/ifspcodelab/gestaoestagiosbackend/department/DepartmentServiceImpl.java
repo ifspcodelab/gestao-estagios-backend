@@ -6,6 +6,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateSta
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department create(UUID campusId, DepartmentCreateDto departmentCreateDto) {
         Campus campus = campusService.findById(campusId);
+
+        if (campus.getStatus() == EntityStatus.DISABLED) {
+            throw new ResourceReferentialIntegrityException(ResourceName.DEPARTMENT, ResourceName.CAMPUS);
+        }
+
         if (departmentRepository.existsByAbbreviationAndCampusId(
             departmentCreateDto.getAbbreviation(),
             campusId)) {
@@ -114,6 +120,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public boolean existsByCampusId(UUID campusId) {
         return departmentRepository.existsByCampusId(campusId);
+    }
+
+    @Override
+    public void disableAllByCourseId(UUID courseId) {
+        departmentRepository.disableAllByCourseId(courseId);
     }
 
     private Department getDepartment(UUID campusId, UUID departmentId) {

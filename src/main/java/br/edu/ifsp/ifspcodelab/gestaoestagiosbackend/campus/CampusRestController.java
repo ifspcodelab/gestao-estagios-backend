@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,13 @@ public class CampusRestController {
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         campusService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<CampusDto> patch(
+        @PathVariable UUID id,
+        @Valid @RequestBody EntityUpdateStatusDto campusUpdateStatusDto)
+    {
+        return ResponseEntity.ok(campusMapper.to(campusService.setStatus(id, campusUpdateStatusDto)));
     }
 }
