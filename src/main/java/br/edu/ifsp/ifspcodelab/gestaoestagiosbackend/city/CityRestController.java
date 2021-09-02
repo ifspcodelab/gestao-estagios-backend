@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 @CrossOrigin
 @AllArgsConstructor
 public class CityRestController {
-    private CityRepository cityRepository;
+    private CityService cityService;
 
     @GetMapping
     public ResponseEntity<List<CityDto>> index(@PathVariable String stateAbbreviation) {
-        List<CityDto> cities = cityRepository.findAllByStateAbbreviation(stateAbbreviation.toUpperCase()).stream()
+        List<CityDto> cities = cityService.findAllByStateAbbreviation(stateAbbreviation.toUpperCase()).stream()
             .map(city -> new CityDto(city.getId(), city.getName(), city.getState())).collect(Collectors.toList());
         return ResponseEntity.ok(cities);
     }
