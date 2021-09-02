@@ -114,6 +114,11 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.deleteById(courseId);
     }
 
+    @Override
+    public void disableAllByDepartmentId(UUID departmentId) {
+        courseRepository.disableAllByDepartmentId(departmentId);
+    }
+
     private Department getDepartment(CourseCreateDto courseCreateDto) {
         return departmentRepository
             .findById(courseCreateDto.getDepartmentId())
