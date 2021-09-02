@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,8 @@ public class Campus {
     private Address address;
     @Embedded
     private InternshipSector internshipSector;
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status;
 
     public Campus(String name, String abbreviation, Address address, InternshipSector internshipSector) {
         this.id = UUID.randomUUID();
@@ -30,5 +33,6 @@ public class Campus {
         this.abbreviation = abbreviation;
         this.address = address;
         this.internshipSector = internshipSector;
+        this.status = EntityStatus.ENABLED;
     }
 }

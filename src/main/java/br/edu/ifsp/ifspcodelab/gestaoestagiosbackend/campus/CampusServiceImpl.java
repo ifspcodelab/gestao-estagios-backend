@@ -2,6 +2,8 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
@@ -9,6 +11,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,6 +79,19 @@ public class CampusServiceImpl implements CampusService {
         }
         Campus campusUpdated = toCampus(campusCreateDto, cityOptional.get());
         campusUpdated.setId(id);
+        return campusRepository.save(campusUpdated);
+    }
+
+    @Transactional
+    @Override
+    public Campus setStatus(UUID id, EntityUpdateStatusDto campusUpdateStatusDto) {
+        Campus campusUpdated = getCampus(id);
+
+        campusUpdated.setStatus(campusUpdateStatusDto.getStatus());
+
+        if (campusUpdated.getStatus() == EntityStatus.DISABLED) {
+            departmentService.disableAllByCourseId(id);
+        }
         return campusRepository.save(campusUpdated);
     }
 

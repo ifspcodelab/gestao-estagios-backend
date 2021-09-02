@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import lombok.Data;
 
 import java.util.UUID;
@@ -11,4 +12,5 @@ public class CampusDto {
     String abbreviation;
     AddressDto address;
     InternshipSectorDto internshipSector;
+    EntityStatus status;
 }
