@@ -7,7 +7,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceN
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,12 @@ import java.util.UUID;
 
 @Service
 public class CourseServiceImpl implements CourseService {
-    private DepartmentRepository departmentRepository;
     private CourseRepository courseRepository;
 
+    private DepartmentService departmentService;
     private CurriculumService curriculumService;
 
-    public CourseServiceImpl(DepartmentRepository departmentRepository, CourseRepository courseRepository) {
-        this.departmentRepository = departmentRepository;
+    public CourseServiceImpl(CourseRepository courseRepository) {
         this.courseRepository = courseRepository;
     }
 
@@ -32,9 +31,14 @@ public class CourseServiceImpl implements CourseService {
         this.curriculumService = curriculumService;
     }
 
+    @Autowired
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
+
     @Override
     public Course create(CourseCreateDto courseCreateDto) {
-        Department department = getDepartment(courseCreateDto);
+        Department department = departmentService.findById(courseCreateDto.getDepartmentId());
 
         if (department.getStatus().equals(EntityStatus.DISABLED)) {
             throw new ResourceReferentialIntegrityException(ResourceName.COURSE, ResourceName.DEPARTMENT);
@@ -70,7 +74,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course update(UUID courseId, CourseCreateDto courseCreateDto) {
         getCourse(courseId);
-        Department department = getDepartment(courseCreateDto);
+        Department department = departmentService.findById(courseCreateDto.getDepartmentId());
 
         if (courseRepository.existsByAbbreviationAndDepartmentIdExcludedId(
             courseCreateDto.getAbbreviation(),
@@ -117,15 +121,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void disableAllByDepartmentId(UUID departmentId) {
         courseRepository.disableAllByDepartmentId(departmentId);
-    }
-
-    private Department getDepartment(CourseCreateDto courseCreateDto) {
-        return departmentRepository
-            .findById(courseCreateDto.getDepartmentId())
-            .orElseThrow(() -> new ResourceNotFoundException(
-                ResourceName.DEPARTMENT,
-                courseCreateDto.getDepartmentId()
-            ));
     }
 
     private Course getCourse(UUID courseId) {

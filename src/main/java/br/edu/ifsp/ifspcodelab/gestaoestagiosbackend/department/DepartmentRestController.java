@@ -38,7 +38,7 @@ public class DepartmentRestController {
 
     @GetMapping("{departmentId}")
     public ResponseEntity<DepartmentDto> show(@PathVariable UUID campusId, @PathVariable UUID departmentId) {
-        return ResponseEntity.ok(departmentMapper.to(departmentService.findById(campusId, departmentId)));
+        return ResponseEntity.ok(departmentMapper.to(departmentService.findByCampusIdAndId(campusId, departmentId)));
     }
 
     @PutMapping("{departmentId}")
