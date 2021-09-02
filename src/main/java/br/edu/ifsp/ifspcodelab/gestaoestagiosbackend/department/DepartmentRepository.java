@@ -16,4 +16,5 @@ public interface DepartmentRepository extends JpaRepository<Department, UUID> {
     Optional<Department> findByCampusIdAndId(UUID campusId, UUID departmentId);
     @Query("select count(d) > 0 from Department d join Campus as c on d.campus = c.id where d.abbreviation = ?1 and c.id = ?2 and d.id <> ?3")
     boolean existsByAbbreviationAndCampusIdExcludedId(String abbreviation, UUID campusId, UUID departmentId);
+    boolean existsByCampusId(UUID campusId);
 }

@@ -7,6 +7,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceN
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +19,22 @@ import java.util.UUID;
 @Service
 public class CampusServiceImpl implements CampusService {
     private CampusRepository campusRepository;
-    private DepartmentRepository departmentRepository;
 
     private CityService cityService;
+    private DepartmentService departmentService;
 
-    public CampusServiceImpl(CampusRepository campusRepository, DepartmentRepository departmentRepository) {
+    public CampusServiceImpl(CampusRepository campusRepository) {
         this.campusRepository = campusRepository;
-        this.departmentRepository = departmentRepository;
     }
 
     @Autowired
     public void setCityService(CityService cityService) {
         this.cityService = cityService;
+    }
+
+    @Autowired
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
     }
 
     @Override
@@ -79,7 +84,7 @@ public class CampusServiceImpl implements CampusService {
 
     @Override
     public void delete(UUID id) {
-        if (departmentRepository.countAllByCampusId(id) != 0) {
+        if (departmentService.existsByCampusId(id)) {
             throw new ResourceReferentialIntegrityException(ResourceName.DEPARTMENT, ResourceName.CAMPUS);
         }
         campusRepository.deleteById(getCampus(id).getId());
