@@ -6,7 +6,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateSta
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseRepository;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
