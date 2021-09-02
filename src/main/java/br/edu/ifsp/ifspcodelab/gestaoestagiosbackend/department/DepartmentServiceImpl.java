@@ -88,6 +88,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentRepository.deleteById(departmentId);
     }
 
+    @Override
+    public boolean existsByCampusId(UUID campusId) {
+        return departmentRepository.existsByCampusId(campusId);
+    }
+
     private Campus getCampus(UUID campusId) {
         return campusRepository
             .findById(campusId)
