@@ -12,4 +12,5 @@ public interface CourseService {
     Course update(UUID courseId, CourseCreateDto courseCreateDto);
     Course setStatus(UUID courseId, EntityUpdateStatusDto courseUpdateStatusDto);
     void delete(UUID courseId);
+    void disableAllByDepartmentId(UUID departmentId);
 }

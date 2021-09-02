@@ -7,6 +7,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +18,22 @@ import java.util.UUID;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentRepository departmentRepository;
-    private CourseRepository courseRepository;
 
     private CampusService campusService;
+    private CourseService courseService;
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository, CourseRepository courseRepository) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
-        this.courseRepository = courseRepository;
     }
 
     @Autowired
     public void setCampusService(CampusService campusService) {
         this.campusService = campusService;
+    }
+
+    @Autowired
+    public void setCourseService(CourseService courseService) {
+        this.courseService = courseService;
     }
 
     @Override
@@ -88,7 +93,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         departmentUpdated.setStatus(departmentUpdateStatusDto.getStatus());
 
         if (departmentUpdated.getStatus() == EntityStatus.DISABLED) {
-            courseRepository.disableAllByDepartmentId(id);
+            courseService.disableAllByDepartmentId(id);
         }
         return departmentRepository.save(departmentUpdated);
     }
