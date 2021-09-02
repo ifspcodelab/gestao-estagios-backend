@@ -2,11 +2,13 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityRepository;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +16,21 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
 public class CampusServiceImpl implements CampusService {
-    private final CampusRepository campusRepository;
-    private final CityRepository cityRepository;
-    private final DepartmentRepository departmentRepository;
+    private CampusRepository campusRepository;
+    private DepartmentRepository departmentRepository;
+
+    private CityService cityService;
+
+    public CampusServiceImpl(CampusRepository campusRepository, DepartmentRepository departmentRepository) {
+        this.campusRepository = campusRepository;
+        this.departmentRepository = departmentRepository;
+    }
+
+    @Autowired
+    public void setCityService(CityService cityService) {
+        this.cityService = cityService;
+    }
 
     @Override
     public Campus create(CampusCreateDto campusCreateDto) {
@@ -29,7 +41,7 @@ public class CampusServiceImpl implements CampusService {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
         UUID cityId = campusCreateDto.getAddress().getCityId();
-        Optional<City> cityOptional = cityRepository.findById(cityId);
+        Optional<City> cityOptional = cityService.findById(cityId);
         if (cityOptional.isEmpty()){
             throw new ResourceNotFoundException(ResourceName.CITY, cityId);
         }
@@ -56,7 +68,7 @@ public class CampusServiceImpl implements CampusService {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
         UUID cityId = campusCreateDto.getAddress().getCityId();
-        Optional<City> cityOptional = cityRepository.findById(cityId);
+        Optional<City> cityOptional = cityService.findById(cityId);
         if (cityOptional.isEmpty()){
             throw new ResourceNotFoundException(ResourceName.CITY, cityId);
         }
