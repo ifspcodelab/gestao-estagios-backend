@@ -123,6 +123,11 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.disableAllByDepartmentId(departmentId);
     }
 
+    @Override
+    public boolean existsByDepartmentId(UUID departmentId) {
+        return courseRepository.existsByDepartmentId(departmentId);
+    }
+
     private Course getCourse(UUID courseId) {
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.COURSE, courseId));

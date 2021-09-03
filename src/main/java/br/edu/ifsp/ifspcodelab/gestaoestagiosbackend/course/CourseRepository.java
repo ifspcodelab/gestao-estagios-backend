@@ -15,4 +15,5 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     @Modifying
     @Query("update Course c set c.status = 'DISABLED' where c.department.id = ?1")
     void disableAllByDepartmentId(UUID departmentId);
+    boolean existsByDepartmentId(UUID departmentId);
 }

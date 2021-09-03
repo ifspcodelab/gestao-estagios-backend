@@ -13,4 +13,5 @@ public interface CourseService {
     Course setStatus(UUID courseId, EntityUpdateStatusDto courseUpdateStatusDto);
     void delete(UUID courseId);
     void disableAllByDepartmentId(UUID departmentId);
+    boolean existsByDepartmentId(UUID departmentId);
 }
