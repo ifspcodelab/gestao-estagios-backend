@@ -10,8 +10,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,6 +106,9 @@ public class CourseServiceImpl implements CourseService {
         if (courseUpdated.getStatus().equals(EntityStatus.DISABLED)) {
             curriculumService.disableAllByCourseId(courseId);
         }
+        else {
+            enable(courseId);
+        }
         return courseRepository.save(courseUpdated);
     }
 
@@ -118,14 +121,34 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.deleteById(courseId);
     }
 
+    @Transactional
     @Override
     public void disableAllByDepartmentId(UUID departmentId) {
+        this.findAllByDepartmentId(departmentId)
+            .forEach(course -> curriculumService.disableAllByCourseId(course.getId()));
         courseRepository.disableAllByDepartmentId(departmentId);
     }
 
     @Override
     public boolean existsByDepartmentId(UUID departmentId) {
         return courseRepository.existsByDepartmentId(departmentId);
+    }
+
+    @Override
+    public List<Course> findAllByDepartmentId(UUID departmentId) {
+        return courseRepository.findAllByDepartmentId(departmentId);
+    }
+
+    @Override
+    public Course enable(UUID courseId) {
+        Course course = getCourse(courseId);
+        if (course.getDepartment().getStatus().equals(EntityStatus.DISABLED)) {
+            departmentService.enable(
+                course.getDepartment().getCampus().getId(),
+                course.getDepartment().getId()
+            );
+        }
+        return courseRepository.save(course.enable());
     }
 
     private Course getCourse(UUID courseId) {

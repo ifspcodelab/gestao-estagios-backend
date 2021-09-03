@@ -20,5 +20,5 @@ public interface DepartmentRepository extends JpaRepository<Department, UUID> {
     boolean existsByCampusId(UUID campusId);
     @Modifying
     @Query("update Department d set d.status = 'DISABLED' where d.campus.id = ?1")
-    void disableAllByCourseId(UUID courseId);
+    void disableAllByCampusId(UUID campusId);
 }

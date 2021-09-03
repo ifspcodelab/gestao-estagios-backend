@@ -32,4 +32,9 @@ public class Department {
         this.status = EntityStatus.ENABLED;
         this.campus = campus;
     }
+
+    public Department enable() {
+        this.setStatus(EntityStatus.ENABLED);
+        return this;
+    }
 }

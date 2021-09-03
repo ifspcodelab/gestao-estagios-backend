@@ -43,4 +43,9 @@ public class Course {
         this.status = status;
         this.department = department;
     }
+
+    public Course enable() {
+        this.setStatus(EntityStatus.ENABLED);
+        return this;
+    }
 }

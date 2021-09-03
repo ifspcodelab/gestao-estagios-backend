@@ -14,5 +14,6 @@ public interface DepartmentService {
     Department setStatus(UUID campusId, UUID id, EntityUpdateStatusDto departmentUpdateStatusDto);
     void delete(UUID campusId, UUID departmentId);
     boolean existsByCampusId(UUID campusId);
-    void disableAllByCourseId(UUID courseId);
+    void disableAllByCampusId(UUID campusId);
+    Department enable(UUID campusId, UUID departmentId);
 }

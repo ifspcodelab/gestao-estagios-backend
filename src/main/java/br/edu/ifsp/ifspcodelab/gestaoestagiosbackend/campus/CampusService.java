@@ -12,4 +12,5 @@ public interface CampusService {
     Campus update(UUID id, CampusCreateDto campusCreateDto);
     Campus setStatus(UUID id, EntityUpdateStatusDto campusUpdateStatusDto);
     void delete(UUID id);
+    Campus enable(UUID id);
 }

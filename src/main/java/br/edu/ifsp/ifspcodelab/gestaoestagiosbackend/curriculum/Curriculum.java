@@ -45,4 +45,9 @@ public class Curriculum {
         this.status = EntityStatus.ENABLED;
         this.course = course;
     }
+
+    public Curriculum enable() {
+        this.setStatus(EntityStatus.ENABLED);
+        return this;
+    }
 }

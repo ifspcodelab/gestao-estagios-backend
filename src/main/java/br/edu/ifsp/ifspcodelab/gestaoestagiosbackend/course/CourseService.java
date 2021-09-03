@@ -14,4 +14,6 @@ public interface CourseService {
     void delete(UUID courseId);
     void disableAllByDepartmentId(UUID departmentId);
     boolean existsByDepartmentId(UUID departmentId);
+    List<Course> findAllByDepartmentId(UUID departmentId);
+    Course enable(UUID courseId);
 }
