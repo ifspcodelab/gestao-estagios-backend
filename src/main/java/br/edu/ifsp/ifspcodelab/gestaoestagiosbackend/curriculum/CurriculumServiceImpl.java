@@ -1,14 +1,15 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,12 +78,16 @@ public class CurriculumServiceImpl implements CurriculumService {
 
         curriculumUpdated.setStatus(curriculumUpdateStatusDto.getStatus());
 
+        if (curriculumUpdated.getStatus().equals(EntityStatus.ENABLED)) {
+            enable(courseId, curriculumId);
+        }
+
         return curriculumRepository.save(curriculumUpdated);
     }
 
+    @Transactional
     @Override
     public void disableAllByCourseId(UUID courseId) {
-        courseService.findById(courseId);
         curriculumRepository.disableAllByCourseId(courseId);
     }
 
@@ -96,6 +101,15 @@ public class CurriculumServiceImpl implements CurriculumService {
         courseService.findById(courseId);
         getCurriculum(courseId, curriculumId);
         curriculumRepository.deleteById(curriculumId);
+    }
+
+    @Override
+    public Curriculum enable(UUID courseId, UUID curriculumId) {
+        Curriculum curriculum = getCurriculum(courseId, curriculumId);
+        if (curriculum.getCourse().getStatus().equals(EntityStatus.DISABLED)) {
+            courseService.enable(courseId);
+        }
+        return curriculumRepository.save(curriculum.enable());
     }
 
     private Curriculum getCurriculum(UUID courseId, UUID curriculumId) {

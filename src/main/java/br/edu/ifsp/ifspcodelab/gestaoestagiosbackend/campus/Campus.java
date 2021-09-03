@@ -35,4 +35,9 @@ public class Campus {
         this.internshipSector = internshipSector;
         this.status = EntityStatus.ENABLED;
     }
+
+    public Campus enable() {
+        this.status = EntityStatus.ENABLED;
+        return this;
+    }
 }

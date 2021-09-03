@@ -10,8 +10,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceR
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -90,7 +90,7 @@ public class CampusServiceImpl implements CampusService {
         campusUpdated.setStatus(campusUpdateStatusDto.getStatus());
 
         if (campusUpdated.getStatus() == EntityStatus.DISABLED) {
-            departmentService.disableAllByCourseId(id);
+            departmentService.disableAllByCampusId(id);
         }
         return campusRepository.save(campusUpdated);
     }
@@ -101,6 +101,11 @@ public class CampusServiceImpl implements CampusService {
             throw new ResourceReferentialIntegrityException(ResourceName.DEPARTMENT, ResourceName.CAMPUS);
         }
         campusRepository.deleteById(getCampus(id).getId());
+    }
+
+    @Override
+    public Campus enable(UUID id) {
+        return campusRepository.save(getCampus(id).enable());
     }
 
     private Campus getCampus(UUID id) {

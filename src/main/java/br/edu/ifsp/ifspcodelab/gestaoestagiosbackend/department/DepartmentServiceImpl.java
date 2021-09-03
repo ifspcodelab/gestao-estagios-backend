@@ -10,8 +10,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceR
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,6 +106,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         if (departmentUpdated.getStatus() == EntityStatus.DISABLED) {
             courseService.disableAllByDepartmentId(id);
+        } else {
+          enable(campusId, id);
         }
         return departmentRepository.save(departmentUpdated);
     }
@@ -127,9 +129,20 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.existsByCampusId(campusId);
     }
 
+    @Transactional
     @Override
-    public void disableAllByCourseId(UUID courseId) {
-        departmentRepository.disableAllByCourseId(courseId);
+    public void disableAllByCampusId(UUID campusId) {
+        this.findAll(campusId).forEach(department -> courseService.disableAllByDepartmentId(department.getId()));
+        departmentRepository.disableAllByCampusId(campusId);
+    }
+
+    @Override
+    public Department enable(UUID campusId, UUID departmentId) {
+        Department department = getDepartment(campusId, departmentId);
+        if (department.getCampus().getStatus().equals(EntityStatus.DISABLED)) {
+            campusService.enable(campusId);
+        }
+        return departmentRepository.save(department.enable());
     }
 
     private Department getDepartment(UUID campusId, UUID departmentId) {

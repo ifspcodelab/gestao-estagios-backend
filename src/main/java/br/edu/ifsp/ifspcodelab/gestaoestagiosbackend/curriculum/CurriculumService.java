@@ -14,4 +14,5 @@ public interface CurriculumService {
     void disableAllByCourseId(UUID courseId);
     boolean existsByCourseId(UUID courseId);
     void delete(UUID courseId, UUID curriculumId);
+    Curriculum enable(UUID courseId, UUID curriculumId);
 }
