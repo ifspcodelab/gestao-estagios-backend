@@ -114,6 +114,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void delete(UUID campusId, UUID departmentId) {
         campusService.findById(campusId);
         getDepartment(campusId, departmentId);
+
+        if (courseService.existsByDepartmentId(departmentId)) {
+            throw new ResourceReferentialIntegrityException(ResourceName.COURSE, ResourceName.DEPARTMENT);
+        }
+
         departmentRepository.deleteById(departmentId);
     }
 
