@@ -1,5 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import java.util.List;
+
 public interface UserService {
-    User create(String email, String password);
+    User create(UserCreateDto userCreateDto);
+    List<User> findAll();
 }

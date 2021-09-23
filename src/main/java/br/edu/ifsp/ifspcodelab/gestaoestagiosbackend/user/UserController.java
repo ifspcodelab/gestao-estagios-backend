@@ -1,13 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ProblemDetail;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.Violation;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,19 +16,25 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDto> create(@Valid @RequestBody UserCreateDto userCreateDto) {
-        User user = this.userService.create(userCreateDto.getEmail(), userCreateDto.getPassword());
-        return new ResponseEntity<>(new UserDto(user.getId(), user.getEmail()), HttpStatus.CREATED);
+    public ResponseEntity<User> create(@Valid @RequestBody UserCreateDto userCreateDto) {
+        User user = this.userService.create(userCreateDto);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/api/users").toUriString());
+        return ResponseEntity.created(uri).body(user);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ProblemDetail> alreadyExists(UserAlreadyExistsException exception) {
-        return new ResponseEntity<>(
-            new ProblemDetail(
-                "User already exists",
-                List.of(new Violation("email", "User already exists with email " + exception.getEmail()))
-            ),
-            HttpStatus.CONFLICT
-        );
+    @GetMapping
+    public ResponseEntity<List<User>> index() {
+        return ResponseEntity.ok(userService.findAll());
     }
+
+//    @ExceptionHandler(UserAlreadyExistsException.class)
+//    public ResponseEntity<ProblemDetail> alreadyExists(UserAlreadyExistsException exception) {
+//        return new ResponseEntity<>(
+//            new ProblemDetail(
+//                "User already exists",
+//                List.of(new Violation("email", "User already exists with email " + exception.getEmail()))
+//            ),
+//            HttpStatus.CONFLICT
+//        );
+//    }
 }
