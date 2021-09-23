@@ -11,11 +11,19 @@ import javax.validation.constraints.Size;
 public class UserCreateDto {
     @NotNull
     @NotBlank
-    @Email
-    String email;
+    String registration;
+
+    @NotNull
+    @NotBlank
+    String name;
 
     @NotNull
     @NotBlank
     @Size(min = 6, max = 22)
     String password;
+
+    @NotNull
+    @NotBlank
+    @Email
+    String email;
 }
