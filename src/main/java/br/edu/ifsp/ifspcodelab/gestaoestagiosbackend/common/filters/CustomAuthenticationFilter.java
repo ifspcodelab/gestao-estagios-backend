@@ -1,5 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.filters;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.JwtConfig;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.JwtSecretKey;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -33,6 +36,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtConfig jwtConfig;
+    private final JwtSecretKey jwtSecretKey;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -53,19 +58,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+        //Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
         String access_token = JWT.create()
             .withSubject(user.getUsername())
             .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+            //.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationMillis()))
             .withIssuer(request.getRequestURL().toString())
             .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
-            .sign(algorithm);
+            .sign(jwtSecretKey.secretKey());
         String refresh_token = JWT.create()
             .withSubject(user.getUsername())
             .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+            //.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationMillis()))
             .withIssuer(request.getRequestURL().toString())
-            .sign(algorithm);
+            .sign(jwtSecretKey.secretKey());
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", access_token);
