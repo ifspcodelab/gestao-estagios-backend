@@ -51,6 +51,17 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
         );
     }
 
+    @ExceptionHandler(ResourcesNotFoundException.class)
+    public ResponseEntity<ProblemDetail> resourcesNotFound(ResourcesNotFoundException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                exception.getResourceName().getName() + " not found with ids " + exception.getResourcesIds(),
+                Collections.emptyList()
+            ),
+            HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<ProblemDetail> resourceAlreadyExists(ResourceAlreadyExistsException exception) {
         return new ResponseEntity<>(
