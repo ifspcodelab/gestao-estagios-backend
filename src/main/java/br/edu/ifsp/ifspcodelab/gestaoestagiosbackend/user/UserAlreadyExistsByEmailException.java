@@ -5,8 +5,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceN
 import lombok.Getter;
 
 @Getter
-public class UserAlreadyExistsException extends ResourceAlreadyExistsException {
-    public UserAlreadyExistsException(String email) {
+public class UserAlreadyExistsByEmailException extends ResourceAlreadyExistsException {
+    public UserAlreadyExistsByEmailException(String email) {
         super(ResourceName.USER, "Email", email);
     }
 }
