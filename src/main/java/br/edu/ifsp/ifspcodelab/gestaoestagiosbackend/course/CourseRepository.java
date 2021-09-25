@@ -18,4 +18,5 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     void disableAllByDepartmentId(UUID departmentId);
     boolean existsByDepartmentId(UUID departmentId);
     List<Course> findAllByDepartmentId(UUID departmentId);
+    List<Course> findByIdIn(List<UUID> coursesIds);
 }

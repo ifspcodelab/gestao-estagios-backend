@@ -151,6 +151,11 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.save(course.enable());
     }
 
+    @Override
+    public List<Course> findByIdIn(List<UUID> coursesIds) {
+        return courseRepository.findByIdIn(coursesIds);
+    }
+
     private Course getCourse(UUID courseId) {
         return courseRepository.findById(courseId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.COURSE, courseId));

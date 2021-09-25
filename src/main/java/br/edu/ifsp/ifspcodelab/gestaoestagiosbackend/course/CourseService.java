@@ -16,4 +16,5 @@ public interface CourseService {
     boolean existsByDepartmentId(UUID departmentId);
     List<Course> findAllByDepartmentId(UUID departmentId);
     Course enable(UUID courseId);
+    List<Course> findByIdIn(List<UUID> coursesIds);
 }
