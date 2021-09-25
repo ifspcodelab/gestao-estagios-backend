@@ -1,5 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.Advisor;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.AdvisorDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.AdvisorMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final AdvisorMapper advisorMapper;
 
-    @PostMapping
-    public ResponseEntity<User> create(@Valid @RequestBody UserCreateDto userCreateDto) {
-        User user = this.userService.create(userCreateDto);
+    @PostMapping("advisors")
+    public ResponseEntity<AdvisorDto> create(@Valid @RequestBody UserAdvisorCreateDto userAdvisorCreateDto) {
+        Advisor advisor = this.userService.createAdvisor(userAdvisorCreateDto);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/api/users").toUriString());
-        return ResponseEntity.created(uri).body(user);
+        return ResponseEntity.created(uri).body(advisorMapper.to(advisor));
     }
 
     @GetMapping

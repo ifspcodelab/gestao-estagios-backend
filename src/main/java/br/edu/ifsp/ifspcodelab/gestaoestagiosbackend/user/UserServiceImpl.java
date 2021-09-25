@@ -1,7 +1,10 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.Advisor;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.AdvisorService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,11 +17,22 @@ import java.util.Collection;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private AdvisorService advisorService;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setAdvisorService(AdvisorService advisorService) {
+        this.advisorService = advisorService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String registration) throws UsernameNotFoundException {
@@ -35,19 +49,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
     @Override
-    public User create(UserCreateDto userCreateDto) {
-        if(userRepository.existsByEmail(userCreateDto.getEmail())) {
-            throw new UserAlreadyExistsException(userCreateDto.getEmail());
+    public Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto) {
+        if(userRepository.existsByEmail(userAdvisorCreateDto.getEmail())) {
+            throw new UserAlreadyExistsException(userAdvisorCreateDto.getEmail());
         }
 
         User userCreated = new User(
-            userCreateDto.getRegistration(),
-            userCreateDto.getName(),
-            passwordEncoder.encode(userCreateDto.getPassword()),
-            userCreateDto.getEmail(),
-            List.of(Role.ROLE_STUDENT)
+            userAdvisorCreateDto.getRegistration(),
+            userAdvisorCreateDto.getName(),
+            passwordEncoder.encode(userAdvisorCreateDto.getPassword()),
+            userAdvisorCreateDto.getEmail(),
+            userAdvisorCreateDto.getRoles()
         );
-        return userRepository.save(userCreated);
+        userRepository.save(userCreated);
+
+        List<Course> courses = advisorService.getCourses(userAdvisorCreateDto);
+
+        return advisorService.create(new Advisor(userCreated, courses));
     }
 
     @Override

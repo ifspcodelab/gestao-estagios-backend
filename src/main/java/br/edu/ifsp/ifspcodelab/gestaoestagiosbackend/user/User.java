@@ -37,4 +37,12 @@ public class User {
         this.email = email;
         this.roles = roles;
     }
+
+    public User(String registration, String name, String email, Collection<Role> roles) {
+        this.id = UUID.randomUUID();
+        this.registration = registration;
+        this.name = name;
+        this.email = email;
+        this.roles = roles;
+    }
 }

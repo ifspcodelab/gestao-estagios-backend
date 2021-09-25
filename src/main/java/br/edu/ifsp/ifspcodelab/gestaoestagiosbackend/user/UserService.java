@@ -1,8 +1,11 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.Advisor;
+
 import java.util.List;
 
 public interface UserService {
-    User create(UserCreateDto userCreateDto);
+    Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto);
     List<User> findAll();
 }
