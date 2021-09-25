@@ -53,8 +53,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto) {
         List<Course> courses = advisorService.getCourses(userAdvisorCreateDto);
 
+        if (userRepository.existsByRegistration(userAdvisorCreateDto.getRegistration())) {
+            throw new UserAlreadyExistsByRegistrationException(userAdvisorCreateDto.getRegistration());
+        }
         if(userRepository.existsByEmail(userAdvisorCreateDto.getEmail())) {
-            throw new UserAlreadyExistsException(userAdvisorCreateDto.getEmail());
+            throw new UserAlreadyExistsByEmailException(userAdvisorCreateDto.getEmail());
         }
         if (courses.size() == 0) {
             throw new ResourcesNotFoundException(ResourceName.COURSE, userAdvisorCreateDto.getCoursesIds());
