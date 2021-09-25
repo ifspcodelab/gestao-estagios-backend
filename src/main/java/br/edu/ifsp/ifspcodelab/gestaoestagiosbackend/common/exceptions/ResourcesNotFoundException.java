@@ -6,14 +6,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourcesNotFoundException extends RuntimeException {
     private final ResourceName resourceName;
-    private final UUID resourceId;
+    private final List<UUID> resourcesIds;
 
-    public ResourceNotFoundException(ResourceName resourceName, UUID resourceId) {
+    public ResourcesNotFoundException(ResourceName resourceName, List<UUID> resourcesIds) {
         super();
         this.resourceName = resourceName;
-        this.resourceId = resourceId;
+        this.resourcesIds = resourcesIds;
     }
-
 }
