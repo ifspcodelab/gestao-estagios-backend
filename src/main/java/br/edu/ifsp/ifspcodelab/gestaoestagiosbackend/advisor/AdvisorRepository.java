@@ -1,4 +1,4 @@
-package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor;
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

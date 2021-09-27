@@ -3,8 +3,8 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourcesNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.Advisor;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor.AdvisorService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto) {
-        List<Course> courses = advisorService.getCourses(userAdvisorCreateDto);
+        List<Course> courses = advisorService.getCourses(userAdvisorCreateDto.getCoursesIds());
 
         if (userRepository.existsByRegistration(userAdvisorCreateDto.getRegistration())) {
             throw new UserAlreadyExistsByRegistrationException(userAdvisorCreateDto.getRegistration());

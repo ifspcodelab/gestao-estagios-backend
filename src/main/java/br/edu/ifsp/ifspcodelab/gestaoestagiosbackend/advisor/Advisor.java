@@ -1,4 +1,4 @@
-package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor;
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.User;
