@@ -4,7 +4,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.JwtConfig;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.JwtSecretKey;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

@@ -2,7 +2,6 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions;
 
 import lombok.Getter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
