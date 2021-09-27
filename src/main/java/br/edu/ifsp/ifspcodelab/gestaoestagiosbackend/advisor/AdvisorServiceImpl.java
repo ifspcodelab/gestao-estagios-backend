@@ -1,12 +1,12 @@
-package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.advisor;
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorCreateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdvisorServiceImpl implements AdvisorService {
@@ -30,7 +30,7 @@ public class AdvisorServiceImpl implements AdvisorService {
     }
 
     @Override
-    public List<Course> getCourses(UserAdvisorCreateDto userAdvisorCreateDto) {
-        return courseService.findByIdIn(userAdvisorCreateDto.getCoursesIds());
+    public List<Course> getCourses(List<UUID> coursesIds) {
+        return courseService.findByIdIn(coursesIds);
     }
 }

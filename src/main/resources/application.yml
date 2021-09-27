@@ -14,3 +14,8 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: false
+application:
+  jwt:
+    secretKey: bcd38b5a-95f7-4750-a4e8-a215430cc515
+    tokenPrefix: "Bearer "
+    tokenExpirationAfterMinutes: 60
