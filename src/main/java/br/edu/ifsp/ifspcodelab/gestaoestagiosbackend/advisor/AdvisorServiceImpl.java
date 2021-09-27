@@ -30,6 +30,11 @@ public class AdvisorServiceImpl implements AdvisorService {
     }
 
     @Override
+    public List<Advisor> findAll() {
+        return advisorRepository.findAll();
+    }
+
+    @Override
     public List<Course> getCourses(List<UUID> coursesIds) {
         return courseService.findByIdIn(coursesIds);
     }

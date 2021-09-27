@@ -8,4 +8,6 @@ import java.util.UUID;
 public class UserDto {
     UUID id;
     String registration;
+    String name;
+    String email;
 }
