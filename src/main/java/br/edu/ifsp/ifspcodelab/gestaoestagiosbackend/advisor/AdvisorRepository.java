@@ -7,4 +7,5 @@ import java.util.UUID;
 
 @Repository
 public interface AdvisorRepository extends JpaRepository<Advisor, UUID> {
+
 }
