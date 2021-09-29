@@ -6,6 +6,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.Resources
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private AdvisorService advisorService;
-
     private StudentService studentService;
+
+    private CurriculumService curriculumService;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -36,6 +38,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     public void setAdvisorService(AdvisorService advisorService) {
         this.advisorService = advisorService;
+    }
+
+    @Autowired
+    public void setStudentService(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @Autowired
+    public void setCurriculumService(CurriculumService curriculumService) {
+        this.curriculumService = curriculumService;
     }
 
     @Override
@@ -101,6 +113,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         );
         userRepository.save(userCreated);
 
-        return studentService.create(new Student(userCreated, userStudentCreateDto.getCurriculum()));
+        return studentService.create(new Student(userCreated, curriculumService.findByCurriculumId(userStudentCreateDto.getCurriculumId())));
     }
 }
