@@ -1,10 +1,13 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourcesNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +25,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private AdvisorService advisorService;
+
+    private StudentService studentService;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -76,5 +81,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Student createStudent(UserStudentCreateDto userStudentCreateDto) {
+        if (userRepository.existsByRegistration(userStudentCreateDto.getRegistration())) {
+            throw new UserAlreadyExistsByRegistrationException(userStudentCreateDto.getRegistration());
+        }
+        if(userRepository.existsByEmail(userStudentCreateDto.getEmail())) {
+            throw new UserAlreadyExistsByEmailException(userStudentCreateDto.getEmail());
+        }
+
+        User userCreated = new User(
+                userStudentCreateDto.getRegistration(),
+                userStudentCreateDto.getName(),
+                passwordEncoder.encode(userStudentCreateDto.getPassword()),
+                userStudentCreateDto.getEmail(),
+                List.of(Role.ROLE_STUDENT)
+        );
+        userRepository.save(userCreated);
+
+        return studentService.create(new Student(userCreated, userStudentCreateDto.getCurriculum()));
     }
 }

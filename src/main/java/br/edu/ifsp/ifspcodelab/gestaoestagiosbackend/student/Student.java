@@ -1,7 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +15,19 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Student {
+
+    public Student(User user, Curriculum curriculum) {
+        this.id = UUID.randomUUID();
+        this.user = user;
+        this.curriculum = curriculum;
+    }
+
     @Id
     private UUID id;
 
     @OneToOne
     private User user;
 
-    private UUID curriculumId;
-
     @ManyToOne
-    private Campus campus;
-
-    @ManyToOne
-    private Course course;
+    private Curriculum curriculum;
 }
