@@ -2,10 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
 import lombok.Value;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.UUID;
 
 @Value
@@ -25,7 +22,7 @@ public class UserStudentCreateDto {
 
     @NotNull
     @NotBlank
-    @Email
+    @Pattern(regexp="^([_A-Za-z0-9-+]+\\.?[_A-Za-z0-9-+]+@(aluno.ifsp.edu.br|ifsp.edu.br))$", message = "utilize o email institucional (@ifsp.edu.br ou @aluno.ifsp.edu.br)")
     String email;
 
     @NotNull
