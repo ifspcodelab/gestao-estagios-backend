@@ -1,12 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
 import lombok.Value;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Value
 public class UserStudentCreateDto {
@@ -29,6 +29,5 @@ public class UserStudentCreateDto {
     String email;
 
     @NotNull
-    @NotBlank
-    Curriculum curriculum;
+    UUID curriculumId;
 }
