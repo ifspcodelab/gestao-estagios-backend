@@ -1,7 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusCreateDto;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserStudentCreateDto;

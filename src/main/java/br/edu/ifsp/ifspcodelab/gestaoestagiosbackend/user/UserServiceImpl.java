@@ -2,7 +2,6 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourcesNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;

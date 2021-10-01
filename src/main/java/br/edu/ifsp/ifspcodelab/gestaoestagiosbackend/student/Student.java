@@ -16,12 +16,6 @@ import java.util.UUID;
 @Setter
 public class Student {
 
-    public Student(User user, Curriculum curriculum) {
-        this.id = UUID.randomUUID();
-        this.user = user;
-        this.curriculum = curriculum;
-    }
-
     @Id
     private UUID id;
 
@@ -30,4 +24,10 @@ public class Student {
 
     @ManyToOne
     private Curriculum curriculum;
+
+    public Student(User user, Curriculum curriculum) {
+        this.id = UUID.randomUUID();
+        this.user = user;
+        this.curriculum = curriculum;
+    }
 }
