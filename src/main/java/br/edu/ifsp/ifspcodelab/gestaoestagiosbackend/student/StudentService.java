@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface StudentService {
     Student create(Student student);
     List<Student> findAll();
-    Curriculum getCurriculum(UUID curriculumId, UUID courseId);
     Student findById(UUID id);
     UserDto update(UserDto userDto);
+    void delete(UUID id);
 }
