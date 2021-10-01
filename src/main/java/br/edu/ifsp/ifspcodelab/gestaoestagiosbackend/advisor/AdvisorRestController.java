@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/advisors")
+@CrossOrigin
 @AllArgsConstructor
 public class AdvisorRestController {
     private final UserService userService;
