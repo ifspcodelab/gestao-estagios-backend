@@ -50,11 +50,6 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Curriculum getCurriculum(UUID curriculumId, UUID courseId) {
-        return curriculumService.findById(curriculumId, courseId);
-    }
-
-    @Override
     public Student findById(UUID id) {
         return studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ResourceName.STUDENT, id));
     }
@@ -84,5 +79,17 @@ public class StudentServiceImpl implements StudentService {
         userRepository.save(user);
 
         return userDto;
+    }
+
+    @Override
+    public void delete(UUID id) {
+        Optional<Student> student = studentRepository.findById(id);
+
+        if(student.isEmpty()){
+            throw new ResourceNotFoundException(ResourceName.STUDENT, id);
+        }
+
+        studentRepository.deleteById(id);
+        userRepository.deleteById(student.get().getUser().getId());
     }
 }

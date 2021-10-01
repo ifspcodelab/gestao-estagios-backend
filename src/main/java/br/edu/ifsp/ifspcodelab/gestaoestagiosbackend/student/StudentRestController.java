@@ -48,4 +48,10 @@ public class StudentRestController {
     public ResponseEntity<UserDto> update(@Valid @RequestBody UserDto userDto) {
         return ResponseEntity.ok(studentService.update(userDto));
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        studentService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
