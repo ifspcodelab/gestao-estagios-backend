@@ -3,12 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceAlreadyExistsException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.User;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserDto;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserRepository;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserStudentCreateDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,23 +16,29 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
-    private CurriculumService curriculumService;
+    private UserService userService;
 
     @Autowired
+    public UserService getUserService() {
+        return userService;
+    }
+
+    /*@Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
+    }*/
 
-    private UserRepository userRepository;
+    //private UserRepository userRepository;
 
-    public StudentServiceImpl(StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, UserService userService) {
         this.studentRepository = studentRepository;
+        this.userService = userService;
     }
 
-    @Autowired
+    /*@Autowired
     public void setCurriculumService(CurriculumService curriculumService) {
         this.curriculumService = curriculumService;
-    }
+    }*/
 
     @Override
     public Student create(Student student) {
@@ -57,15 +58,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public UserDto update(UserDto userDto) {
 
-        if(userRepository.existsByEmailExcludedId(userDto.getEmail(), userDto.getId())){
+        if(userService.existsByEmailExcludedId(userDto.getEmail(), userDto.getId())){
             throw new ResourceAlreadyExistsException(ResourceName.STUDENT, userDto.getEmail(), userDto);
         }
 
-        if(userRepository.existsByRegistrationExcludeId(userDto.getRegistration(), userDto.getId())){
+        if(userService.existsByRegistrationExcludeId(userDto.getRegistration(), userDto.getId())){
             throw new ResourceAlreadyExistsException(ResourceName.STUDENT, userDto.getRegistration(), userDto);
         }
 
-        Optional<User> userUpdate = userRepository.findById(userDto.getId());
+        Optional<User> userUpdate = userService.findById(userDto.getId());
 
         if(userUpdate.isEmpty()){
             throw new ResourceNotFoundException(ResourceName.STUDENT, userDto.getId());
@@ -76,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         user.setRegistration(userDto.getRegistration());
         user.setName(userDto.getName());
 
-        userRepository.save(user);
+        userService.save(user);
 
         return userDto;
     }
@@ -90,6 +91,6 @@ public class StudentServiceImpl implements StudentService {
         }
 
         studentRepository.deleteById(id);
-        userRepository.deleteById(student.get().getUser().getId());
+        userService.delete(student.get().getUser().getId());
     }
 }
