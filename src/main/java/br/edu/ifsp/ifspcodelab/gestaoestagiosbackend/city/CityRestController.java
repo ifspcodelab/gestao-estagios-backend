@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/states/{stateAbbreviation}/cities")
-@CrossOrigin
 @AllArgsConstructor
 public class CityRestController {
     private CityService cityService;

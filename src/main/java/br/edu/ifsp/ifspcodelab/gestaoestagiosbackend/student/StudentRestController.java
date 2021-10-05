@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/students")
-@CrossOrigin
 @AllArgsConstructor
 public class StudentRestController {
     private final UserService userService;

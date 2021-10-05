@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/states")
-@CrossOrigin
 @AllArgsConstructor
 public class StateRestController {
     private StateRepository stateRepository;
