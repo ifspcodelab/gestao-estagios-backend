@@ -39,12 +39,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             jwtSecretKey
         );
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+        http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/v1/login").permitAll();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/login").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/students").permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(jwtConfig, jwtSecretKey), UsernamePasswordAuthenticationFilter.class);
     }

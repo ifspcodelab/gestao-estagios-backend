@@ -16,6 +16,8 @@ spring:
     generate-ddl: false
 application:
   jwt:
-    secretKey: bcd38b5a-95f7-4750-a4e8-a215430cc515
+    secretKey: ${JWT_SECRETKEY:bcd38b5a-95f7-4750-a4e8-a215430cc515}
     tokenPrefix: "Bearer "
     tokenExpirationAfterMinutes: 60
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:4200}

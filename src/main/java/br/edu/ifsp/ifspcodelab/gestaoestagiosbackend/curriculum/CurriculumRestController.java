@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/courses/{courseId}/curriculums")
-@CrossOrigin
 @AllArgsConstructor
 public class CurriculumRestController {
     private CurriculumService curriculumService;
