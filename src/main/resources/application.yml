@@ -21,3 +21,7 @@ application:
     tokenExpirationAfterMinutes: 60
   frontend:
     url: ${FRONTEND_URL:http://localhost:4200}
+
+  mail:
+    username: nao.responda424@gmail.com
+    password: Senha435#
