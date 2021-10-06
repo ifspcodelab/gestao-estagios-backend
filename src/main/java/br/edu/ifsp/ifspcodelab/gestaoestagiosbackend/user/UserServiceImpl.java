@@ -3,6 +3,9 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourcesNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.CreateAccountHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
@@ -24,15 +27,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SenderMail senderMail;
 
     private AdvisorService advisorService;
     private StudentService studentService;
 
     private CurriculumService curriculumService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, SenderMail senderMail) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.senderMail = senderMail;
     }
 
     @Autowired
@@ -76,6 +81,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         if (courses.size() == 0) {
             throw new ResourcesNotFoundException(ResourceName.COURSE, userAdvisorCreateDto.getCoursesIds());
+        }
+
+        MailDto email = MailDto.builder()
+                .title("Bem vindo(a)!!")
+                .msgHTML(CreateAccountHtml.getMessageHtml())
+                .build();
+
+
+
+        email.setRecipientTo(userAdvisorCreateDto.getEmail());
+
+        if(senderMail.sendEmail(email)){
+            System.out.println("EMAIL ENVIADO TESTE");
+        } else {
+            System.out.println("EMAIL NÃO ENVIADO TESTE");
         }
 
         User userCreated = new User(
