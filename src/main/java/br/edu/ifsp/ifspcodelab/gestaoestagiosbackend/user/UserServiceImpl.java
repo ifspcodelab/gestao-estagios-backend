@@ -5,6 +5,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceN
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourcesNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.FormatterMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.CreateAccountHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
@@ -88,7 +90,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-
+        Map<String, String> params = CreatorParametersMail.activateAccount(userAdvisorCreateDto.getName(), "http://localhost/api/v1/activate", "token");
+        email = FormatterMail.build(email, params);
 
         email.setRecipientTo(userAdvisorCreateDto.getEmail());
 
