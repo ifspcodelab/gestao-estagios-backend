@@ -51,4 +51,10 @@ public class StudentRestController {
         studentService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/activate")
+    public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody String password) {
+        userService.activateAdvisor(id, password);
+        return ResponseEntity.noContent().build();
+    }
 }

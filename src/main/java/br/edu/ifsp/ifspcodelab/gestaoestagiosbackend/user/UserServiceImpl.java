@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
@@ -95,8 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userAdvisorCreateDto.getName(),
             passwordEncoder.encode(userAdvisorCreateDto.getPassword()),
             userAdvisorCreateDto.getEmail(),
-            userAdvisorCreateDto.getRoles(),
-            false
+            userAdvisorCreateDto.getRoles()
         );
         User user = userRepository.save(userCreated);
 
@@ -138,8 +138,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 userStudentCreateDto.getName(),
                 passwordEncoder.encode(userStudentCreateDto.getPassword()),
                 userStudentCreateDto.getEmail(),
-                List.of(Role.ROLE_STUDENT),
-                false
+                List.of(Role.ROLE_STUDENT)
         );
 
         User user = userRepository.save(userCreated);
@@ -190,9 +189,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ResourceNotFoundException(ResourceName.ADVISOR, idAdvisor);
         }
 
-        user.get().setIsActivated(true);
-
+        user.get().setIsActivated(EntityStatus.ENABLED);
         user.get().setPassword(passwordEncoder.encode(password));
+        userRepository.save(user.get());
+    }
+
+    @Override
+    public void activateStudent(UUID idStudent) {
+        Optional<User> user = userRepository.findById(idStudent);
+
+        if(user.isEmpty()) {
+            throw new ResourceNotFoundException(ResourceName.ADVISOR, idStudent);
+        }
+
+        user.get().setIsActivated(EntityStatus.ENABLED);
 
         userRepository.save(user.get());
     }

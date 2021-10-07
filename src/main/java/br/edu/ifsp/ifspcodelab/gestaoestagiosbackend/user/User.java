@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,9 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private Boolean isActivated;
+
+    @Enumerated(EnumType.STRING)
+    private EntityStatus isActivated;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_roles")
@@ -30,22 +33,22 @@ public class User {
     @Column(name = "role")
     private Collection<Role> roles = new ArrayList<>();
 
-    public User(String registration, String name, String password, String email, Collection<Role> roles, Boolean isActivated) {
+    public User(String registration, String name, String password, String email, Collection<Role> roles) {
         this.id = UUID.randomUUID();
         this.registration = registration;
         this.name = name;
         this.password = password;
         this.email = email;
         this.roles = roles;
-        this.isActivated = isActivated;
+        this.isActivated = EntityStatus.DISABLED;
     }
 
-    public User(String registration, String name, String email, Collection<Role> roles, Boolean isActivated) {
+    public User(String registration, String name, String email, Collection<Role> roles) {
         this.id = UUID.randomUUID();
         this.registration = registration;
         this.name = name;
         this.email = email;
         this.roles = roles;
-        this.isActivated = isActivated;
+        this.isActivated = EntityStatus.DISABLED;
     }
 }
