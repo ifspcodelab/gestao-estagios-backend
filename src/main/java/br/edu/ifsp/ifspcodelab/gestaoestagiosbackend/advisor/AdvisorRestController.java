@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,5 +33,11 @@ public class AdvisorRestController {
         return ResponseEntity.ok(advisorService.findAll().stream()
             .map(advisorMapper::to).
             collect(Collectors.toList()));
+    }
+
+    @PatchMapping("/activate/{id}")
+    public ResponseEntity<Void> activate(@PathVariable UUID userId, @RequestBody() String password) {
+
+        return ResponseEntity.noContent().build();
     }
 }

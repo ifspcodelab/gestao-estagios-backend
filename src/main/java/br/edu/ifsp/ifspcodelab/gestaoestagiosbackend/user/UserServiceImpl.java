@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourcesNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
@@ -179,5 +180,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void delete(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void activateAdvisor(UUID idAdvisor, String password) {
+        Optional<User> user = userRepository.findById(idAdvisor);
+
+        if(user.isEmpty()) {
+            throw new ResourceNotFoundException(ResourceName.ADVISOR, idAdvisor);
+        }
+
+        user.get().setIsActivated(true);
+
+        user.get().setPassword(passwordEncoder.encode(password));
+
+        userRepository.save(user.get());
     }
 }

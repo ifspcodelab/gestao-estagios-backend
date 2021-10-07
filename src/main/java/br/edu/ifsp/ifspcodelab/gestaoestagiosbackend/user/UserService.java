@@ -17,4 +17,5 @@ public interface UserService {
     Optional<User> findById(UUID id);
     void save(User user);
     void delete(UUID id);
+    void activateAdvisor(UUID idAdvisor, String password);
 }
