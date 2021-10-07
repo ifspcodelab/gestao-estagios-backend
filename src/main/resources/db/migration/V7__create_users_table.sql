@@ -4,6 +4,6 @@ CREATE TABLE users(
     name VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
-    is_activated BOOLEAN NOT NULL,
+    is_activated VARCHAR NOT NULL,
     CONSTRAINT users_pk PRIMARY KEY (id)
 );

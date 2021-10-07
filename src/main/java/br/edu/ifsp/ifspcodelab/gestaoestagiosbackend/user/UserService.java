@@ -18,4 +18,5 @@ public interface UserService {
     void save(User user);
     void delete(UUID id);
     void activateAdvisor(UUID idAdvisor, String password);
+    void activateStudent(UUID idStudent);
 }
