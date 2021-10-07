@@ -22,6 +22,7 @@ public class User {
     private String name;
     private String password;
     private String email;
+    private Boolean isActivated;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_roles")
@@ -29,20 +30,22 @@ public class User {
     @Column(name = "role")
     private Collection<Role> roles = new ArrayList<>();
 
-    public User(String registration, String name, String password, String email, Collection<Role> roles) {
+    public User(String registration, String name, String password, String email, Collection<Role> roles, Boolean isActivated) {
         this.id = UUID.randomUUID();
         this.registration = registration;
         this.name = name;
         this.password = password;
         this.email = email;
         this.roles = roles;
+        this.isActivated = isActivated;
     }
 
-    public User(String registration, String name, String email, Collection<Role> roles) {
+    public User(String registration, String name, String email, Collection<Role> roles, Boolean isActivated) {
         this.id = UUID.randomUUID();
         this.registration = registration;
         this.name = name;
         this.email = email;
         this.roles = roles;
+        this.isActivated = isActivated;
     }
 }

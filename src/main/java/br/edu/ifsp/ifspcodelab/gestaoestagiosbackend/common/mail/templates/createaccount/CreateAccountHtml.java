@@ -5,28 +5,71 @@ public abstract class CreateAccountHtml {
     private CreateAccountHtml() {}
 
     public static String getMessageHtml() {
-        return "<!DOCTYPE html>\r\n" +
-                "<html lang=\"pt-br\">\r\n" +
-                "<head>\r\n" +
-                "    <meta charset=\"UTF-8\">\r\n" +
-                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" +
-                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n" +
-                "    <!-- CSS only -->\r\n" +
-                "    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF\" crossorigin=\"anonymous\">\r\n" +
-                "</head>\r\n" +
-                "<body>\r\n" +
-                "    <div class=\"container\">\r\n" +
-                "        <div class=\"jumbotron\">\r\n" +
-                "            <h1 class=\"display-6\"><strong>Seja bem vindo(a), $USERNAME!</strong></h1>\r\n" +
-                "            <p class=\"lead\">Sistema de Apoio à Orientação de Estágios do Instituto Federal de São Paulo.</p>\r\n" +
-                "            <hr class=\"my-4\">\r\n" +
-                "            <p>Clique no botão abaixo para ativar sua conta e ter acesso ao sistema.</p>\r\n" +
-                "            <p class=\"lead\">\r\n" +
-                "              <a class=\"btn btn-primary btn-lg\" href=\"$BASEURL?token=$TOKEN\" role=\"button\">Ativar conta</a>\r\n" +
-                "            </p>\r\n" +
-                "        </div>\r\n" +
-                "    </div>\r\n" +
-                "</body>\r\n" +
+        return "<!DOCTYPE html>\n" +
+               "<html lang=\"pt-br\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n" +
+                "    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap\" rel=\"stylesheet\">\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Roboto, \"Helvetica Neue\", sans-serif;\n" +
+                "            color: #494949;\n" +
+                "        }\n" +
+                "\n" +
+                "        .button-activate {\n" +
+                "            padding-left: 2.5rem;\n" +
+                "            padding-right: 2.5rem;\n" +
+                "            background-color: #673ab7;\n" +
+                "        }\n" +
+                "\n" +
+                "        .button-row a {\n" +
+                "            text-align: center;\n" +
+                "            margin-left: auto;\n" +
+                "            margin-right: auto;\n" +
+                "            padding-left: 1.5rem;\n" +
+                "            padding-right: 1.5rem;\n" +
+                "            padding-top: 10px;\n" +
+                "            padding-bottom: 10px;\n" +
+                "            color: #fff;\n" +
+                "            font-size: 14px;\n" +
+                "            font-weight: 500;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 4px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .lead {\n" +
+                "            font-weight: 400;\n" +
+                "        }\n" +
+                "\n" +
+                "        span {\n" +
+                "            font-weight: 700;\n" +
+                "        }\n" +
+                "\n" +
+                "        .activate {\n" +
+                "            margin-bottom: 30px;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"jumbotron\">\n" +
+                "            <h1 class=\"display-6\"><span>Seja bem vindo(a), $USERNAME!</span></h1>\n" +
+                "            <p class=\"lead\">Sistema de Apoio à Orientação de Estágios do Instituto Federal de São Paulo.</p>\n" +
+                "            <hr class=\"my-4\">\n" +
+                "            <p class=\"activate\">Clique no botão abaixo para ativar sua conta e ter acesso ao sistema.</p>\n" +
+                "            <div class=\"button-row\">\n" +
+                "                <a class=\"button-activate\" href=\"$BASEURL/$IDUSER\" role=\"button\">Ativar conta</a>\n" +
+                "            </div>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "\n" +
                 "</html>";
     }
 }

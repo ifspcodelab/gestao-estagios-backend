@@ -15,6 +15,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumServic
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,9 @@ import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
+
+    @Value("${application.frontend.url}")
+    private String baseUrl;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -85,30 +89,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ResourcesNotFoundException(ResourceName.COURSE, userAdvisorCreateDto.getCoursesIds());
         }
 
+        User userCreated = new User(
+            userAdvisorCreateDto.getRegistration(),
+            userAdvisorCreateDto.getName(),
+            passwordEncoder.encode(userAdvisorCreateDto.getPassword()),
+            userAdvisorCreateDto.getEmail(),
+            userAdvisorCreateDto.getRoles(),
+            false
+        );
+        User user = userRepository.save(userCreated);
+
         MailDto email = MailDto.builder()
                 .title("Bem vindo(a)!!")
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-        Map<String, String> params = CreatorParametersMail.activateAccount(userAdvisorCreateDto.getName(), "http://localhost/api/v1/activate", "token");
+        Map<String, String> params = CreatorParametersMail.activateAccount(userAdvisorCreateDto.getName(), baseUrl+"/advisor/activate", user.getId());
         email = FormatterMail.build(email, params);
 
-        email.setRecipientTo(userAdvisorCreateDto.getEmail());
+        email.setRecipientTo(user.getEmail());
 
         if(senderMail.sendEmail(email)){
             System.out.println("EMAIL ENVIADO TESTE");
         } else {
             System.out.println("EMAIL NÃO ENVIADO TESTE");
         }
-
-        User userCreated = new User(
-            userAdvisorCreateDto.getRegistration(),
-            userAdvisorCreateDto.getName(),
-            passwordEncoder.encode(userAdvisorCreateDto.getPassword()),
-            userAdvisorCreateDto.getEmail(),
-            userAdvisorCreateDto.getRoles()
-        );
-        userRepository.save(userCreated);
 
         return advisorService.create(new Advisor(userCreated, courses));
     }
@@ -132,9 +137,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 userStudentCreateDto.getName(),
                 passwordEncoder.encode(userStudentCreateDto.getPassword()),
                 userStudentCreateDto.getEmail(),
-                List.of(Role.ROLE_STUDENT)
+                List.of(Role.ROLE_STUDENT),
+                false
         );
-        userRepository.save(userCreated);
+
+        User user = userRepository.save(userCreated);
+
+        MailDto email = MailDto.builder()
+                .title("Bem vindo(a)!!")
+                .msgHTML(CreateAccountHtml.getMessageHtml())
+                .build();
+
+        Map<String, String> params = CreatorParametersMail.activateAccount(userStudentCreateDto.getName(), baseUrl+"/student/activate", user.getId());
+        email = FormatterMail.build(email, params);
+
+        email.setRecipientTo(user.getEmail());
 
         return studentService.create(new Student(userCreated, curriculumService.findByCurriculumId(userStudentCreateDto.getCurriculumId())));
     }
