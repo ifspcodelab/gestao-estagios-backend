@@ -36,8 +36,8 @@ public class AdvisorRestController {
     }
 
     @PatchMapping("/activate/{id}")
-    public ResponseEntity<Void> activate(@PathVariable UUID userId, @RequestBody() String password) {
-
+    public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody String password) {
+        userService.activateAdvisor(id, password);
         return ResponseEntity.noContent().build();
     }
 }
