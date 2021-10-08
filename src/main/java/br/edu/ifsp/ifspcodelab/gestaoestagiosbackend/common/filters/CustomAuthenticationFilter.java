@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.filters;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.JwtConfig;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.JwtSecretKey;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.User;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -91,7 +91,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         Map<String, Object> body = new HashMap<>();
         body.put("message", failed.getMessage());
-        body.put("error", "Username or password is incorrect");
+        body.put("error", "Authentication failed");
         body.put("timeStamp", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd H:m:s")));
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
 

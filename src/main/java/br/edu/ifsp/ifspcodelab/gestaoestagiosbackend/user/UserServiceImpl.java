@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.Role;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
@@ -182,7 +183,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void activateAdvisor(UUID idAdvisor, String password) {
+    public void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto) {
         Optional<User> user = userRepository.findById(idAdvisor);
 
         if(user.isEmpty()) {
@@ -190,7 +191,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         user.get().setIsActivated(EntityStatus.ENABLED);
-        user.get().setPassword(passwordEncoder.encode(password));
+        user.get().setPassword(passwordEncoder.encode(userUpdatePasswordDto.getPassword()));
         userRepository.save(user.get());
     }
 
