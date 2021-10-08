@@ -86,9 +86,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        if(isActivated == EntityStatus.ENABLED)
-            return true;
-        else
-            return false;
+        return isActivated == EntityStatus.ENABLED;
     }
 }

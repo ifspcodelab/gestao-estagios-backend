@@ -33,7 +33,7 @@ public class SenderMail {
 
         try {
             if (!mail.isValid()) {
-                throw new Exception("Corpo de email inválido");
+                return false;
             }
 
             Session session = this.config();
