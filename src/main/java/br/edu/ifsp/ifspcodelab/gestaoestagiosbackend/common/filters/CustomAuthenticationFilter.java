@@ -48,8 +48,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         } catch (IOException e) {
             throw new AuthenticationServiceException(e.getMessage());
         }
-//        String registration = request.getParameter("registration");
-//        String password = request.getParameter("password");
+
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(registration, password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -60,7 +59,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                                             FilterChain chain,
                                             Authentication authentication) throws IOException, ServletException {
         User user = (User) authentication.getPrincipal();
-        //Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
 
         String access_token = JWT.create()
             .withSubject(user.getUsername())
@@ -72,7 +70,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String refresh_token = JWT.create()
             .withSubject(user.getUsername())
             .withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMinutes() * 60 * 1000))
-            //.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationMillis()))
             .withIssuer(request.getRequestURL().toString())
             .sign(jwtSecretKey.secretKey());
 
