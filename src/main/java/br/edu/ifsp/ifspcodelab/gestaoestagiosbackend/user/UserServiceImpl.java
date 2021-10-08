@@ -69,11 +69,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found in the database");
         }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        user.getAuthorities().stream().forEach(e -> System.out.println("Roles: "+e.getAuthority()));
+        /*Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(user.getRegistration(), user.getPassword(), authorities);
+        });*/
+        //org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(user.getRegistration(), user.getPassword(), authorities);
+        return user;
     }
 
 
@@ -110,11 +112,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         email.setRecipientTo(user.getEmail());
 
-        if(senderMail.sendEmail(email)){
-            System.out.println("EMAIL ENVIADO TESTE");
-        } else {
-            System.out.println("EMAIL NÃO ENVIADO TESTE");
-        }
+        senderMail.sendEmail(email);
 
         return advisorService.create(new Advisor(userCreated, courses));
     }
@@ -152,6 +150,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
+
+        senderMail.sendEmail(email);
 
         return studentService.create(new Student(userCreated, curriculumService.findByCurriculumId(userStudentCreateDto.getCurriculumId())));
     }
