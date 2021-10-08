@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorCreateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
 import lombok.AllArgsConstructor;
@@ -36,8 +37,8 @@ public class AdvisorRestController {
     }
 
     @PatchMapping("/{id}/activate")
-    public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody String password) {
-        userService.activateAdvisor(id, password);
+    public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) {
+        userService.activateAdvisor(id, userUpdatePasswordDto);
         return ResponseEntity.noContent().build();
     }
 }

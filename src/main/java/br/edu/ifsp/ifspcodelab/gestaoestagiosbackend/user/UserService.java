@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface UserService {
     Optional<User> findById(UUID id);
     void save(User user);
     void delete(UUID id);
-    void activateAdvisor(UUID idAdvisor, String password);
+    void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto);
     void activateStudent(UUID idStudent);
 }
