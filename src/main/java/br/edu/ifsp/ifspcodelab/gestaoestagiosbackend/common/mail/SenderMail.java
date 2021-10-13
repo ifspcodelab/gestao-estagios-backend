@@ -1,9 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import javax.activation.DataHandler;
@@ -16,21 +15,16 @@ import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Level;
 
 @Service
+@EnableConfigurationProperties(MailConfig.class)
+@Log
+@AllArgsConstructor
 public class SenderMail {
-
-    private final SmtpAuthenticator auth;
-
-    private static final Logger logger = LoggerFactory.getLogger(SenderMail.class);
-
-    @Autowired
-    public SenderMail(@Qualifier("mailer") SmtpAuthenticator smtp) {
-        this.auth = smtp;
-    }
+    private MailConfig mailConfig;
 
     public boolean sendEmail(MailDto mail) {
-
         try {
             if (!mail.isValid()) {
                 return false;
@@ -41,27 +35,27 @@ public class SenderMail {
             MimeMessage message = this.configMessage(mail, session);
             Transport.send(message);
 
-            logger.info("Email enviado com sucesso!");
+            log.info("Email enviado com sucesso!");
             return true;
         } catch (Exception e) {
-            logger.error("Erro ao enviar email: ".concat(e.getMessage()));
+            log.log(Level.WARNING, "Erro ao enviar email: ".concat(e.getMessage()));
             return false;
         }
     }
 
     private Session config() {
-
         var props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.host", mailConfig.getServer());
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.port", mailConfig.getPort());
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.port", mailConfig.getPort());
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.smtp.ssl.checkserveridentity", "true");
 
-        return Session.getInstance(props, auth);
+        Authenticator authentication = new SmtpAuthenticator(mailConfig.getUsername(), mailConfig.getPassword());
+        return Session.getInstance(props, authentication);
     }
 
     private MimeMessage configMessage(MailDto mail, Session session) throws MessagingException {
@@ -108,7 +102,7 @@ public class SenderMail {
             multipart.addBodyPart(part);
 
         } catch (MessagingException e) {
-            logger.error("Erro ao anexar ".concat(file.getName()).concat(" no email."));
+            log.log(Level.WARNING, "Erro ao anexar ".concat(file.getName()).concat(" no email."));
         }
 
     }

@@ -21,7 +21,8 @@ application:
     tokenExpirationAfterMinutes: 60
   frontend:
     url: ${FRONTEND_URL:http://localhost:4200}
-
   mail:
-    username: nao.responda424@gmail.com
-    password: nyjjfxnznezmhtkm
+    server: ${MAIL_SERVER:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:test@mailhog.example}
+    password: ${MAIL_PASSWORD:}
