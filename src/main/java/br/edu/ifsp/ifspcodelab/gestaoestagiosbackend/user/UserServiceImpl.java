@@ -19,7 +19,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,18 +70,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("User not found in the database");
         }
         user.getAuthorities().stream().forEach(e -> System.out.println("Roles: "+e.getAuthority()));
-        /*Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });*/
-        //org.springframework.security.core.userdetails.User userDetails = new org.springframework.security.core.userdetails.User(user.getRegistration(), user.getPassword(), authorities);
         return user;
     }
 
 
     @Override
     public Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto) {
-        List<Course> courses = advisorService.getCourses(userAdvisorCreateDto.getCoursesIds());
+        Set<Course> courses = advisorService.getCourses(userAdvisorCreateDto.getCoursesIds());
 
         if (userRepository.existsByRegistration(userAdvisorCreateDto.getRegistration())) {
             throw new UserAlreadyExistsByRegistrationException(userAdvisorCreateDto.getRegistration());
@@ -97,7 +91,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User userCreated = new User(
             userAdvisorCreateDto.getRegistration(),
             userAdvisorCreateDto.getName(),
-            passwordEncoder.encode(userAdvisorCreateDto.getPassword()),
             userAdvisorCreateDto.getEmail(),
             userAdvisorCreateDto.getRoles()
         );
@@ -116,6 +109,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         senderMail.sendEmail(email);
 
         return advisorService.create(new Advisor(userCreated, courses));
+    }
+
+    @Override
+    public Advisor updateAdvisor(UUID id, UserAdvisorUpdateDto userAdvisorUpdateDto) {
+        Advisor advisor = advisorService.findById(id);
+        Set<Course> courses = advisorService.getCourses(userAdvisorUpdateDto.getCoursesIds());
+
+        if (userRepository.existsByEmailExcludedId(userAdvisorUpdateDto.getEmail(), advisor.getUser().getId())) {
+            throw new UserAlreadyExistsByEmailException(userAdvisorUpdateDto.getEmail());
+        }
+        if (courses.size() == 0) {
+            throw new ResourcesNotFoundException(ResourceName.COURSE, userAdvisorUpdateDto.getCoursesIds());
+        }
+
+        Advisor advisorUpdated = new Advisor(advisor.getUser(), new HashSet<>(courses));
+        advisorUpdated.setId(id);
+
+        User userUpdated = advisorUpdated.getUser();
+        userUpdated.setName(userAdvisorUpdateDto.getName());
+        userUpdated.setEmail(userAdvisorUpdateDto.getEmail());
+
+        userRepository.save(userUpdated);
+        return advisorService.create(advisorUpdated);
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public interface UserService {
     Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto);
+    Advisor updateAdvisor(UUID id, UserAdvisorUpdateDto userAdvisorUpdateDto);
     List<User> findAll();
     Student createStudent(UserStudentCreateDto userStudentCreateDto);
     boolean existsByEmailExcludedId(String email, UUID id);

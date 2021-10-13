@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorCreateDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorUpdateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,17 @@ public class AdvisorRestController {
         return ResponseEntity.ok(advisorService.findAll().stream()
             .map(advisorMapper::to).
             collect(Collectors.toList()));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<AdvisorDto> show(@PathVariable UUID id) {
+        return ResponseEntity.ok(advisorMapper.to(advisorService.findById(id)));
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<AdvisorDto> update(@PathVariable UUID id,
+                                             @Valid @RequestBody UserAdvisorUpdateDto userAdvisorUpdateDto) {
+        return ResponseEntity.ok(advisorMapper.to(userService.updateAdvisor(id, userAdvisorUpdateDto)));
     }
 
     @PatchMapping("/{id}/activate")
