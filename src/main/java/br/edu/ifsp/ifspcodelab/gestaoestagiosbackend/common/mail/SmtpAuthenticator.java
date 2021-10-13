@@ -18,7 +18,7 @@ public class SmtpAuthenticator extends Authenticator {
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
 
-        if(!username.isBlank() && Objects.nonNull(username) && !password.isBlank() && Objects.nonNull(password)) {
+        if(!username.isBlank() && Objects.nonNull(username)) {
             return new PasswordAuthentication(username, password);
         }
 

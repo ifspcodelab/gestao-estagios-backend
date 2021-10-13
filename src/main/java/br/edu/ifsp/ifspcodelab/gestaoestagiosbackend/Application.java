@@ -20,10 +20,4 @@ public class Application {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
-	@Bean
-	@Qualifier("mailer")
-	SmtpAuthenticator mailerAccount(@Value("${application.mail.username}") String username, @Value("${application.mail.password}") String password) {
-		return new SmtpAuthenticator(username, password);
-	}
 }
