@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,10 +21,10 @@ public class Advisor {
 
     @OneToOne
     private User user;
-    @OneToMany
-    private List<Course> courses;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Course> courses;
 
-    public Advisor(User user, List<Course> courses) {
+    public Advisor(User user, Set<Course> courses) {
         this.id = UUID.randomUUID();
         this.user = user;
         this.courses = courses;

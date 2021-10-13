@@ -55,6 +55,11 @@ public class User implements UserDetails {
         this.isActivated = EntityStatus.DISABLED;
     }
 
+    public User(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
