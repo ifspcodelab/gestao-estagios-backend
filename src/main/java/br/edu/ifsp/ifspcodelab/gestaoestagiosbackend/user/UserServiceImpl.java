@@ -96,19 +96,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         );
         User user = userRepository.save(userCreated);
 
+        Advisor advisor = advisorService.create(new Advisor(userCreated, courses));
+
         MailDto email = MailDto.builder()
                 .title("Bem vindo(a)!!")
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-        Map<String, String> params = CreatorParametersMail.activateAccount(userAdvisorCreateDto.getName(), baseUrl+"/advisor/activate", user.getId());
+        Map<String, String> params = CreatorParametersMail.activateAccount(userAdvisorCreateDto.getName(), baseUrl+"/authentication/reset", advisor.getId());
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
 
         senderMail.sendEmail(email);
 
-        return advisorService.create(new Advisor(userCreated, courses));
+        return advisor;
     }
 
     @Override
@@ -157,20 +159,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         );
 
         User user = userRepository.save(userCreated);
+        Student student = studentService.create(
+            new Student(userCreated, curriculumService.findByCurriculumId(userStudentCreateDto.getCurriculumId())));
 
         MailDto email = MailDto.builder()
                 .title("Bem vindo(a)!!")
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-        Map<String, String> params = CreatorParametersMail.activateAccount(userStudentCreateDto.getName(), baseUrl+"/student/activate", user.getId());
+        Map<String, String> params = CreatorParametersMail.activateAccount(userStudentCreateDto.getName(), baseUrl+"/authentication/verification", student.getId());
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
 
         senderMail.sendEmail(email);
 
-        return studentService.create(new Student(userCreated, curriculumService.findByCurriculumId(userStudentCreateDto.getCurriculumId())));
+        return student;
     }
 
     @Override
@@ -200,27 +204,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto) {
-        Optional<User> user = userRepository.findById(idAdvisor);
+        Advisor advisor = advisorService.findById(idAdvisor);
 
-        if(user.isEmpty()) {
-            throw new ResourceNotFoundException(ResourceName.ADVISOR, idAdvisor);
-        }
+        advisor.getUser().setIsActivated(EntityStatus.ENABLED);
+        advisor.getUser().setPassword(passwordEncoder.encode(userUpdatePasswordDto.getPassword()));
 
-        user.get().setIsActivated(EntityStatus.ENABLED);
-        user.get().setPassword(passwordEncoder.encode(userUpdatePasswordDto.getPassword()));
-        userRepository.save(user.get());
+        userRepository.save(advisor.getUser());
     }
 
     @Override
     public void activateStudent(UUID idStudent) {
-        Optional<User> user = userRepository.findById(idStudent);
+        Student student = studentService.findById(idStudent);
 
-        if(user.isEmpty()) {
-            throw new ResourceNotFoundException(ResourceName.ADVISOR, idStudent);
-        }
+        student.getUser().setIsActivated(EntityStatus.ENABLED);
 
-        user.get().setIsActivated(EntityStatus.ENABLED);
-
-        userRepository.save(user.get());
+        userRepository.save(student.getUser());
     }
 }
