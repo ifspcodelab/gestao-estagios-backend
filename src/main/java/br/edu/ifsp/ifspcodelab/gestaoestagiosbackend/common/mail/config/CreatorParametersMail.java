@@ -8,7 +8,7 @@ public abstract class CreatorParametersMail {
 
     private CreatorParametersMail() {}
 
-    public static Map<String, String> activateAccount(String username, String baseUrl, UUID userId) {
+    public static Map<String, String> setParameters(String username, String baseUrl, UUID userId) {
         Map<String, String> map = new HashMap<>();
 
         map.put("$USERNAME", username);

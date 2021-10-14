@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,18 @@ public class UserController {
     @PutMapping("{id}")
     public ResponseEntity<UserDto> update(@PathVariable UUID id, @Valid @RequestBody UserUpdateDto userUpdateDto) {
         return ResponseEntity.ok(userMapper.to(userService.updateUser(id, userUpdateDto)));
+    }
+
+    @PostMapping("{registration}")
+    public ResponseEntity<Void> forgetPassword(@PathVariable String registration) {
+        userService.sendMailPassword(registration);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{id}/redefine")
+    public ResponseEntity<Void> redefinePassword(@PathVariable UUID id,
+                                                 @Valid @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) {
+        userService.changePassword(id, userUpdatePasswordDto);
+        return ResponseEntity.noContent().build();
     }
 }

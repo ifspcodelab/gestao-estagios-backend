@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-        Map<String, String> params = CreatorParametersMail.activateAccount(userAdvisorCreateDto.getName(), baseUrl+"/authentication/reset", advisor.getId());
+        Map<String, String> params = CreatorParametersMail.setParameters(userAdvisorCreateDto.getName(), baseUrl+"/authentication/reset", advisor.getId());
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
@@ -173,7 +173,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-        Map<String, String> params = CreatorParametersMail.activateAccount(userStudentCreateDto.getName(), baseUrl+"/authentication/verification", student.getId());
+        Map<String, String> params = CreatorParametersMail.setParameters(userStudentCreateDto.getName(), baseUrl+"/authentication/verification", student.getId());
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
@@ -231,5 +231,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         student.getUser().setIsActivated(EntityStatus.ENABLED);
 
         userRepository.save(student.getUser());
+    }
+
+    @Override
+    public void sendMailPassword(String registration) {
+        User user = findByRegistration(registration);
+
+        MailDto email = MailDto.builder()
+            .title("Redefinição de senha")
+            .msgHTML(CreateAccountHtml.getPasswordResetHtml())
+            .build();
+
+        Map<String, String> params = CreatorParametersMail.setParameters(
+            user.getName(),
+            baseUrl+"/authentication/reset-password",
+            user.getId()
+        );
+        email = FormatterMail.build(email, params);
+        email.setRecipientTo(user.getEmail());
+        senderMail.sendEmail(email);
+    }
+
+    @Override
+    public void changePassword(UUID id, UserUpdatePasswordDto userUpdatePasswordDto) {
+        User user = findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.USER, id));
+
+        user.setPassword(passwordEncoder.encode(userUpdatePasswordDto.getPassword()));
+        userRepository.save(user);
     }
 }
