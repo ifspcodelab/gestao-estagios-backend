@@ -11,12 +11,14 @@ import java.util.UUID;
 
 public interface UserService {
     Advisor createAdvisor(UserAdvisorCreateDto userAdvisorCreateDto);
+    User updateUser(UUID id, UserUpdateDto userUpdateDto);
     Advisor updateAdvisor(UUID id, UserAdvisorUpdateDto userAdvisorUpdateDto);
     List<User> findAll();
     Student createStudent(UserStudentCreateDto userStudentCreateDto);
     boolean existsByEmailExcludedId(String email, UUID id);
     boolean existsByRegistrationExcludeId(String registration, UUID id);
     Optional<User> findById(UUID id);
+    User findByRegistration(String registration);
     void save(User user);
     void delete(UUID id);
     void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto);

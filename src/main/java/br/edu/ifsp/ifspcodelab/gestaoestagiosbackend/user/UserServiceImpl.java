@@ -65,11 +65,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String registration) throws UsernameNotFoundException {
-        User user = userRepository.findByRegistration(registration);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found in the database");
-        }
-        user.getAuthorities().stream().forEach(e -> System.out.println("Roles: "+e.getAuthority()));
+        User user = this.findByRegistration(registration);
         return user;
     }
 
@@ -111,6 +107,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         senderMail.sendEmail(email);
 
         return advisor;
+    }
+
+    @Override
+    public User updateUser(UUID id, UserUpdateDto userUpdateDto) {
+        User user = this.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.USER, id));
+
+        user.setName(userUpdateDto.getName());
+
+        return userRepository.save(user);
     }
 
     @Override
@@ -190,6 +196,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public User findByRegistration(String registration) {
+        return userRepository.findByRegistration(registration)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with registration " + registration));
     }
 
     @Override
