@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -56,6 +57,17 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
         return new ResponseEntity<>(
             new ProblemDetail(
                 exception.getResourceName().getName() + " not found with ids " + exception.getResourcesIds(),
+                Collections.emptyList()
+            ),
+            HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ProblemDetail> userNotFound(UsernameNotFoundException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                exception.getMessage(),
                 Collections.emptyList()
             ),
             HttpStatus.NOT_FOUND

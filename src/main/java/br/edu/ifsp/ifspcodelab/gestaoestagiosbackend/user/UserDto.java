@@ -12,6 +12,7 @@ public class UserDto {
     UUID id;
     String registration;
     String name;
+    String password;
     String email;
     Collection<Role> roles;
     EntityStatus isActivated;
