@@ -23,4 +23,6 @@ public interface UserService {
     void delete(UUID id);
     void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto);
     void activateStudent(UUID idStudent);
+    void sendMailPassword(String registration);
+    void changePassword(UUID id, UserUpdatePasswordDto userUpdatePasswordDto);
 }
