@@ -234,7 +234,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void sendMailPassword(String registration) {
+    public User sendMailPassword(String registration) {
         User user = findByRegistration(registration);
 
         MailDto email = MailDto.builder()
@@ -250,6 +250,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         email = FormatterMail.build(email, params);
         email.setRecipientTo(user.getEmail());
         senderMail.sendEmail(email);
+        return user;
     }
 
     @Override
