@@ -1,9 +1,11 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class AdvisorServiceImpl implements AdvisorService {
     private final AdvisorRepository advisorRepository;
 
     private CourseService courseService;
+    private UserService userService;
 
     public AdvisorServiceImpl(AdvisorRepository advisorRepository) {
         this.advisorRepository = advisorRepository;
@@ -26,6 +29,11 @@ public class AdvisorServiceImpl implements AdvisorService {
     @Autowired
     public void setCourseService(CourseService courseService) {
         this.courseService = courseService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -47,5 +55,13 @@ public class AdvisorServiceImpl implements AdvisorService {
     @Override
     public Set<Course> getCourses(List<UUID> coursesIds) {
         return new HashSet<>(courseService.findByIdIn(coursesIds));
+    }
+
+    @Override
+    public Advisor setStatus(UUID id, EntityUpdateStatusDto advisorUpdateStatusDto) {
+        Advisor advisor = findById(id);
+        advisor.getUser().setIsActivated(advisorUpdateStatusDto.getStatus());
+        userService.save(advisor.getUser());
+        return advisor;
     }
 }
