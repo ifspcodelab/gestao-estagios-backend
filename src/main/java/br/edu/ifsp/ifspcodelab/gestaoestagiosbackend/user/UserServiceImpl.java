@@ -99,8 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .msgHTML(CreateAccountHtml.getMessageHtml())
                 .build();
 
-        Map<String, String> params = CreatorParametersMail.setParameters(userAdvisorCreateDto.getName(), baseUrl+"/authentication/reset", advisor.getId());
-        email = FormatterMail.build(email, params);
+        Map<String, String> params = CreatorParametersMail.setParameters(userAdvisorCreateDto.getName(), baseUrl+"/authentication/reset", advisor.getId());matterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
 
@@ -260,5 +259,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(userUpdatePasswordDto.getPassword()));
         userRepository.save(user);
+
+        student.getUser().setIsActivated(EntityStatus.ENABLED);
+
+        userRepository.save(student.getUser());
     }
 }
