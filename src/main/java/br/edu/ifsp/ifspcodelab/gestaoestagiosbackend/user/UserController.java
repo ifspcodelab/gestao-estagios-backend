@@ -33,9 +33,8 @@ public class UserController {
     }
 
     @PostMapping("{registration}")
-    public ResponseEntity<Void> forgetPassword(@PathVariable String registration) {
-        userService.sendMailPassword(registration);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<UserDto> forgetPassword(@PathVariable String registration) {
+        return ResponseEntity.ok(userMapper.to(userService.sendMailPassword(registration)));
     }
 
     @PatchMapping("{id}/redefine")
