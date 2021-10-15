@@ -133,7 +133,7 @@ public abstract class CreateAccountHtml {
             "            <hr class=\"my-4\">\n" +
             "            <p class=\"activate\">Clique no botão abaixo para redefinir sua senha no sistema.</p>\n" +
             "            <div class=\"button-row\">\n" +
-            "                <a class=\"button-activate\" href=\"$BASEURL/$IDUSER\" role=\"button\">Ativar conta</a>\n" +
+            "                <a class=\"button-activate\" href=\"$BASEURL/$IDUSER\" role=\"button\">Redefinir Senha</a>\n" +
             "            </div>\n" +
             "        </div>\n" +
             "    </div>\n" +
