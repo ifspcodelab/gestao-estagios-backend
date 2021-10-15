@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorCreateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorUpdateDto;
@@ -52,5 +53,11 @@ public class AdvisorRestController {
     public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) {
         userService.activateAdvisor(id, userUpdatePasswordDto);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<AdvisorDto> patch(@PathVariable UUID id,
+                                            @Valid @RequestBody EntityUpdateStatusDto advisorUpdateStatusDto) {
+        return ResponseEntity.ok(advisorMapper.to(advisorService.setStatus(id, advisorUpdateStatusDto)));
     }
 }

@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface AdvisorService {
     List<Advisor> findAll();
     Advisor findById(UUID id);
     Set<Course> getCourses(List<UUID> coursesIds);
+    Advisor setStatus(UUID id, EntityUpdateStatusDto advisorUpdateStatusDto);
 }
