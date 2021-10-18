@@ -4,7 +4,7 @@ CREATE TABLE parameters(
      projectEquivalence VARCHAR NOT NULL,
      professionalEnjoyment VARCHAR NOT NULL,
      advisorRequestDeadline INT NOT NULL,
-);
+)
 INSERT INTO parameters (
      requiredOrNot,
      projectEquivalence,
