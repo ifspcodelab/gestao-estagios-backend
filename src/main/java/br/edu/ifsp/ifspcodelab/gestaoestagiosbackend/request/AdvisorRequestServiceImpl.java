@@ -71,8 +71,27 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
     }
 
     @Override
-    public List<AdvisorRequest> findByAdvisorId(UUID id) {
-        return this.advisorRequestRepository.findAllByAdvisor_Id(id);
+    public List<AdvisorRequestForAdvisorDto> findByAdvisorId(UUID id) {
+        List<AdvisorRequest> advisorRequests = this.advisorRequestRepository.findAllByAdvisor_Id(id);
+        List<AdvisorRequestForAdvisorDto> advisorRequestForAdvisorDtoList = advisorRequests.stream()
+                .map(e -> {
+                    return new AdvisorRequestForAdvisorDto(
+                            e.getId(),
+                            e.getCreatedAt(),
+                            e.getExpiresAt(),
+                            e.getInternshipType(),
+                            e.getDetails(),
+                            e.getStatus(),
+                            e.getCurriculum().getCode(),
+                            e.getStudent().getUser().getName(),
+                            e.getStudent().getUser().getRegistration(),
+                            e.getStudent().getCurriculum().getCourse().getName(),
+                            e.getStudent().getId(),
+                            e.getAdvisor().getId(),
+                            e.getCurriculum().getId()
+                    );
+                }).collect(Collectors.toList());
+        return advisorRequestForAdvisorDtoList;
     }
 
     @Override
