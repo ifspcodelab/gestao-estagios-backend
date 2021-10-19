@@ -3,7 +3,7 @@ CREATE TABLE parameters(
      requiredOrNot VARCHAR NOT NULL,
      projectEquivalence VARCHAR NOT NULL,
      professionalEnjoyment VARCHAR NOT NULL,
-     advisorRequestDeadline INT NOT NULL,
+     advisorRequestDeadline INT NOT NULL
 );
 INSERT INTO parameters (
      requiredOrNot,
