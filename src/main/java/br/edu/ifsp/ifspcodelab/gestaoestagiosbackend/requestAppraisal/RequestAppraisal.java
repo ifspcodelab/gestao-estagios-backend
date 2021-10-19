@@ -28,7 +28,7 @@ public class RequestAppraisal {
 
     private String details;
 
-    private Boolean idDeferred;
+    private Boolean isDeferred;
 
     private Instant meetingDate;
 
@@ -39,7 +39,7 @@ public class RequestAppraisal {
         this.id = UUID.randomUUID();
         this.createdAt = Instant.now();
         this.details = details;
-        this.idDeferred = idDeferred;
+        this.isDeferred = idDeferred;
         this.meetingDate = meetingDate;
         this.advisorRequest = advisorRequest;
     }
