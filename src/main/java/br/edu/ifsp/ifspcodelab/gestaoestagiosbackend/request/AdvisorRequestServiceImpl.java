@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AdvisorRequestServiceImpl implements AdvisorRequestService{
@@ -23,6 +23,12 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
     private StudentService studentService;
     private CurriculumService curriculumService;
     private AdvisorService advisorService;
+
+    public void setAdvisorRequestRepository(AdvisorRequestRepository advisorRequestRepository) {
+        this.advisorRequestRepository = advisorRequestRepository;
+    }
+
+    private AdvisorRequestMapper advisorRequestMapper;
 
     public AdvisorRequestServiceImpl(AdvisorRequestRepository advisorRepository) {
         this.advisorRequestRepository = advisorRepository;
@@ -70,7 +76,27 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
     }
 
     @Override
-    public List<AdvisorRequest> findByStudentId(UUID id) {
-        return this.advisorRequestRepository.findAllByStudent_Id(id);
+    public List<AdvisorRequestForStudentDto> findByStudentId(UUID id) {
+        List<AdvisorRequest> advisorRequests = this.advisorRequestRepository.findAllByStudent_Id(id);
+        /*return advisorRequests.stream()
+                .map(e -> this.advisorRequestMapper.to(e))
+                .collect(Collectors.toList());*/
+        List<AdvisorRequestForStudentDto> advisorRequestForStudentDtoList = advisorRequests.stream()
+                .map(e -> {
+                    return new AdvisorRequestForStudentDto(
+                            e.getId(),
+                            e.getCreatedAt(),
+                            e.getExpiresAt(),
+                            e.getInternshipType(),
+                            e.getDetails(),
+                            e.getStatus(),
+                            e.getCurriculum().getCode(),
+                            e.getAdvisor().getUser().getName(),
+                            e.getStudent().getId(),
+                            e.getAdvisor().getId(),
+                            e.getCurriculum().getId()
+                    );
+                }).collect(Collectors.toList());
+        return advisorRequestForStudentDtoList;
     }
 }
