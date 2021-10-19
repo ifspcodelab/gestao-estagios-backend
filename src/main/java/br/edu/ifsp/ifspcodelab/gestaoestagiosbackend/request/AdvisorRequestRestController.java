@@ -29,8 +29,8 @@ public class AdvisorRequestRestController {
     }
 
     @GetMapping("/students/{id}")
-    public ResponseEntity<List<AdvisorRequest>> showByStudentId(@PathVariable UUID id) {
-        List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByStudentId(id);
+    public ResponseEntity<List<AdvisorRequestForStudentDto>> showByStudentId(@PathVariable UUID id) {
+        List<AdvisorRequestForStudentDto> advisorRequestsList = this.advisorRequestService.findByStudentId(id);
         return ResponseEntity.ok(advisorRequestsList);
     }
 }
