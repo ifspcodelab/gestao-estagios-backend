@@ -20,10 +20,10 @@ public class AdvisorRequestRestController {
     private final AdvisorRequestForAdvisorMapper advisorRequestForAdvisorMapper;
 
     @PostMapping()
-    public ResponseEntity<AdvisorRequest> create(@RequestBody AdvisorRequestCreateDto advisorRequestCreateDto) {
+    public ResponseEntity<AdvisorRequestForStudentDto> create(@RequestBody AdvisorRequestCreateDto advisorRequestCreateDto) {
         AdvisorRequest advisorRequest = this.advisorRequestService.create(advisorRequestCreateDto);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/api/v1/advisor-requests").toUriString());
-        return ResponseEntity.created(uri).body(advisorRequest);
+        return ResponseEntity.created(uri).body(advisorRequestForStudentMapper.to(advisorRequest));
     }
 
     @GetMapping("/advisors/{id}")
