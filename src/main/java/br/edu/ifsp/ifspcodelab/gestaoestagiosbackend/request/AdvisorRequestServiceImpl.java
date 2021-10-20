@@ -1,10 +1,16 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorMapper;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseMapper;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumMapper;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentMapper;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +29,6 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
     private StudentService studentService;
     private CurriculumService curriculumService;
     private AdvisorService advisorService;
-
-    public void setAdvisorRequestRepository(AdvisorRequestRepository advisorRequestRepository) {
-        this.advisorRequestRepository = advisorRequestRepository;
-    }
-
-    private AdvisorRequestMapper advisorRequestMapper;
 
     public AdvisorRequestServiceImpl(AdvisorRequestRepository advisorRepository) {
         this.advisorRequestRepository = advisorRepository;
@@ -71,51 +71,12 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
     }
 
     @Override
-    public List<AdvisorRequestForAdvisorDto> findByAdvisorId(UUID id) {
-        List<AdvisorRequest> advisorRequests = this.advisorRequestRepository.findAllByAdvisor_Id(id);
-        List<AdvisorRequestForAdvisorDto> advisorRequestForAdvisorDtoList = advisorRequests.stream()
-                .map(e -> {
-                    return new AdvisorRequestForAdvisorDto(
-                            e.getId(),
-                            e.getCreatedAt(),
-                            e.getExpiresAt(),
-                            e.getInternshipType(),
-                            e.getDetails(),
-                            e.getStatus(),
-                            e.getCurriculum().getCode(),
-                            e.getStudent().getUser().getName(),
-                            e.getStudent().getUser().getRegistration(),
-                            e.getStudent().getCurriculum().getCourse().getName(),
-                            e.getStudent().getId(),
-                            e.getAdvisor().getId(),
-                            e.getCurriculum().getId()
-                    );
-                }).collect(Collectors.toList());
-        return advisorRequestForAdvisorDtoList;
+    public List<AdvisorRequest> findByAdvisorId(UUID id) {
+        return this.advisorRequestRepository.findAllByAdvisor_Id(id);
     }
 
     @Override
-    public List<AdvisorRequestForStudentDto> findByStudentId(UUID id) {
-        List<AdvisorRequest> advisorRequests = this.advisorRequestRepository.findAllByStudent_Id(id);
-        /*return advisorRequests.stream()
-                .map(e -> this.advisorRequestMapper.to(e))
-                .collect(Collectors.toList());*/
-        List<AdvisorRequestForStudentDto> advisorRequestForStudentDtoList = advisorRequests.stream()
-                .map(e -> {
-                    return new AdvisorRequestForStudentDto(
-                            e.getId(),
-                            e.getCreatedAt(),
-                            e.getExpiresAt(),
-                            e.getInternshipType(),
-                            e.getDetails(),
-                            e.getStatus(),
-                            e.getCurriculum().getCode(),
-                            e.getAdvisor().getUser().getName(),
-                            e.getStudent().getId(),
-                            e.getAdvisor().getId(),
-                            e.getCurriculum().getId()
-                    );
-                }).collect(Collectors.toList());
-        return advisorRequestForStudentDtoList;
+    public List<AdvisorRequest> findByStudentId(UUID id) {
+        return this.advisorRequestRepository.findAllByStudent_Id(id);
     }
 }
