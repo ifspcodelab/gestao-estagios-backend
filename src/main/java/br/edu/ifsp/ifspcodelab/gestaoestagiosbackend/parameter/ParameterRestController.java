@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/parameters")
@@ -16,11 +14,8 @@ public class ParameterRestController {
     private final ParameterMapper parameterMapper;
 
     @GetMapping
-    public ResponseEntity<List<ParameterDto>> index() {
-        List<ParameterDto> parameters = parameterService.findAll().stream()
-                .map(parameterMapper::to)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(parameters);
+    public ResponseEntity<ParameterDto> index() {
+        return ResponseEntity.ok(parameterMapper.to(parameterService.findAll()));
     }
 
     @PutMapping
