@@ -8,12 +8,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/advisor-requests")
 @AllArgsConstructor
 public class AdvisorRequestRestController {
     private final AdvisorRequestService advisorRequestService;
+
+    private final AdvisorRequestForStudentMapper advisorRequestForStudentMapper;
+    private final AdvisorRequestForAdvisorMapper advisorRequestForAdvisorMapper;
 
     @PostMapping()
     public ResponseEntity<AdvisorRequest> create(@RequestBody AdvisorRequestCreateDto advisorRequestCreateDto) {
@@ -24,13 +28,13 @@ public class AdvisorRequestRestController {
 
     @GetMapping("/advisors/{id}")
     public ResponseEntity<List<AdvisorRequestForAdvisorDto>> showByAdvisorId(@PathVariable UUID id) {
-        List<AdvisorRequestForAdvisorDto> advisorRequestsList = this.advisorRequestService.findByAdvisorId(id);
-        return ResponseEntity.ok(advisorRequestsList);
+        List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByAdvisorId(id);
+        return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestForAdvisorMapper::to).collect(Collectors.toList()));
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<List<AdvisorRequestForStudentDto>> showByStudentId(@PathVariable UUID id) {
-        List<AdvisorRequestForStudentDto> advisorRequestsList = this.advisorRequestService.findByStudentId(id);
-        return ResponseEntity.ok(advisorRequestsList);
+        List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByStudentId(id);
+        return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestForStudentMapper::to).collect(Collectors.toList()));
     }
 }

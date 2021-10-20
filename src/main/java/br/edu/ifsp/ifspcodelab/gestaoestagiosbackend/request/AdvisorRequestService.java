@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface AdvisorRequestService {
     AdvisorRequest create(AdvisorRequestCreateDto advisorRequestCreateDto);
-    List<AdvisorRequestForAdvisorDto> findByAdvisorId(UUID id);
-    List<AdvisorRequestForStudentDto> findByStudentId(UUID id);
+    List<AdvisorRequest> findByAdvisorId(UUID id);
+    List<AdvisorRequest> findByStudentId(UUID id);
 }
