@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/advisor-requests")
 @AllArgsConstructor
 public class AdvisorRequestRestController {
     private final AdvisorRequestService advisorRequestService;
@@ -19,22 +20,28 @@ public class AdvisorRequestRestController {
     private final AdvisorRequestForStudentMapper advisorRequestForStudentMapper;
     private final AdvisorRequestForAdvisorMapper advisorRequestForAdvisorMapper;
 
-    @PostMapping()
+    @PostMapping("api/v1/advisor-requests")
     public ResponseEntity<AdvisorRequestForStudentDto> create(@RequestBody AdvisorRequestCreateDto advisorRequestCreateDto) {
         AdvisorRequest advisorRequest = this.advisorRequestService.create(advisorRequestCreateDto);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/api/v1/advisor-requests").toUriString());
-        return ResponseEntity.created(uri).body(advisorRequestForStudentMapper.to(advisorRequest));
+        return ResponseEntity.created(getURIFromAdvisorRequest(advisorRequest)).body(advisorRequestForStudentMapper.to(advisorRequest));
     }
 
-    @GetMapping("/advisors/{id}")
+    @GetMapping("api/v1/advisors/{id}/advisor-requests")
     public ResponseEntity<List<AdvisorRequestForAdvisorDto>> showByAdvisorId(@PathVariable UUID id) {
         List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByAdvisorId(id);
         return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestForAdvisorMapper::to).collect(Collectors.toList()));
     }
 
-    @GetMapping("/students/{id}")
+    @GetMapping("api/v1/students/{id}/advisor-requests")
     public ResponseEntity<List<AdvisorRequestForStudentDto>> showByStudentId(@PathVariable UUID id) {
         List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByStudentId(id);
         return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestForStudentMapper::to).collect(Collectors.toList()));
+    }
+
+    private URI getURIFromAdvisorRequest(AdvisorRequest advisorRequest) {
+        Map<String, String> value = new HashMap<>();
+        value.put("id", advisorRequest.getStudent().getId().toString());
+        value.put("idAdvisorRequest", advisorRequest.getId().toString());
+        return URI.create(ServletUriComponentsBuilder.fromPath("api/v1/students/{id}/advisor-requests/{idAdvisorRequest}").buildAndExpand(value).toUriString());
     }
 }

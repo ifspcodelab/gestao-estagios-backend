@@ -74,16 +74,6 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
                 .msgHTML(TemplatesHtml.getAdvisorRequestNotify())
                 .build();
 
-        String internshipType = "";
-
-        if (advisorRequestCreateDto.getInternshipType() == InternshipType.REQUIRED_OR_NOT){
-            internshipType = "Estágio obrigatório ou não obrigatório";
-        } else if (advisorRequestCreateDto.getInternshipType() == InternshipType.PROFESSIONAL_ENJOYMENT) {
-            internshipType = "Aproveitamento profissional";
-        } else if (advisorRequestCreateDto.getInternshipType() == InternshipType.PROJECT_EQUIVALENCE) {
-            internshipType = "Equiparação de projeto institucional";
-        }
-
         Date expiresAt = Date.from(advisorRequest.getExpiresAt());
         java.util.Locale locale = new java.util.Locale("pt","BR");
         SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
@@ -93,9 +83,10 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
                 advisor.getUser().getName(),
                 student.getUser().getName(),
                 student.getUser().getRegistration(),
-                internshipType,
+                advisorRequestCreateDto.getInternshipType().getDescription(),
                 formattedExpiresAt
         );
+
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(advisor.getUser().getEmail());
