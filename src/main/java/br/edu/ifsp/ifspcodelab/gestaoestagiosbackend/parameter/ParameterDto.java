@@ -7,8 +7,8 @@ import java.util.UUID;
 @Value
 public class ParameterDto {
     UUID id;
-    String requiredOrNot;
-    String projectEquivalence;
-    String professionalEnjoyment;
+    String internshipRequiredOrNotMessage;
+    String projectEquivalenceMessage;
+    String professionalValidationMessage;
     Integer advisorRequestDeadline;
 }

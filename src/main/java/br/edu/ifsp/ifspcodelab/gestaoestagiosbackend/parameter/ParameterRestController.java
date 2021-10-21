@@ -15,7 +15,7 @@ public class ParameterRestController {
 
     @GetMapping
     public ResponseEntity<ParameterDto> index() {
-        return ResponseEntity.ok(parameterMapper.to(parameterService.findAll()));
+        return ResponseEntity.ok(parameterMapper.to(parameterService.findFirst()));
     }
 
     @PutMapping

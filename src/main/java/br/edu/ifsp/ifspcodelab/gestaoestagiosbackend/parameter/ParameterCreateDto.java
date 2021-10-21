@@ -10,13 +10,13 @@ import javax.validation.constraints.Positive;
 public class ParameterCreateDto {
     @NotNull
     @NotBlank
-    String requiredOrNot;
+    String internshipRequiredOrNotMessage;
     @NotNull
     @NotBlank
-    String projectEquivalence;
+    String projectEquivalenceMessage;
     @NotNull
     @NotBlank
-    String professionalEnjoyment;
+    String professionalValidationMessage;
     @NotNull
     @Positive
     Integer advisorRequestDeadline;
