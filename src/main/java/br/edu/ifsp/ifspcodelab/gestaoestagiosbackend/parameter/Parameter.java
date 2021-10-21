@@ -17,16 +17,16 @@ public class Parameter {
     @Id
     private UUID id;
 
-    private String requiredOrNot;
-    private String projectEquivalence;
-    private String professionalEnjoyment;
+    private String stageMessageRequiredOrNot;
+    private String projectEquivalenceMessage;
+    private String professionalValidationMessage;
     private Integer advisorRequestDeadline;
 
-    public Parameter(String requiredOrNot, String projectEquivalence, String professionalEnjoyment, Integer advisorRequestDeadline) {
+    public Parameter(String stageMessageRequiredOrNot, String projectEquivalenceMessage, String professionalValidationMessage, Integer advisorRequestDeadline) {
         this.id = UUID.randomUUID();
-        this.requiredOrNot = requiredOrNot;
-        this.projectEquivalence = projectEquivalence;
-        this.professionalEnjoyment = professionalEnjoyment;
+        this.stageMessageRequiredOrNot = stageMessageRequiredOrNot;
+        this.projectEquivalenceMessage = projectEquivalenceMessage;
+        this.professionalValidationMessage = professionalValidationMessage;
         this.advisorRequestDeadline = advisorRequestDeadline;
     }
 }

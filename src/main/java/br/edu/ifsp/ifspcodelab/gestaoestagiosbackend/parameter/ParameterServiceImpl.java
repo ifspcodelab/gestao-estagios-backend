@@ -9,17 +9,17 @@ public class ParameterServiceImpl implements ParameterService {
     private ParameterRepository parameterRepository;
 
     @Override
-    public Parameter findAll() {
+    public Parameter findFirst() {
         return parameterRepository.findAll().get(0);
     }
 
     @Override
     public Parameter update(ParameterCreateDto parameterCreateDto) {
-        Parameter parameters = this.findAll();
+        Parameter parameters = this.findFirst();
         Parameter parameterUpdated = new Parameter(
-                parameterCreateDto.getRequiredOrNot(),
-                parameterCreateDto.getProjectEquivalence(),
-                parameterCreateDto.getProfessionalEnjoyment(),
+                parameterCreateDto.getInternshipRequiredOrNotMessage(),
+                parameterCreateDto.getProjectEquivalenceMessage(),
+                parameterCreateDto.getProfessionalValidationMessage(),
                 parameterCreateDto.getAdvisorRequestDeadline()
         );
         parameterUpdated.setId(parameters.getId());
