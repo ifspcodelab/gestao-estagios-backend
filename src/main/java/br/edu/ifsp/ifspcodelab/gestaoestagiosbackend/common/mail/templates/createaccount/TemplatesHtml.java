@@ -1,10 +1,10 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount;
 
-public abstract class CreateAccountHtml {
+public abstract class TemplatesHtml {
 
-    private CreateAccountHtml() {}
+    private TemplatesHtml() {}
 
-    public static String getMessageHtml() {
+    public static String getCreateAccount() {
         return "<!DOCTYPE html>\n" +
                "<html lang=\"pt-br\">\n" +
                 "\n" +
@@ -73,7 +73,7 @@ public abstract class CreateAccountHtml {
                 "</html>";
     }
 
-    public static String getPasswordResetHtml() {
+    public static String getPasswordReset() {
         return "<!DOCTYPE html>\n" +
             "<html lang=\"pt-br\">\n" +
             "\n" +
@@ -142,7 +142,7 @@ public abstract class CreateAccountHtml {
             "</html>";
     }
 
-    public static String getAdvisorRequestNotifyHtml() {
+    public static String getAdvisorRequestNotify() {
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"pt-br\">\n" +
                 "\n" +
@@ -205,7 +205,7 @@ public abstract class CreateAccountHtml {
                 "                   <li><b>Aluno:</b> $STUDENTNAME</li>\n" +
                 "                   <li><b>Matrícula:</b> $REGISTRATION</li>\n" +
                 "                   <li><b>Tipo de estágio:</b> $INTERNSHIPTYPE</li>\n" +
-                "                   <li><b>Prazo para avaliação:</b> $EXPIRESAT</li>\n" +
+                "                   <li><b>Data limite para avaliar:</b> $EXPIRESAT</li>\n" +
                 "           </ul>\n" +
                 "        </div>\n" +
                 "    </div>\n" +
