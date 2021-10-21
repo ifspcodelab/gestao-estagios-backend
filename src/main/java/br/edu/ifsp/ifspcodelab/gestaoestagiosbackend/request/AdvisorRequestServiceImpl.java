@@ -7,7 +7,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.FormatterMail;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.CreateAccountHtml;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.TemplatesHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AdvisorRequestServiceImpl implements AdvisorRequestService{
@@ -74,7 +71,7 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
 
         MailDto email = MailDto.builder()
                 .title("Novo Pedido de Orientação")
-                .msgHTML(CreateAccountHtml.getAdvisorRequestNotifyHtml())
+                .msgHTML(TemplatesHtml.getAdvisorRequestNotify())
                 .build();
 
         String internshipType = "";
@@ -88,7 +85,8 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
         }
 
         Date expiresAt = Date.from(advisorRequest.getExpiresAt());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        java.util.Locale locale = new java.util.Locale("pt","BR");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
         String formattedExpiresAt = sdf.format(expiresAt);
 
         Map<String, String> params = CreatorParametersMail.setParametersAdvisorRequestNotify(

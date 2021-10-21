@@ -10,7 +10,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.FormatterMail;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.CreateAccountHtml;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.TemplatesHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         MailDto email = MailDto.builder()
                 .title("Bem vindo(a)!!")
-                .msgHTML(CreateAccountHtml.getMessageHtml())
+                .msgHTML(TemplatesHtml.getCreateAccount())
                 .build();
 
         Map<String, String> params = CreatorParametersMail.setParameters(userAdvisorCreateDto.getName(), baseUrl+"/authentication/reset", advisor.getId());
@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         MailDto email = MailDto.builder()
                 .title("Bem vindo(a)!!")
-                .msgHTML(CreateAccountHtml.getMessageHtml())
+                .msgHTML(TemplatesHtml.getCreateAccount())
                 .build();
 
         Map<String, String> params = CreatorParametersMail.setParameters(userStudentCreateDto.getName(), baseUrl+"/authentication/verification", student.getId());
@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         MailDto email = MailDto.builder()
             .title("Redefinição de senha")
-            .msgHTML(CreateAccountHtml.getPasswordResetHtml())
+            .msgHTML(TemplatesHtml.getPasswordReset())
             .build();
 
         Map<String, String> params = CreatorParametersMail.setParameters(
