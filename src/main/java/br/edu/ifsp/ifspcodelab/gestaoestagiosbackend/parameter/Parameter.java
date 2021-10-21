@@ -17,14 +17,14 @@ public class Parameter {
     @Id
     private UUID id;
 
-    private String stageMessageRequiredOrNot;
+    private String internshipRequiredOrNotMessage;
     private String projectEquivalenceMessage;
     private String professionalValidationMessage;
     private Integer advisorRequestDeadline;
 
-    public Parameter(String stageMessageRequiredOrNot, String projectEquivalenceMessage, String professionalValidationMessage, Integer advisorRequestDeadline) {
+    public Parameter(String internshipRequiredOrNotMessage, String projectEquivalenceMessage, String professionalValidationMessage, Integer advisorRequestDeadline) {
         this.id = UUID.randomUUID();
-        this.stageMessageRequiredOrNot = stageMessageRequiredOrNot;
+        this.internshipRequiredOrNotMessage = internshipRequiredOrNotMessage;
         this.projectEquivalenceMessage = projectEquivalenceMessage;
         this.professionalValidationMessage = professionalValidationMessage;
         this.advisorRequestDeadline = advisorRequestDeadline;
