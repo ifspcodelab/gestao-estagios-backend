@@ -1,8 +1,8 @@
 CREATE TABLE parameters(
      id UUID NOT NULL,
-     internship_required_or_not_message BYTEA NOT NULL,
-     project_equivalence_message BYTEA NOT NULL,
-     professional_validation_message BYTEA NOT NULL,
+     internship_required_or_not_message TEXT NOT NULL,
+     project_equivalence_message TEXT NOT NULL,
+     professional_validation_message TEXT NOT NULL,
      advisor_request_deadline INT NOT NULL
 );
 INSERT INTO parameters (
