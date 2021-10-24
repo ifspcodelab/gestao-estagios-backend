@@ -2,7 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
@@ -10,6 +10,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.Formatte
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.TemplatesHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.Parameter;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.ParameterService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
     private StudentService studentService;
     private CurriculumService curriculumService;
     private AdvisorService advisorService;
+    private ParameterService parameterService;
 
     private final SenderMail senderMail;
 
@@ -51,17 +54,28 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
         this.advisorService = advisorService;
     }
 
+    @Autowired
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
+    }
+
     @Override
     public AdvisorRequest create(AdvisorRequestCreateDto advisorRequestCreateDto) {
-
         Student student = this.studentService.findById(advisorRequestCreateDto.getStudentId());
 
-        Curriculum curriculum = this.curriculumService.findByCurriculumId(advisorRequestCreateDto.getCurriculumId());
+        List<AdvisorRequest> requests = this.findByStudentId(student.getId());
+        requests.forEach(request -> {
+            if (request.getStatus() == RequestStatus.PENDING) {
+                throw new AdvisorRequestAlreadyExistsByStatus(request.getStatus());
+            }
+        });
 
+        Curriculum curriculum = this.curriculumService.findByCurriculumId(advisorRequestCreateDto.getCurriculumId());
         Advisor advisor = this.advisorService.findById(advisorRequestCreateDto.getAdvisorId());
+        Parameter parameter = this.parameterService.findFirst();
 
         AdvisorRequest advisorRequest = new AdvisorRequest(
-            Instant.now().plus(7, ChronoUnit.DAYS),
+            Instant.now().plus(parameter.getAdvisorRequestDeadline(), ChronoUnit.DAYS),
             advisorRequestCreateDto.getInternshipType(),
             advisorRequestCreateDto.getDetails(),
             student,
@@ -86,11 +100,8 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
                 advisorRequestCreateDto.getInternshipType().getDescription(),
                 formattedExpiresAt
         );
-
         email = FormatterMail.build(email, params);
-
         email.setRecipientTo(advisor.getUser().getEmail());
-
         senderMail.sendEmail(email);
 
         return this.advisorRequestRepository.save(advisorRequest);
