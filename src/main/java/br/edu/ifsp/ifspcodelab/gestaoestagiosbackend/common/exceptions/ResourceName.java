@@ -13,7 +13,8 @@ public enum ResourceName {
     CAMPUS("Campus"),
     DEPARTMENT("Department"),
     COURSE("Course"),
-    CURRICULUM("Curriculum");
+    CURRICULUM("Curriculum"),
+    ADVISOR_REQUEST("Advisor Request");
 
     private String name;
 }
