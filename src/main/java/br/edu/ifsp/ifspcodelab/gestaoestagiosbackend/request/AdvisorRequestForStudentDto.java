@@ -1,11 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorDtoSimplified;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumDto;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

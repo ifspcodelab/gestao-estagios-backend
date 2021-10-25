@@ -1,6 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailConfig;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 
 import java.util.Map;

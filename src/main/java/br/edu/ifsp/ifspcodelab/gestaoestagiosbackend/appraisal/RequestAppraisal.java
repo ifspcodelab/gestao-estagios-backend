@@ -1,4 +1,4 @@
-package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.requestAppraisal;
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
 import lombok.AllArgsConstructor;

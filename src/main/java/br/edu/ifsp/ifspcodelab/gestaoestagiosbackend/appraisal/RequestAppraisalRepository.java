@@ -1,4 +1,4 @@
-package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.requestAppraisal;
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

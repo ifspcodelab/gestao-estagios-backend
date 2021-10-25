@@ -89,7 +89,7 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
                 .build();
 
         Date expiresAt = Date.from(advisorRequest.getExpiresAt());
-        java.util.Locale locale = new java.util.Locale("pt","BR");
+        Locale locale = new Locale("pt","BR");
         SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
         String formattedExpiresAt = sdf.format(expiresAt);
 
@@ -109,11 +109,11 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
 
     @Override
     public List<AdvisorRequest> findByAdvisorId(UUID id) {
-        return this.advisorRequestRepository.findAllByAdvisor_Id(id);
+        return this.advisorRequestRepository.findAllByAdvisorId(id);
     }
 
     @Override
     public List<AdvisorRequest> findByStudentId(UUID id) {
-        return this.advisorRequestRepository.findAllByStudent_Id(id);
+        return this.advisorRequestRepository.findAllByStudentId(id);
     }
 }
