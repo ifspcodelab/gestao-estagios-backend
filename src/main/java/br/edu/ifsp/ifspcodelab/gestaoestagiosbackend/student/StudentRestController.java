@@ -15,44 +15,48 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/students")
 @AllArgsConstructor
 public class StudentRestController {
     private final UserService userService;
     private final StudentService studentService;
     private final StudentMapper studentMapper;
 
-    @PostMapping
+    @PostMapping("api/v1/students")
     public ResponseEntity<StudentDto> create(@Valid @RequestBody UserStudentCreateDto userStudentCreateDto) {
         Student student = this.userService.createStudent(userStudentCreateDto);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/api/students").toUriString());
         return ResponseEntity.created(uri).body(studentMapper.to(student));
     }
 
-    @GetMapping
+    @GetMapping("api/v1/students")
     public ResponseEntity<List<StudentDto>> index() {
         return ResponseEntity.ok(studentService.findAll().stream()
                 .map(studentMapper::to).
                 collect(Collectors.toList()));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("api/v1/students/{id}")
     public ResponseEntity<StudentDto> show(@PathVariable UUID id) {
         return ResponseEntity.ok(studentMapper.to(studentService.findById(id)));
     }
 
-    @PutMapping()
+    @GetMapping("api/v1/users/{id}/students")
+    public ResponseEntity<StudentDto> showByUserId(@PathVariable UUID id) {
+        return ResponseEntity.ok(studentMapper.to(studentService.findByUserId(id)));
+    }
+
+    @PutMapping("api/v1/students")
     public ResponseEntity<UserDto> update(@Valid @RequestBody UserDto userDto) {
         return ResponseEntity.ok(studentService.update(userDto));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("api/v1/students/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         studentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/activate")
+    @PatchMapping("api/v1/students/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable UUID id) {
         userService.activateStudent(id);
         return ResponseEntity.noContent().build();

@@ -62,6 +62,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String access_token = JWT.create()
             .withSubject(user.getUsername())
+            .withClaim("id", user.getId().toString())
             .withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMinutes() * 60 * 1000))
             //.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationMillis()))
             .withIssuer(request.getRequestURL().toString())

@@ -56,6 +56,12 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Student findByUserId(UUID userId) {
+        return studentRepository.findByUserId(userId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.STUDENT, userId));
+    }
+
+    @Override
     public UserDto update(UserDto userDto) {
 
         if(userService.existsByEmailExcludedId(userDto.getEmail(), userDto.getId())){

@@ -9,6 +9,7 @@ public interface StudentService {
     Student create(Student student);
     List<Student> findAll();
     Student findById(UUID id);
+    Student findByUserId(UUID userId);
     UserDto update(UserDto userDto);
     void delete(UUID id);
 }
