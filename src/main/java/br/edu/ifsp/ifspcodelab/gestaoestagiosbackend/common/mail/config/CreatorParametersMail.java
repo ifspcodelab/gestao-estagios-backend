@@ -30,4 +30,15 @@ public abstract class CreatorParametersMail {
         return map;
     }
 
+    public static Map<String, String> setParametersRequestAppraisal(String isDeferred, String studentName, String advisorName, String details) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$ISDEFERRED", isDeferred);
+        map.put("$STUDENTNAME", studentName);
+        map.put("$ADVISORNAME", advisorName);
+        map.put("$DETAILS", details);
+
+        return map;
+    }
+
 }

@@ -16,7 +16,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "advisor_request_appraisals")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class RequestAppraisal {
@@ -35,11 +34,11 @@ public class RequestAppraisal {
     @OneToOne
     private AdvisorRequest advisorRequest;
 
-    public RequestAppraisal(String details, Boolean idDeferred, Instant meetingDate, AdvisorRequest advisorRequest) {
+    public RequestAppraisal(String details, Boolean isDeferred, Instant meetingDate, AdvisorRequest advisorRequest) {
         this.id = UUID.randomUUID();
         this.createdAt = Instant.now();
         this.details = details;
-        this.isDeferred = idDeferred;
+        this.isDeferred = isDeferred;
         this.meetingDate = meetingDate;
         this.advisorRequest = advisorRequest;
     }

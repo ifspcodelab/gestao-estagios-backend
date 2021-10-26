@@ -3,6 +3,8 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
@@ -23,7 +25,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
-public class AdvisorRequestServiceImpl implements AdvisorRequestService{
+public class AdvisorRequestServiceImpl implements AdvisorRequestService {
 
     private AdvisorRequestRepository advisorRequestRepository;
 
@@ -105,6 +107,17 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService{
         senderMail.sendEmail(email);
 
         return this.advisorRequestRepository.save(advisorRequest);
+    }
+
+    @Override
+    public AdvisorRequest save(AdvisorRequest advisorRequest) {
+        return advisorRequestRepository.save(advisorRequest);
+    }
+
+    @Override
+    public AdvisorRequest findById(UUID id) {
+        return advisorRequestRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ADVISOR_REQUEST, id));
     }
 
     @Override
