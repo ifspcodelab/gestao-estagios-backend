@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserDto;
 import lombok.Value;
 
@@ -9,4 +10,5 @@ import java.util.UUID;
 public class StudentDto {
     UUID id;
     UserDto user;
+    CurriculumDto curriculum;
 }
