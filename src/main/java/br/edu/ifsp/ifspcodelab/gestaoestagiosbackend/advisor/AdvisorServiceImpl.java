@@ -47,6 +47,11 @@ public class AdvisorServiceImpl implements AdvisorService {
     }
 
     @Override
+    public List<Advisor> findAllByCourseId(UUID courseId) {
+        return advisorRepository.findAllByCoursesId(courseId);
+    }
+
+    @Override
     public Advisor findById(UUID id) {
         return advisorRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ADVISOR, id));

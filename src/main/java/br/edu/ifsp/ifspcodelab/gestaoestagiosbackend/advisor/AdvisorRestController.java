@@ -17,45 +17,52 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/advisors")
 @AllArgsConstructor
 public class AdvisorRestController {
     private final UserService userService;
     private final AdvisorService advisorService;
     private final AdvisorMapper advisorMapper;
 
-    @PostMapping()
+    @PostMapping("api/v1/advisors")
     public ResponseEntity<AdvisorDto> create(@Valid @RequestBody UserAdvisorCreateDto userAdvisorCreateDto) {
         Advisor advisor = this.userService.createAdvisor(userAdvisorCreateDto);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/api/advisors").toUriString());
         return ResponseEntity.created(uri).body(advisorMapper.to(advisor));
     }
 
-    @GetMapping()
+    @GetMapping("api/v1/advisors")
     public ResponseEntity<List<AdvisorDto>> index() {
         return ResponseEntity.ok(advisorService.findAll().stream()
             .map(advisorMapper::to).
             collect(Collectors.toList()));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("api/v1/courses/{id}/advisors")
+    public ResponseEntity<List<AdvisorDto>> indexByCourseId(@PathVariable UUID id) {
+        return ResponseEntity.ok(advisorService.findAllByCourseId(id)
+            .stream()
+            .map(advisorMapper::to)
+            .collect(Collectors.toList()));
+    }
+
+    @GetMapping("api/v1/advisors/{id}")
     public ResponseEntity<AdvisorDto> show(@PathVariable UUID id) {
         return ResponseEntity.ok(advisorMapper.to(advisorService.findById(id)));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("api/v1/advisors/{id}")
     public ResponseEntity<AdvisorDto> update(@PathVariable UUID id,
                                              @Valid @RequestBody UserAdvisorUpdateDto userAdvisorUpdateDto) {
         return ResponseEntity.ok(advisorMapper.to(userService.updateAdvisor(id, userAdvisorUpdateDto)));
     }
 
-    @PatchMapping("/{id}/activate")
+    @PatchMapping("api/v1/advisors/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) {
         userService.activateAdvisor(id, userUpdatePasswordDto);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("api/v1/advisors/{id}")
     public ResponseEntity<AdvisorDto> patch(@PathVariable UUID id,
                                             @Valid @RequestBody EntityUpdateStatusDto advisorUpdateStatusDto) {
         return ResponseEntity.ok(advisorMapper.to(advisorService.setStatus(id, advisorUpdateStatusDto)));
