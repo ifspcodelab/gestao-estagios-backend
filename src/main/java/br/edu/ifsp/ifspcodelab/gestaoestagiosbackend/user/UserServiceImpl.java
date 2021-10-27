@@ -32,6 +32,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Value("${application.frontend.url}")
     private String baseUrl;
+    @Value("${application.mail.username}")
+    private String replyTo;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -103,6 +105,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
+        email.setReplyTo(replyTo);
 
         senderMail.sendEmail(email);
 
@@ -177,6 +180,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(user.getEmail());
+        email.setReplyTo(replyTo);
 
         senderMail.sendEmail(email);
 
@@ -249,6 +253,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         );
         email = FormatterMail.build(email, params);
         email.setRecipientTo(user.getEmail());
+        email.setReplyTo(replyTo);
         senderMail.sendEmail(email);
         return user;
     }
