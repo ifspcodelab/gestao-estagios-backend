@@ -45,17 +45,15 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
             advisorRequest
         );
 
-        MailDto email;
+        MailDto email = MailDto.builder()
+            .title("Avaliação de pedido de orientação")
+            .msgHTML(TemplatesHtml.getRequestAppraisal())
+            .build();
         String details = requestAppraisalCreateDto.getDetails();
         Map<String, String> params;
 
         if (requestAppraisalCreateDto.getIsDeferred()) {
             advisorRequest.setStatus(RequestStatus.ACCEPTED);
-            email = MailDto.builder()
-                .title("Avaliação de pedido de orientação")
-                .msgHTML(TemplatesHtml.getRequestAppraisal())
-                .build();
-
 
             if (requestAppraisalCreateDto.getMeetingDate() != null) {
                 Date meetingDate = Date.from(advisorRequest.getExpiresAt());
@@ -73,10 +71,6 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
             );
         } else {
             advisorRequest.setStatus(RequestStatus.REJECTED);
-            email = MailDto.builder()
-                .title("Avaliação de pedido de orientação")
-                .msgHTML(TemplatesHtml.getRequestAppraisal())
-                .build();
 
             params = CreatorParametersMail.setParametersRequestAppraisal(
                 "O pedido de orientação foi indeferido.",
@@ -95,6 +89,7 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
         } else {
             email.setRecipientTo(advisorRequest.getStudent().getUser().getEmail());
         }
+        email.setReplyTo(advisorRequest.getAdvisor().getUser().getEmail());
         senderMail.sendEmail(email);
 
         this.advisorRequestService.save(advisorRequest);

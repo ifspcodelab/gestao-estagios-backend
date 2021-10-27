@@ -17,6 +17,7 @@ public class MailDto {
 
     private String msgHTML;
     private String title;
+    private String replyTo;
     private List<String> recipientsTO;
     private List<String> recipientsCC;
     private List<String> recipientsBCC;
@@ -31,6 +32,11 @@ public class MailDto {
             recipientsTO.add(s);
         }
 
+        return this;
+    }
+
+    public MailDto setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
         return this;
     }
 
