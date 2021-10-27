@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestForStudentDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +15,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RequestAppraisalRestController {
     private final RequestAppraisalService requestAppraisalService;
+    private final RequestAppraisalMapper requestAppraisalMapper;
 
     @PostMapping()
-    public ResponseEntity<RequestAppraisal> create(@PathVariable UUID requestId,
+    public ResponseEntity<RequestAppraisalDto> create(@PathVariable UUID requestId,
                                                    @RequestBody @Valid RequestAppraisalCreateDto requestAppraisalCreateDto
     ) {
         RequestAppraisal requestAppraisal = requestAppraisalService.create(requestId, requestAppraisalCreateDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{appraisalId}")
             .buildAndExpand(requestAppraisal.getId()).toUri();
-        return ResponseEntity.created(uri).body(requestAppraisal);
+        return ResponseEntity.created(uri).body(requestAppraisalMapper.to(requestAppraisal));
     }
 }
