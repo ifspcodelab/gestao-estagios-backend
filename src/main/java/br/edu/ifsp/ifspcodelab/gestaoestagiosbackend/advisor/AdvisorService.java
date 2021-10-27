@@ -12,6 +12,7 @@ public interface AdvisorService {
     List<Advisor> findAll();
     List<Advisor> findAllByCourseId(UUID courseId);
     Advisor findById(UUID id);
+    Advisor findByUserId(UUID userId);
     Set<Course> getCourses(List<UUID> coursesIds);
     Advisor setStatus(UUID id, EntityUpdateStatusDto advisorUpdateStatusDto);
 }
