@@ -50,6 +50,11 @@ public class AdvisorRestController {
         return ResponseEntity.ok(advisorMapper.to(advisorService.findById(id)));
     }
 
+    @GetMapping("api/v1/users/{id}/advisors")
+    public ResponseEntity<AdvisorDto> showByUserId(@PathVariable UUID id) {
+        return ResponseEntity.ok(advisorMapper.to(advisorService.findByUserId(id)));
+    }
+
     @PutMapping("api/v1/advisors/{id}")
     public ResponseEntity<AdvisorDto> update(@PathVariable UUID id,
                                              @Valid @RequestBody UserAdvisorUpdateDto userAdvisorUpdateDto) {

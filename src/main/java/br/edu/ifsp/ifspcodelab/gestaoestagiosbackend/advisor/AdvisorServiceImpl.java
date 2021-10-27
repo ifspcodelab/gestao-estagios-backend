@@ -58,6 +58,12 @@ public class AdvisorServiceImpl implements AdvisorService {
     }
 
     @Override
+    public Advisor findByUserId(UUID userId) {
+        return advisorRepository.findByUserId(userId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ADVISOR, userId));
+    }
+
+    @Override
     public Set<Course> getCourses(List<UUID> coursesIds) {
         return new HashSet<>(courseService.findByIdIn(coursesIds));
     }
