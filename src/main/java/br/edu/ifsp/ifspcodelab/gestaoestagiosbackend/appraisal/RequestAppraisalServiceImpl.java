@@ -56,7 +56,7 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
             advisorRequest.setStatus(RequestStatus.ACCEPTED);
 
             if (requestAppraisalCreateDto.getMeetingDate() != null) {
-                Date meetingDate = Date.from(advisorRequest.getExpiresAt());
+                Date meetingDate = Date.from(requestAppraisalCreateDto.getMeetingDate());
                 Locale locale = new Locale("pt","BR");
                 SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
                 String formattedMeetingDate = sdf.format(meetingDate);
