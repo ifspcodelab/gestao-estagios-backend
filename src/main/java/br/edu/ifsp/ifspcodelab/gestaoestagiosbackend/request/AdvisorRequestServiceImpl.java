@@ -17,6 +17,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.ParameterService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +27,9 @@ import java.util.*;
 
 @Service
 public class AdvisorRequestServiceImpl implements AdvisorRequestService {
+
+    @Value("${application.mail.username}")
+    private String replyTo;
 
     private AdvisorRequestRepository advisorRequestRepository;
 
@@ -104,6 +108,7 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService {
         );
         email = FormatterMail.build(email, params);
         email.setRecipientTo(advisor.getUser().getEmail());
+        email.setReplyTo(replyTo);
         senderMail.sendEmail(email);
 
         return this.advisorRequestRepository.save(advisorRequest);

@@ -26,6 +26,11 @@ public class AdvisorRequestRestController {
         return ResponseEntity.created(getURIFromAdvisorRequest(advisorRequest)).body(advisorRequestForStudentMapper.to(advisorRequest));
     }
 
+    @GetMapping("api/v1/advisor-requests/{id}")
+    public ResponseEntity<AdvisorRequestForAdvisorDto> show(@PathVariable UUID id) {
+        return ResponseEntity.ok(advisorRequestForAdvisorMapper.to(advisorRequestService.findById(id)));
+    }
+
     @GetMapping("api/v1/advisors/{id}/advisor-requests")
     public ResponseEntity<List<AdvisorRequestForAdvisorDto>> showByAdvisorId(@PathVariable UUID id) {
         List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByAdvisorId(id);
