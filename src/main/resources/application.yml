@@ -26,3 +26,5 @@ application:
     port: ${MAIL_PORT:1025}
     username: ${MAIL_USERNAME:test@mailhog.example}
     password: ${MAIL_PASSWORD:}
+  schedule:
+    intervalScanRequestExpiresInMillis: 86400000
