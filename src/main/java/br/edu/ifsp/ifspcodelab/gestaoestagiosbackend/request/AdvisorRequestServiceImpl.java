@@ -134,4 +134,41 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService {
     public List<AdvisorRequest> findByStudentId(UUID id) {
         return this.advisorRequestRepository.findAllByStudentId(id);
     }
+
+    @Override
+    public void verifyExpiredRequests() {
+        List<AdvisorRequest> expiredRequests = this.advisorRequestRepository
+                .findAllByExpiresAtBeforeAndStatusEquals(Instant.now(), RequestStatus.PENDING);
+
+        if(expiredRequests.isEmpty()){
+            return;
+        }
+
+        for (AdvisorRequest request : expiredRequests) {
+            MailDto email = MailDto.builder()
+                    .title("Pedido de Orientação Expirou")
+                    .msgHTML(TemplatesHtml.getStudentNotificationExpired())
+                    .build();
+
+            Date createdAt = Date.from(request.getCreatedAt());
+            Locale locale = new Locale("pt","BR");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
+            String formattedCreatedAt = sdf.format(createdAt);
+
+            Map<String, String> params = CreatorParametersMail
+                    .setParametersStudentNotificationExpired(
+                            request.getStudent().getUser().getName(),
+                            request.getAdvisor().getUser().getName(),
+                            formattedCreatedAt,
+                            "https://gestao-projetos-frontend.netlify.app/"
+                    );
+
+            email = FormatterMail.build(email, params);
+            email.setRecipientTo(request.getStudent().getUser().getEmail());
+            senderMail.sendEmail(email);
+
+            request.setStatus(RequestStatus.REJECTED);
+            this.advisorRequestRepository.save(request);
+        }
+    }
 }
