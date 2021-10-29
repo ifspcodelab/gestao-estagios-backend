@@ -30,4 +30,18 @@ public abstract class CreatorParametersMail {
         return map;
     }
 
+    public static Map<String, String> setParametersStudentNotificationExpired(String username,
+                                                                              String advisorName,
+                                                                              String requestCreatedDate,
+                                                                              String link) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$USERNAME", username);
+        map.put("$ADVISORNAME", advisorName);
+        map.put("$REQUESTCREATEDATE", requestCreatedDate);
+        map.put("$SYSTEMLINK", link);
+
+        return map;
+    }
+
 }
