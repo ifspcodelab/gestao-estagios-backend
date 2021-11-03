@@ -1,6 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
