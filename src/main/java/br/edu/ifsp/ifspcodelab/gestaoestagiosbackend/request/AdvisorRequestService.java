@@ -9,4 +9,5 @@ public interface AdvisorRequestService {
     AdvisorRequest findById(UUID id);
     List<AdvisorRequest> findByAdvisorId(UUID id);
     List<AdvisorRequest> findByStudentId(UUID id);
+    void verifyExpiredRequests();
 }
