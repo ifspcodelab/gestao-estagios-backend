@@ -11,13 +11,9 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -60,8 +56,12 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
             advisorRequest.setStatus(RequestStatus.ACCEPTED);
 
             if (requestAppraisalCreateDto.getMeetingDate() != null) {
-                OffsetDateTime meetingDateFormatted = OffsetDateTime.ofInstant(requestAppraisalCreateDto.getMeetingDate(), ZoneId.of("Etc/Universal"));
-                DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm");
+                OffsetDateTime meetingDateFormatted = OffsetDateTime.ofInstant(
+                        requestAppraisalCreateDto.getMeetingDate(),
+                        ZoneId.of("Etc/Universal")
+                );
+                DateTimeFormatter customFormatter = DateTimeFormatter
+                        .ofPattern("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm");
                 details += "<br/>" + meetingDateFormatted.format(customFormatter);
             }
 
