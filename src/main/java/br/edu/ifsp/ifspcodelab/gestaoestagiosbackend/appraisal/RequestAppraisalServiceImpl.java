@@ -12,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -56,11 +60,9 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
             advisorRequest.setStatus(RequestStatus.ACCEPTED);
 
             if (requestAppraisalCreateDto.getMeetingDate() != null) {
-                Date meetingDate = Date.from(requestAppraisalCreateDto.getMeetingDate());
-                Locale locale = new Locale("pt","BR");
-                SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
-                String formattedMeetingDate = sdf.format(meetingDate);
-                details += "<br/>" + formattedMeetingDate;
+                OffsetDateTime meetingDateFormatted = OffsetDateTime.ofInstant(requestAppraisalCreateDto.getMeetingDate(), ZoneId.of("Etc/Universal"));
+                DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm");
+                details += "<br/>" + meetingDateFormatted.format(customFormatter);
             }
 
             params = CreatorParametersMail.setParametersRequestAppraisal(
