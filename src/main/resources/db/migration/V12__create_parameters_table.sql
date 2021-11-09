@@ -4,11 +4,13 @@ CREATE TABLE parameters(
      project_equivalence_message TEXT NOT NULL,
      professional_validation_message TEXT NOT NULL,
      advisor_request_deadline INT NOT NULL,
-     deadline_evaluation_activity_plan INT NOT NULL,
+     activity_plan_appraisal_deadline INT NOT NULL,
      activity_plan_link TEXT NOT NULL,
-     deadline_submission_monthly_draft INT NOT NULL,
-     deadline_evaluation_monthly_draft INT NOT NULL,
-     evaluation_period_monthly_report INT NOT NULL
+     activity_plan_file_size_bytes INT NOT NULL,
+     monthly_report_file_size_bytes INT NOT NULL,
+     monthly_report_draft_submission_deadline_months INT NOT NULL,
+     monthly_report_draft_appraisal_deadline_days INT NOT NULL,
+     monthly_report_appraisal_deadline_days INT NOT NULL
 );
 INSERT INTO parameters (
      id,
@@ -16,11 +18,13 @@ INSERT INTO parameters (
      project_equivalence_message,
      professional_validation_message,
      advisor_request_deadline,
-     deadline_evaluation_activity_plan,
+     activity_plan_appraisal_deadline,
      activity_plan_link,
-     deadline_submission_monthly_draft,
-     deadline_evaluation_monthly_draft,
-     evaluation_period_monthly_report
+     activity_plan_file_size_bytes,
+     monthly_report_file_size_bytes,
+     monthly_report_draft_submission_deadline_months,
+     monthly_report_draft_appraisal_deadline_days,
+     monthly_report_appraisal_deadline_days
 )
 VALUES (
     '82d41fb0-b896-4b44-b6e6-3ac9d1726f83',
@@ -29,7 +33,9 @@ VALUES (
     'mensagem para aproveitamento profissional',
      10,
      7,
-     'https://spo.ifsp.edu.br/menu/196-in%C3%ADcio,-aditamento-e-acompanhamento-do-est%C3%A1gio-obrigat%C3%B3rio-ou-n%C3%A3o-obrigat%C3%B3rio',
+     'https://spo.ifsp.edu.br/images/phocadownload/DOCUMENTOS_ESTAGIOS/INICIO_ESTAGIO/2020/ANEXO_G_PLANO_DE_ATIVIDADES_vers%C3%A3o_agos.2020.01.doc',
+     1048576,
+     1048576,
      1,
      30,
      30
