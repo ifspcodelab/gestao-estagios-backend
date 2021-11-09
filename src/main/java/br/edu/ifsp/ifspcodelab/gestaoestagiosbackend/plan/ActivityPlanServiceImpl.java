@@ -53,9 +53,14 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     }
 
     @Override
-    public ActivityPlan update(ActivityPlan activityPlan) {
-        ActivityPlan plan = activityPlanRepository.findById(activityPlan.getId())
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlan.getId()));
+    public ActivityPlan update(UUID advisorRequestId, UUID activityPlanId, ActivityPlan activityPlan) {
+        advisorRequestService.findById(advisorRequestId);
+        ActivityPlan plan = activityPlanRepository.findById(activityPlanId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
+
+        plan.setCompanyName(activityPlan.getCompanyName());
+        plan.setInternshipStartDate(activityPlan.getInternshipStartDate());
+        plan.setInternshipEndDate(activityPlan.getInternshipEndDate());
 
         return activityPlanRepository.save(plan);
     }

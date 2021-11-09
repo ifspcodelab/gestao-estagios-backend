@@ -25,4 +25,13 @@ public class ActivityPlanController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(activityPlan.getId()).toUri();
         return ResponseEntity.created(uri).body(activityPlan);
     }
+
+    @PutMapping("{activityPlanId}")
+    public ResponseEntity<ActivityPlan> update(
+        @PathVariable UUID advisorRequestId,
+        @PathVariable UUID activityPlanId,
+        @RequestBody ActivityPlan activityPlan
+    ) {
+        return ResponseEntity.ok(activityPlanService.update(advisorRequestId, activityPlanId, activityPlan));
+    }
 }
