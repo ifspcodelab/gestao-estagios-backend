@@ -92,7 +92,7 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService {
         );
 
         MailDto email = MailDto.builder()
-                .title("Novo Pedido de Orientação")
+                .title("Novo Pedido de Orientação ["+advisorRequest.getStudent().getUser().getName()+"]")
                 .msgHTML(TemplatesHtml.getAdvisorRequestNotify())
                 .build();
 

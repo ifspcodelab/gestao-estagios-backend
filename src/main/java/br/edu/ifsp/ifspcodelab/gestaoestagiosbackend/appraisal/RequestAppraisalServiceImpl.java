@@ -46,7 +46,7 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
         );
 
         MailDto email = MailDto.builder()
-            .title("Avaliação de pedido de orientação")
+            .title("Avaliação de pedido de orientação ["+advisorRequest.getStudent().getUser().getName()+"]")
             .msgHTML(TemplatesHtml.getRequestAppraisal())
             .build();
         String details = requestAppraisalCreateDto.getDetails();
