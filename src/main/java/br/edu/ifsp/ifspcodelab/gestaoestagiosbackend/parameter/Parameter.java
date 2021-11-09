@@ -22,11 +22,22 @@ public class Parameter {
     private String professionalValidationMessage;
     private Integer advisorRequestDeadline;
 
-    public Parameter(String internshipRequiredOrNotMessage, String projectEquivalenceMessage, String professionalValidationMessage, Integer advisorRequestDeadline) {
+    private Integer deadlineEvaluationActivityPlan;
+    private String activityPlanLink;
+    private Integer deadlineSubmissionMonthlyDraft;
+    private Integer deadlineEvaluationMonthlyDraft;
+    private Integer evaluationPeriodMonthlyReport;
+
+    public Parameter(String internshipRequiredOrNotMessage, String projectEquivalenceMessage, String professionalValidationMessage, Integer advisorRequestDeadline, Integer deadlineEvaluationActivityPlan, String activityPlanLink, Integer deadlineSubmissionMonthlyDraft, Integer deadlineEvaluationMonthlyDraft, Integer evaluationPeriodMonthlyReport ) {
         this.id = UUID.randomUUID();
         this.internshipRequiredOrNotMessage = internshipRequiredOrNotMessage;
         this.projectEquivalenceMessage = projectEquivalenceMessage;
         this.professionalValidationMessage = professionalValidationMessage;
         this.advisorRequestDeadline = advisorRequestDeadline;
+        this.deadlineEvaluationActivityPlan = deadlineEvaluationActivityPlan;
+        this.activityPlanLink = activityPlanLink;
+        this.deadlineSubmissionMonthlyDraft = deadlineSubmissionMonthlyDraft;
+        this.deadlineEvaluationMonthlyDraft = deadlineEvaluationMonthlyDraft;
+        this.evaluationPeriodMonthlyReport = evaluationPeriodMonthlyReport;
     }
 }
