@@ -15,23 +15,26 @@ import java.util.UUID;
 public class ActivityPlanController {
 
     private final ActivityPlanService activityPlanService;
+    private final ActivityPlanMapper activityPlanMapper;
 
     @PostMapping
-    public ResponseEntity<ActivityPlan> create(
+    public ResponseEntity<ActivityPlanDto> create(
         @PathVariable UUID advisorRequestId,
         @RequestPart("file") MultipartFile file
     ) {
         ActivityPlan activityPlan = activityPlanService.create(advisorRequestId, file);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(activityPlan.getId()).toUri();
-        return ResponseEntity.created(uri).body(activityPlan);
+        return ResponseEntity.created(uri).body(activityPlanMapper.to(activityPlan));
     }
 
     @PutMapping("{activityPlanId}")
-    public ResponseEntity<ActivityPlan> update(
+    public ResponseEntity<ActivityPlanDto> update(
         @PathVariable UUID advisorRequestId,
         @PathVariable UUID activityPlanId,
         @RequestBody ActivityPlan activityPlan
     ) {
-        return ResponseEntity.ok(activityPlanService.update(advisorRequestId, activityPlanId, activityPlan));
+        return ResponseEntity.ok(
+            activityPlanMapper.to(activityPlanService.update(advisorRequestId, activityPlanId, activityPlan))
+        );
     }
 }
