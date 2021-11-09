@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -94,10 +97,13 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService {
                 .msgHTML(TemplatesHtml.getAdvisorRequestNotify())
                 .build();
 
-        Date expiresAt = Date.from(advisorRequest.getExpiresAt());
-        Locale locale = new Locale("pt","BR");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
-        String formattedExpiresAt = sdf.format(expiresAt);
+        OffsetDateTime expiresAt = OffsetDateTime.ofInstant(
+                advisorRequest.getExpiresAt(),
+                ZoneId.of("Etc/Universal")
+        );
+        DateTimeFormatter customFormatter = DateTimeFormatter
+                .ofPattern("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm");
+        String formattedExpiresAt = expiresAt.format(customFormatter);
 
         Map<String, String> params = CreatorParametersMail.setParametersAdvisorRequestNotify(
                 advisor.getUser().getName(),
