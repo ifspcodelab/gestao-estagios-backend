@@ -14,6 +14,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: false
+  servlet:
+    multipart:
+      max-file-size: 5MB
 application:
   jwt:
     secretKey: ${JWT_SECRETKEY:bcd38b5a-95f7-4750-a4e8-a215430cc515}
@@ -28,3 +31,7 @@ application:
     password: ${MAIL_PASSWORD:}
   schedule:
     intervalScanRequestExpiresInMillis: 86400000
+  cloudinary:
+    cloud_name: ${CLOUD_NAME:dmnumhilq}
+    api_key: ${CLOUDINARY_KEY:547361999122345}
+    api_secret: ${CLOUDINARY_SECRET:VFQ_Gfgj6uN2BaPUFFj9RMsd_tE}

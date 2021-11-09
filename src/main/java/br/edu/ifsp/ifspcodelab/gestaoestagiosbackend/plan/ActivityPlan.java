@@ -37,5 +37,6 @@ public class ActivityPlan {
         this.expiresAt = expiresAt;
         this.activityPlanUrl = activityPlanUrl;
         this.advisorRequest = advisorRequest;
+        this.status = RequestStatus.PENDING;
     }
 }
