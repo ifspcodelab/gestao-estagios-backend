@@ -20,7 +20,12 @@ public class ParameterServiceImpl implements ParameterService {
                 parameterCreateDto.getInternshipRequiredOrNotMessage(),
                 parameterCreateDto.getProjectEquivalenceMessage(),
                 parameterCreateDto.getProfessionalValidationMessage(),
-                parameterCreateDto.getAdvisorRequestDeadline()
+                parameterCreateDto.getAdvisorRequestDeadline(),
+                parameterCreateDto.getDeadlineEvaluationActivityPlan(),
+                parameterCreateDto.getActivityPlanLink(),
+                parameterCreateDto.getDeadlineSubmissionMonthlyDraft(),
+                parameterCreateDto.getDeadlineEvaluationMonthlyDraft(),
+                parameterCreateDto.getEvaluationPeriodMonthlyReport()
         );
         parameterUpdated.setId(parameters.getId());
         return parameterRepository.save(parameterUpdated);
