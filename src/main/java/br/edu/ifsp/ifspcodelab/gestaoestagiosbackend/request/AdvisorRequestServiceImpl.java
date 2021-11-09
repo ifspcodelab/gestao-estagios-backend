@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -163,11 +162,6 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService {
             DateTimeFormatter customFormatter = DateTimeFormatter
                     .ofPattern("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm");
             String formattedCreatedAt = expiresAt.format(customFormatter);
-
-            /*Date createdAt = Date.from(request.getCreatedAt());
-            Locale locale = new Locale("pt","BR");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
-            String formattedCreatedAt = sdf.format(createdAt);*/
 
             Map<String, String> params = CreatorParametersMail
                     .setParametersStudentNotificationExpired(
