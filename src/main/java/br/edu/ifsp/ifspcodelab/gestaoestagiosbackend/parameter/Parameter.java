@@ -30,7 +30,18 @@ public class Parameter {
     private Integer monthlyReportDraftAppraisalDeadlineDays;
     private Integer monthlyReportAppraisalDeadlineDays;
 
-    public Parameter(String internshipRequiredOrNotMessage, String projectEquivalenceMessage, String professionalValidationMessage, Integer advisorRequestDeadline, Integer activityPlanAppraisalDeadline, String activityPlanLink, Integer activityPlanFileSizeBytes, Integer monthlyReportFileSizeBytes, Integer monthlyReportDraftSubmissionDeadlineMonths, Integer monthlyReportDraftAppraisalDeadlineDays, Integer monthlyReportAppraisalDeadlineDays) {
+    public Parameter(
+            String internshipRequiredOrNotMessage,
+            String projectEquivalenceMessage,
+            String professionalValidationMessage,
+            Integer advisorRequestDeadline,
+            Integer activityPlanAppraisalDeadline,
+            String activityPlanLink,
+            Integer activityPlanFileSizeBytes,
+            Integer monthlyReportFileSizeBytes,
+            Integer monthlyReportDraftSubmissionDeadlineMonths,
+            Integer monthlyReportDraftAppraisalDeadlineDays,
+            Integer monthlyReportAppraisalDeadlineDays) {
         this.id = UUID.randomUUID();
         this.internshipRequiredOrNotMessage = internshipRequiredOrNotMessage;
         this.projectEquivalenceMessage = projectEquivalenceMessage;
