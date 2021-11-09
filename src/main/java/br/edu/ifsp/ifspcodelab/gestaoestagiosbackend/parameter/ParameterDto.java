@@ -11,10 +11,11 @@ public class ParameterDto {
     String projectEquivalenceMessage;
     String professionalValidationMessage;
     Integer advisorRequestDeadline;
-
-    Integer deadlineEvaluationActivityPlan;
+    Integer activityPlanAppraisalDeadline;
     String activityPlanLink;
-    Integer deadlineSubmissionMonthlyDraft;
-    Integer deadlineEvaluationMonthlyDraft;
-    Integer evaluationPeriodMonthlyReport;
+    Integer activityPlanFileSizeBytes;
+    Integer monthlyReportFileSizeBytes;
+    Integer monthlyReportDraftSubmissionDeadlineMonths;
+    Integer monthlyReportDraftAppraisalDeadlineDays;
+    Integer monthlyReportAppraisalDeadlineDays;
 }

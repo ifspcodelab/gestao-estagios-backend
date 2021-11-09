@@ -22,17 +22,23 @@ public class ParameterCreateDto {
     Integer advisorRequestDeadline;
     @NotNull
     @Positive
-    Integer deadlineEvaluationActivityPlan;
+    Integer activityPlanAppraisalDeadline;
     @NotNull
     @NotBlank
     String activityPlanLink;
     @NotNull
     @Positive
-    Integer deadlineSubmissionMonthlyDraft;
+    Integer activityPlanFileSizeBytes;
     @NotNull
     @Positive
-    Integer deadlineEvaluationMonthlyDraft;
+    Integer monthlyReportFileSizeBytes;
     @NotNull
     @Positive
-    Integer evaluationPeriodMonthlyReport;
+    Integer monthlyReportDraftSubmissionDeadlineMonths;
+    @NotNull
+    @Positive
+    Integer monthlyReportDraftAppraisalDeadlineDays;
+    @NotNull
+    @Positive
+    Integer monthlyReportAppraisalDeadlineDays;
 }
