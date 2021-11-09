@@ -40,6 +40,8 @@ dependencies {
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 	implementation 'com.auth0:java-jwt:3.18.2'
+	implementation 'com.cloudinary:cloudinary-core:1.29.0'
+	implementation 'com.cloudinary:cloudinary-http44:1.29.0'
 }
 
 test {
