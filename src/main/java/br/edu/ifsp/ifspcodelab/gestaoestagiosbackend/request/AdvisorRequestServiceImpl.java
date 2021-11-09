@@ -156,10 +156,18 @@ public class AdvisorRequestServiceImpl implements AdvisorRequestService {
                     .msgHTML(TemplatesHtml.getStudentNotificationExpired())
                     .build();
 
-            Date createdAt = Date.from(request.getCreatedAt());
+            OffsetDateTime expiresAt = OffsetDateTime.ofInstant(
+                    request.getCreatedAt(),
+                    ZoneId.of("Etc/Universal")
+            );
+            DateTimeFormatter customFormatter = DateTimeFormatter
+                    .ofPattern("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm");
+            String formattedCreatedAt = expiresAt.format(customFormatter);
+
+            /*Date createdAt = Date.from(request.getCreatedAt());
             Locale locale = new Locale("pt","BR");
             SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy (EEEE), 'às' HH:mm", locale);
-            String formattedCreatedAt = sdf.format(createdAt);
+            String formattedCreatedAt = sdf.format(createdAt);*/
 
             Map<String, String> params = CreatorParametersMail
                     .setParametersStudentNotificationExpired(
