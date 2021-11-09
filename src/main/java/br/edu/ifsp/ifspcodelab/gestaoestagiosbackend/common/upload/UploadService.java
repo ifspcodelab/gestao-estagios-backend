@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.FileUploadException;
 import com.cloudinary.utils.ObjectUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UploadService {
                 );
             return uploadResult.get("url").toString();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new FileUploadException("Error sending file: " + file.getName());
         }
     }
 }
