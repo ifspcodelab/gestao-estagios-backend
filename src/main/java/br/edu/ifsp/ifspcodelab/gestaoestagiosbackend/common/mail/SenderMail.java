@@ -74,9 +74,12 @@ public class SenderMail {
                 message.addRecipient(Message.RecipientType.BCC, new InternetAddress(recipient));
         }
 
+        if (Objects.nonNull(mail.getReplyTo())) {
+            message.setReplyTo(new javax.mail.Address[]{new javax.mail.internet.InternetAddress(mail.getReplyTo())});
+        }
+
         message.setSentDate(mail.getDateSent());
         message.setSubject(mail.getTitle());
-        message.setReplyTo(new javax.mail.Address[]{new javax.mail.internet.InternetAddress(mail.getReplyTo())});
 
         var multipart = new MimeMultipart();
 
