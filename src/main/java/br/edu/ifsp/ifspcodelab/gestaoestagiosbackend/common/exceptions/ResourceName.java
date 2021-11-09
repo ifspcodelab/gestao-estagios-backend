@@ -14,7 +14,8 @@ public enum ResourceName {
     DEPARTMENT("Department"),
     COURSE("Course"),
     CURRICULUM("Curriculum"),
-    ADVISOR_REQUEST("Advisor Request");
+    ADVISOR_REQUEST("Advisor Request"),
+    ACTIVITY_PLAN("Activity Plan");
 
     private String name;
 }
