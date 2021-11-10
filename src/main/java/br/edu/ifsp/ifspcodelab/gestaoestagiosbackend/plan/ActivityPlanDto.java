@@ -5,14 +5,15 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestForSt
 import lombok.Value;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Value
 public class ActivityPlanDto {
     UUID id;
     String companyName;
-    Instant internshipStartDate;
-    Instant internshipEndDate;
+    LocalDate internshipStartDate;
+    LocalDate internshipEndDate;
     Instant createdAt;
     Instant expiresAt;
     String activityPlanUrl;
