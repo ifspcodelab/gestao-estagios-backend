@@ -148,4 +148,19 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(FileMaxSizeException.class)
+    public ResponseEntity<ProblemDetail> fileMaxSize(FileMaxSizeException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                "File size: " +
+                    exception.getActualSize().toString() +
+                    "Bs exceeds max size: " +
+                    exception.getMaxSize().toString() +
+                    "Bs",
+                Collections.emptyList()
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
 }

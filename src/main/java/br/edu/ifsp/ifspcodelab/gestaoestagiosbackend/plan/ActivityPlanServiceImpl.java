@@ -1,9 +1,11 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DateIntervalException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.FileMaxSizeException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.ParameterService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
     private AdvisorRequestService advisorRequestService;
     private UploadService uploadService;
+    private ParameterService parameterService;
 
     public ActivityPlanServiceImpl(ActivityPlanRepository activityPlanRepository) {
         this.activityPlanRepository = activityPlanRepository;
@@ -38,12 +41,23 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         this.uploadService = uploadService;
     }
 
+    @Autowired
+    public void setParameterService(ParameterService parameterService) {
+        this.parameterService = parameterService;
+    }
+
     @Override
     public ActivityPlan create(UUID advisorRequestId, MultipartFile file) {
         AdvisorRequest advisorRequest = advisorRequestService.findById(advisorRequestId);
 
         if (!Objects.requireNonNull(file.getContentType()).equals(MediaType.APPLICATION_PDF_VALUE)) {
             throw new FileExtensionPdfException(MediaType.APPLICATION_PDF_VALUE, file.getContentType());
+        }
+        if (file.getSize() > parameterService.findFirst().getActivityPlanFileSizeMegabytes() * 1048576) {
+            throw new FileMaxSizeException(
+                parameterService.findFirst().getActivityPlanFileSizeMegabytes() * 1048576,
+                file.getSize()
+            );
         }
         String activityPlanUrl = uploadService.uploadFile(
             file,
