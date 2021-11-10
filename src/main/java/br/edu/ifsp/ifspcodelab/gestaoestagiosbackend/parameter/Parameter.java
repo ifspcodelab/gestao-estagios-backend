@@ -21,38 +21,11 @@ public class Parameter {
     private String projectEquivalenceMessage;
     private String professionalValidationMessage;
     private Integer advisorRequestDeadline;
-
     private Integer activityPlanAppraisalDeadline;
     private String activityPlanLink;
-    private Integer activityPlanFileSizeBytes;
-    private Integer monthlyReportFileSizeBytes;
+    private Integer activityPlanFileSizeMegabytes;
+    private Integer monthlyReportFileSizeMegabytes;
     private Integer monthlyReportDraftSubmissionDeadlineMonths;
     private Integer monthlyReportDraftAppraisalDeadlineDays;
     private Integer monthlyReportAppraisalDeadlineDays;
-
-    public Parameter(
-            String internshipRequiredOrNotMessage,
-            String projectEquivalenceMessage,
-            String professionalValidationMessage,
-            Integer advisorRequestDeadline,
-            Integer activityPlanAppraisalDeadline,
-            String activityPlanLink,
-            Integer activityPlanFileSizeBytes,
-            Integer monthlyReportFileSizeBytes,
-            Integer monthlyReportDraftSubmissionDeadlineMonths,
-            Integer monthlyReportDraftAppraisalDeadlineDays,
-            Integer monthlyReportAppraisalDeadlineDays) {
-        this.id = UUID.randomUUID();
-        this.internshipRequiredOrNotMessage = internshipRequiredOrNotMessage;
-        this.projectEquivalenceMessage = projectEquivalenceMessage;
-        this.professionalValidationMessage = professionalValidationMessage;
-        this.advisorRequestDeadline = advisorRequestDeadline;
-        this.activityPlanAppraisalDeadline = activityPlanAppraisalDeadline;
-        this.activityPlanLink = activityPlanLink;
-        this.activityPlanFileSizeBytes = activityPlanFileSizeBytes;
-        this.monthlyReportFileSizeBytes = monthlyReportFileSizeBytes;
-        this.monthlyReportDraftSubmissionDeadlineMonths = monthlyReportDraftSubmissionDeadlineMonths;
-        this.monthlyReportDraftAppraisalDeadlineDays = monthlyReportDraftAppraisalDeadlineDays;
-        this.monthlyReportAppraisalDeadlineDays = monthlyReportAppraisalDeadlineDays;
-    }
 }

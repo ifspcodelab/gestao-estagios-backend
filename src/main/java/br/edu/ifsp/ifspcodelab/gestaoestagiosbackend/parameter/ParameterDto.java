@@ -13,8 +13,8 @@ public class ParameterDto {
     Integer advisorRequestDeadline;
     Integer activityPlanAppraisalDeadline;
     String activityPlanLink;
-    Integer activityPlanFileSizeBytes;
-    Integer monthlyReportFileSizeBytes;
+    Integer activityPlanFileSizeMegabytes;
+    Integer monthlyReportFileSizeMegabytes;
     Integer monthlyReportDraftSubmissionDeadlineMonths;
     Integer monthlyReportDraftAppraisalDeadlineDays;
     Integer monthlyReportAppraisalDeadlineDays;
