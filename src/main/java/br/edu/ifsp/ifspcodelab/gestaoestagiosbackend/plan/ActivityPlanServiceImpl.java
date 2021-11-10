@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -39,6 +40,9 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     public ActivityPlan create(UUID advisorRequestId, MultipartFile file) {
         AdvisorRequest advisorRequest = advisorRequestService.findById(advisorRequestId);
 
+        if (!Objects.requireNonNull(file.getContentType()).contains("pdf")) {
+            throw new FileExtensionPdfException(file.getContentType());
+        }
         String activityPlanUrl = uploadService.uploadFile(
             file,
             advisorRequest.getStudent().getUser().getRegistration() + "/plano-atividades-" + System.currentTimeMillis()
@@ -58,6 +62,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         ActivityPlan plan = activityPlanRepository.findById(activityPlanId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
 
+        if(ChronoUnit.DAYS.between(activityPlan.getInternshipStartDate(), activityPlan.getInternshipEndDate()) > 365) {
+            throw new DateIntervalYearException(activityPlan.getInternshipStartDate(),
+                activityPlan.getInternshipEndDate(),
+                365
+            );
+        }
         plan.setCompanyName(activityPlan.getCompanyName());
         plan.setInternshipStartDate(activityPlan.getInternshipStartDate());
         plan.setInternshipEndDate(activityPlan.getInternshipEndDate());
