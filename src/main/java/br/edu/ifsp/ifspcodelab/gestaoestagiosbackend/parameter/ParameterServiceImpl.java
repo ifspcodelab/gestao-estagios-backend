@@ -16,20 +16,18 @@ public class ParameterServiceImpl implements ParameterService {
     @Override
     public Parameter update(ParameterCreateDto parameterCreateDto) {
         Parameter parameters = this.findFirst();
-        Parameter parameterUpdated = new Parameter(
-                parameterCreateDto.getInternshipRequiredOrNotMessage(),
-                parameterCreateDto.getProjectEquivalenceMessage(),
-                parameterCreateDto.getProfessionalValidationMessage(),
-                parameterCreateDto.getAdvisorRequestDeadline(),
-                parameterCreateDto.getActivityPlanAppraisalDeadline(),
-                parameterCreateDto.getActivityPlanLink(),
-                parameterCreateDto.getActivityPlanFileSizeBytes(),
-                parameterCreateDto.getMonthlyReportFileSizeBytes(),
-                parameterCreateDto.getMonthlyReportDraftSubmissionDeadlineMonths(),
-                parameterCreateDto.getMonthlyReportDraftAppraisalDeadlineDays(),
-                parameterCreateDto.getMonthlyReportAppraisalDeadlineDays()
-        );
-        parameterUpdated.setId(parameters.getId());
-        return parameterRepository.save(parameterUpdated);
+        parameters.setInternshipRequiredOrNotMessage(parameterCreateDto.getInternshipRequiredOrNotMessage());
+        parameters.setProjectEquivalenceMessage(parameterCreateDto.getProjectEquivalenceMessage());
+        parameters.setProfessionalValidationMessage(parameterCreateDto.getProfessionalValidationMessage());
+        parameters.setAdvisorRequestDeadline(parameterCreateDto.getAdvisorRequestDeadline());
+        parameters.setActivityPlanAppraisalDeadline(parameterCreateDto.getActivityPlanAppraisalDeadline());
+        parameters.setActivityPlanLink(parameterCreateDto.getActivityPlanLink());
+        parameters.setActivityPlanFileSizeMegabytes(parameterCreateDto.getActivityPlanFileSizeMegabytes());
+        parameters.setMonthlyReportFileSizeMegabytes(parameterCreateDto.getMonthlyReportFileSizeMegabytes());
+        parameters.setMonthlyReportDraftSubmissionDeadlineMonths(parameterCreateDto.getMonthlyReportDraftSubmissionDeadlineMonths());
+        parameters.setMonthlyReportDraftAppraisalDeadlineDays(parameterCreateDto.getMonthlyReportDraftAppraisalDeadlineDays());
+        parameters.setMonthlyReportAppraisalDeadlineDays(parameterCreateDto.getMonthlyReportAppraisalDeadlineDays());
+
+        return parameterRepository.save(parameters);
     }
 }

@@ -28,10 +28,10 @@ public class ParameterCreateDto {
     String activityPlanLink;
     @NotNull
     @Positive
-    Integer activityPlanFileSizeBytes;
+    Integer activityPlanFileSizeMegabytes;
     @NotNull
     @Positive
-    Integer monthlyReportFileSizeBytes;
+    Integer monthlyReportFileSizeMegabytes;
     @NotNull
     @Positive
     Integer monthlyReportDraftSubmissionDeadlineMonths;
