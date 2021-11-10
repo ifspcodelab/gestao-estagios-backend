@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -19,8 +20,8 @@ public class ActivityPlan {
     @Id
     private UUID id;
     private String companyName;
-    private Instant internshipStartDate;
-    private Instant internshipEndDate;
+    private LocalDate internshipStartDate;
+    private LocalDate internshipEndDate;
     private Instant createdAt;
     private Instant expiresAt;
     private String activityPlanUrl;
