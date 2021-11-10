@@ -6,8 +6,8 @@ CREATE TABLE parameters(
      advisor_request_deadline INT NOT NULL,
      activity_plan_appraisal_deadline INT NOT NULL,
      activity_plan_link TEXT NOT NULL,
-     activity_plan_file_size_bytes INT NOT NULL,
-     monthly_report_file_size_bytes INT NOT NULL,
+     activity_plan_file_size_megabytes INT NOT NULL,
+     monthly_report_file_size_megabytes INT NOT NULL,
      monthly_report_draft_submission_deadline_months INT NOT NULL,
      monthly_report_draft_appraisal_deadline_days INT NOT NULL,
      monthly_report_appraisal_deadline_days INT NOT NULL
@@ -20,8 +20,8 @@ INSERT INTO parameters (
      advisor_request_deadline,
      activity_plan_appraisal_deadline,
      activity_plan_link,
-     activity_plan_file_size_bytes,
-     monthly_report_file_size_bytes,
+     activity_plan_file_size_megabytes,
+     monthly_report_file_size_megabytes,
      monthly_report_draft_submission_deadline_months,
      monthly_report_draft_appraisal_deadline_days,
      monthly_report_appraisal_deadline_days
@@ -34,8 +34,8 @@ VALUES (
      10,
      7,
      'https://spo.ifsp.edu.br/images/phocadownload/DOCUMENTOS_ESTAGIOS/INICIO_ESTAGIO/2020/ANEXO_G_PLANO_DE_ATIVIDADES_vers%C3%A3o_agos.2020.01.doc',
-     1048576,
-     1048576,
+     1,
+     1,
      1,
      30,
      30
