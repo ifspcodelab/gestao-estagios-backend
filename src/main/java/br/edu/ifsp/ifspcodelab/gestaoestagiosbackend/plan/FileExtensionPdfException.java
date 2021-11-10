@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class FileExtensionPdfException extends FileExtensionException {
-    public FileExtensionPdfException(String fileExtension) {
-        super(fileExtension);
+    public FileExtensionPdfException(String expectedFileExtension, String actualFileExtension) {
+        super(expectedFileExtension, actualFileExtension);
     }
 }

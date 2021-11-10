@@ -4,10 +4,12 @@ import lombok.Getter;
 
 @Getter
 public class FileExtensionException extends RuntimeException {
-    private final String fileExtension;
+    private final String expectedFileExtension;
+    private final String actualFileExtension;
 
-    public FileExtensionException(String fileExtension) {
+    public FileExtensionException(String expectedFileExtension, String actualFileExtension) {
         super();
-        this.fileExtension = fileExtension;
+        this.expectedFileExtension = expectedFileExtension;
+        this.actualFileExtension = actualFileExtension;
     }
 }

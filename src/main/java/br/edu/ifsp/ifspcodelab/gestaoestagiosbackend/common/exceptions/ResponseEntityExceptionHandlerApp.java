@@ -124,7 +124,8 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             new ProblemDetail(
                 "File extension exception",
                 List.of(
-                    new Violation(exception.getFileExtension(), "File extension")
+                    new Violation(exception.getExpectedFileExtension(), "Expected"),
+                    new Violation(exception.getActualFileExtension(), "Got")
                 )
             ),
             HttpStatus.CONFLICT
