@@ -117,4 +117,34 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(FileExtensionException.class)
+    public ResponseEntity<ProblemDetail> fileExtension(FileExtensionException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                "File extension exception",
+                List.of(
+                    new Violation(exception.getFileExtension(), "File extension")
+                )
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(DateIntervalException.class)
+    public ResponseEntity<ProblemDetail> dateInterval(DateIntervalException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+            "interval of days between " +
+                exception.getStartDate().toString() +
+                " and " +
+                exception.getEndDate() +
+                " exceeds " +
+                exception.getInterval().toString()
+                + " days",
+                Collections.emptyList()
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
 }
