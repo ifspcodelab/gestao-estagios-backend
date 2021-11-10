@@ -59,21 +59,24 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     }
 
     @Override
-    public ActivityPlan update(UUID advisorRequestId, UUID activityPlanId, ActivityPlan activityPlan) {
+    public ActivityPlan update(UUID advisorRequestId, UUID activityPlanId, ActivityPlanUpdateDto activityPlanUpdateDto) {
         advisorRequestService.findById(advisorRequestId);
-        ActivityPlan plan = activityPlanRepository.findById(activityPlanId)
+        ActivityPlan activityPlan = activityPlanRepository.findById(activityPlanId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
 
-        if(ChronoUnit.DAYS.between(activityPlan.getInternshipStartDate(), activityPlan.getInternshipEndDate()) > 365) {
-            throw new DateIntervalException(activityPlan.getInternshipStartDate(),
-                activityPlan.getInternshipEndDate(),
+        if(ChronoUnit.DAYS.between(
+            activityPlanUpdateDto.getInternshipStartDate(),
+            activityPlanUpdateDto.getInternshipEndDate()) > 365
+        ) {
+            throw new DateIntervalException(activityPlanUpdateDto.getInternshipStartDate(),
+                activityPlanUpdateDto.getInternshipEndDate(),
                 365
             );
         }
-        plan.setCompanyName(activityPlan.getCompanyName());
-        plan.setInternshipStartDate(activityPlan.getInternshipStartDate());
-        plan.setInternshipEndDate(activityPlan.getInternshipEndDate());
+        activityPlan.setCompanyName(activityPlanUpdateDto.getCompanyName());
+        activityPlan.setInternshipStartDate(activityPlanUpdateDto.getInternshipStartDate());
+        activityPlan.setInternshipEndDate(activityPlanUpdateDto.getInternshipEndDate());
 
-        return activityPlanRepository.save(plan);
+        return activityPlanRepository.save(activityPlan);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.UUID;
 
@@ -31,10 +32,10 @@ public class ActivityPlanController {
     public ResponseEntity<ActivityPlanDto> update(
         @PathVariable UUID advisorRequestId,
         @PathVariable UUID activityPlanId,
-        @RequestBody ActivityPlan activityPlan
+        @RequestBody @Valid ActivityPlanUpdateDto activityPlanUpdateDto
     ) {
         return ResponseEntity.ok(
-            activityPlanMapper.to(activityPlanService.update(advisorRequestId, activityPlanId, activityPlan))
+            activityPlanMapper.to(activityPlanService.update(advisorRequestId, activityPlanId, activityPlanUpdateDto))
         );
     }
 }
