@@ -1,4 +1,4 @@
-CREATE TABLE activity_plans (
+CREATE TABLE activity_plans(
     id UUID NOT NULL,
     company_name VARCHAR,
     internship_start_date TIMESTAMP,
@@ -8,7 +8,7 @@ CREATE TABLE activity_plans (
     activity_plan_url VARCHAR NOT NULL,
     status VARCHAR NOT NULL,
     details VARCHAR,
-    advisor_request_id UUID NOT NULL,
+    internship_id UUID NOT NULL,
     CONSTRAINT activity_plans_pk PRIMARY KEY (id),
-    CONSTRAINT advisor_request_fk FOREIGN KEY (advisor_request_id) REFERENCES advisor_requests(id)
+    CONSTRAINT internship_fk FOREIGN KEY (internship_id) REFERENCES internships(id)
 )

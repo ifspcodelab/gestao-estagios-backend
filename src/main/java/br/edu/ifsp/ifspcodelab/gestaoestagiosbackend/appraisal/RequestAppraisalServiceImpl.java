@@ -6,6 +6,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.FormatterMail;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.TemplatesHtml;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
     private final SenderMail senderMail;
 
     private AdvisorRequestService advisorRequestService;
+    private InternshipService internshipService;
 
     public RequestAppraisalServiceImpl(RequestAppraisalRepository requestAppraisalRepository, SenderMail senderMail) {
         this.requestAppraisalRepository = requestAppraisalRepository;
@@ -32,6 +34,11 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
     @Autowired
     public void setAdvisorRequestService(AdvisorRequestService advisorRequestService) {
         this.advisorRequestService = advisorRequestService;
+    }
+
+    @Autowired
+    public void setInternshipService(InternshipService internshipService) {
+        this.internshipService = internshipService;
     }
 
     @Override
@@ -71,6 +78,7 @@ public class RequestAppraisalServiceImpl implements RequestAppraisalService {
                 advisorRequest.getAdvisor().getUser().getName(),
                 details
             );
+            internshipService.create(advisorRequest);
         } else {
             advisorRequest.setStatus(RequestStatus.REJECTED);
 
