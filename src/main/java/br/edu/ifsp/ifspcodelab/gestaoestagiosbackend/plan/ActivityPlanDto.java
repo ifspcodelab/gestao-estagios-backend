@@ -1,7 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestForStudentDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipDto;
 import lombok.Value;
 
 import java.time.Instant;
@@ -19,5 +19,5 @@ public class ActivityPlanDto {
     String activityPlanUrl;
     RequestStatus status;
     String details;
-    AdvisorRequestForStudentDto advisorRequest;
+    InternshipDto internship;
 }

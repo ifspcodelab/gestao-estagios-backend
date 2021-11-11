@@ -1,7 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,14 +31,15 @@ public class ActivityPlan {
     private String details;
 
     @ManyToOne
-    private AdvisorRequest advisorRequest;
+    @JsonBackReference
+    private Internship internship;
 
-    public ActivityPlan(Instant expiresAt, String activityPlanUrl, AdvisorRequest advisorRequest) {
+    public ActivityPlan(Instant expiresAt, String activityPlanUrl, Internship internship) {
         this.id = UUID.randomUUID();
         this.createdAt = Instant.now();
         this.expiresAt = expiresAt;
         this.activityPlanUrl = activityPlanUrl;
-        this.advisorRequest = advisorRequest;
+        this.internship = internship;
         this.status = RequestStatus.PENDING;
     }
 }

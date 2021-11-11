@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 public interface ActivityPlanService {
-    ActivityPlan create(UUID advisorRequestId, MultipartFile file);
-    ActivityPlan update(UUID advisorRequestId, UUID activityPlanId, ActivityPlanUpdateDto activityPlanUpdateDto);
+    ActivityPlan create(UUID internshipId, MultipartFile file);
+    ActivityPlan update(UUID internshipId, UUID activityPlanId, ActivityPlanUpdateDto activityPlanUpdateDto);
 }
