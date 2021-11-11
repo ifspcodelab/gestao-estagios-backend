@@ -11,7 +11,7 @@ import java.net.URI;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/advisor-requests/{advisorRequestId}/activity-plans")
+@RequestMapping("api/v1/internships/{internshipId}/activity-plans")
 @AllArgsConstructor
 public class ActivityPlanController {
 
@@ -20,22 +20,22 @@ public class ActivityPlanController {
 
     @PostMapping
     public ResponseEntity<ActivityPlanDto> create(
-        @PathVariable UUID advisorRequestId,
+        @PathVariable UUID internshipId,
         @RequestPart("file") MultipartFile file
     ) {
-        ActivityPlan activityPlan = activityPlanService.create(advisorRequestId, file);
+        ActivityPlan activityPlan = activityPlanService.create(internshipId, file);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(activityPlan.getId()).toUri();
         return ResponseEntity.created(uri).body(activityPlanMapper.to(activityPlan));
     }
 
     @PutMapping("{activityPlanId}")
     public ResponseEntity<ActivityPlanDto> update(
-        @PathVariable UUID advisorRequestId,
+        @PathVariable UUID internshipId,
         @PathVariable UUID activityPlanId,
         @RequestBody @Valid ActivityPlanUpdateDto activityPlanUpdateDto
     ) {
         return ResponseEntity.ok(
-            activityPlanMapper.to(activityPlanService.update(advisorRequestId, activityPlanId, activityPlanUpdateDto))
+            activityPlanMapper.to(activityPlanService.update(internshipId, activityPlanId, activityPlanUpdateDto))
         );
     }
 }
