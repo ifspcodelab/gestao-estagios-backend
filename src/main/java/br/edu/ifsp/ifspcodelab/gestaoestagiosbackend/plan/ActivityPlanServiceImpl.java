@@ -50,6 +50,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     }
 
     @Override
+    @Transactional
     public ActivityPlan create(UUID internshipId, MultipartFile file) {
         Internship internship = internshipService.findById(internshipId);
 

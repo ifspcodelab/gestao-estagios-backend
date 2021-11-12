@@ -1,6 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestForStudentDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

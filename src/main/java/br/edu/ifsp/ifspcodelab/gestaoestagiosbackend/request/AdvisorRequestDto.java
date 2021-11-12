@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorDtoSimplified;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumDto;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class AdvisorRequestForAdvisorDto {
+public class AdvisorRequestDto {
     private UUID id;
     private Instant createdAt;
     private Instant expiresAt;
@@ -20,5 +21,6 @@ public class AdvisorRequestForAdvisorDto {
     private String details;
     private RequestStatus status;
     private StudentDtoSimplified student;
+    private AdvisorDtoSimplified advisor;
     private CurriculumDto curriculum;
 }
