@@ -12,10 +12,12 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.ParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -51,6 +53,14 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     public ActivityPlan create(UUID internshipId, MultipartFile file) {
         Internship internship = internshipService.findById(internshipId);
 
+        List<Internship> internships =
+            internshipService.findAllByAdvisorRequestStudentId(internship.getAdvisorRequest().getStudent().getId());
+
+        internships.forEach(i -> {
+            if (i.getStatus() == InternshipStatus.ACTIVITY_PLAN_SENT) {
+                throw new ActivityPlanAlreadyExistsByStatusException(i.getStatus());
+            }
+        });
         if (!Objects.requireNonNull(file.getContentType()).equals(MediaType.APPLICATION_PDF_VALUE)) {
             throw new FileExtensionPdfException(MediaType.APPLICATION_PDF_VALUE, file.getContentType());
         }
@@ -60,6 +70,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                 file.getSize()
             );
         }
+
         String activityPlanUrl = uploadService.uploadFile(
             file,
                 getStudentRegistration(internship) +
