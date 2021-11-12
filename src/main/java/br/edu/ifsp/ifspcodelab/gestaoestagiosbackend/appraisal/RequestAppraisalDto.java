@@ -1,6 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestForStudentDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequestDto;
 import lombok.Value;
 
 import java.time.Instant;
@@ -13,5 +13,5 @@ public class RequestAppraisalDto {
     String details;
     Boolean isDeferred;
     Instant meetingDate;
-    AdvisorRequestForStudentDto advisorRequest;
+    AdvisorRequestDto advisorRequest;
 }

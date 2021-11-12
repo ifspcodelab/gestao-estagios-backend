@@ -17,30 +17,29 @@ import java.util.stream.Collectors;
 public class AdvisorRequestRestController {
     private final AdvisorRequestService advisorRequestService;
 
-    private final AdvisorRequestForStudentMapper advisorRequestForStudentMapper;
-    private final AdvisorRequestForAdvisorMapper advisorRequestForAdvisorMapper;
+    private final AdvisorRequestMapper advisorRequestMapper;
 
     @PostMapping("api/v1/advisor-requests")
-    public ResponseEntity<AdvisorRequestForStudentDto> create(@RequestBody AdvisorRequestCreateDto advisorRequestCreateDto) {
+    public ResponseEntity<AdvisorRequestDto> create(@RequestBody AdvisorRequestCreateDto advisorRequestCreateDto) {
         AdvisorRequest advisorRequest = this.advisorRequestService.create(advisorRequestCreateDto);
-        return ResponseEntity.created(getURIFromAdvisorRequest(advisorRequest)).body(advisorRequestForStudentMapper.to(advisorRequest));
+        return ResponseEntity.created(getURIFromAdvisorRequest(advisorRequest)).body(advisorRequestMapper.to(advisorRequest));
     }
 
     @GetMapping("api/v1/advisor-requests/{id}")
-    public ResponseEntity<AdvisorRequestForAdvisorDto> show(@PathVariable UUID id) {
-        return ResponseEntity.ok(advisorRequestForAdvisorMapper.to(advisorRequestService.findById(id)));
+    public ResponseEntity<AdvisorRequestDto> show(@PathVariable UUID id) {
+        return ResponseEntity.ok(advisorRequestMapper.to(advisorRequestService.findById(id)));
     }
 
     @GetMapping("api/v1/advisors/{id}/advisor-requests")
-    public ResponseEntity<List<AdvisorRequestForAdvisorDto>> showByAdvisorId(@PathVariable UUID id) {
+    public ResponseEntity<List<AdvisorRequestDto>> showByAdvisorId(@PathVariable UUID id) {
         List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByAdvisorId(id);
-        return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestForAdvisorMapper::to).collect(Collectors.toList()));
+        return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestMapper::to).collect(Collectors.toList()));
     }
 
     @GetMapping("api/v1/students/{id}/advisor-requests")
-    public ResponseEntity<List<AdvisorRequestForStudentDto>> showByStudentId(@PathVariable UUID id) {
+    public ResponseEntity<List<AdvisorRequestDto>> showByStudentId(@PathVariable UUID id) {
         List<AdvisorRequest> advisorRequestsList = this.advisorRequestService.findByStudentId(id);
-        return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestForStudentMapper::to).collect(Collectors.toList()));
+        return ResponseEntity.ok(advisorRequestsList.stream().map(advisorRequestMapper::to).collect(Collectors.toList()));
     }
 
     private URI getURIFromAdvisorRequest(AdvisorRequest advisorRequest) {
