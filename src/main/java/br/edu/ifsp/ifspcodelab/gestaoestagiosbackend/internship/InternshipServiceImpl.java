@@ -33,6 +33,11 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     @Override
+    public List<Internship> findAllByAdvisorRequestAdvisorId(UUID advisorId) {
+        return internshipRepository.findAllByAdvisorRequestAdvisorId(advisorId);
+    }
+
+    @Override
     public Internship update(Internship internship) {
         return internshipRepository.save(internship);
     }

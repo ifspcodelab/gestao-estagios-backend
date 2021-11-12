@@ -9,5 +9,6 @@ public interface InternshipService {
     Internship create(AdvisorRequest advisorRequest);
     Internship findById(UUID id);
     List<Internship> findAllByAdvisorRequestStudentId(UUID studentId);
+    List<Internship> findAllByAdvisorRequestAdvisorId(UUID advisorId);
     Internship update(Internship internship);
 }
