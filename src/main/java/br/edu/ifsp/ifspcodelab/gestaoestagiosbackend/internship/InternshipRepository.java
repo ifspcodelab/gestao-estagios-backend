@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface InternshipRepository extends JpaRepository<Internship, UUID> {
     List<Internship> findAllByAdvisorRequestStudentId(UUID studentId);
+    List<Internship> findAllByAdvisorRequestAdvisorId(UUID studentId);
 }
