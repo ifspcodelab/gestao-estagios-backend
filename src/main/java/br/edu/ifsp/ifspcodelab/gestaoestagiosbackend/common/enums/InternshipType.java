@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum InternshipType {
     REQUIRED_OR_NOT("REQUIRED_OR_NOT", "Estágio obrigatório ou não obrigatório"),
+    REQUIRED("REQUIRED", "Estágio obrigatório"),
+    NOT_REQUIRED("NOT_REQUIRED", "Estágio não obrigatório"),
     PROFESSIONAL_VALIDATION("PROFESSIONAL_VALIDATION", "Aproveitamento profissional"),
     PROJECT_EQUIVALENCE("PROJECT_EQUIVALENCE", "Equiparação de projeto institucional");
 

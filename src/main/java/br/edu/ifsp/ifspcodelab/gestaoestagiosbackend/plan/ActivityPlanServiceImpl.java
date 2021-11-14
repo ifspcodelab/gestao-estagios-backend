@@ -1,6 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DateIntervalException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.FileMaxSizeException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
@@ -114,6 +116,31 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         activityPlan.setInternshipStartDate(activityPlanUpdateDto.getInternshipStartDate());
         activityPlan.setInternshipEndDate(activityPlanUpdateDto.getInternshipEndDate());
 
+        return activityPlanRepository.save(activityPlan);
+    }
+
+    @Override
+    public ActivityPlan appraise(UUID internshipId, UUID activityPlanId, ActivityPlanAppraisalDto activityPlanAppraisalDto) {
+        Internship internship = internshipService.findById(internshipId);
+        ActivityPlan activityPlan = activityPlanRepository.findById(activityPlanId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
+
+        if (activityPlanAppraisalDto.getIsRequired()) {
+            internship.setInternshipType(InternshipType.REQUIRED);
+        } else {
+            internship.setInternshipType(InternshipType.NOT_REQUIRED);
+        }
+
+        if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
+            internship.setStatus(InternshipStatus.IN_PROGRESS);
+        } else {
+            internship.setStatus(InternshipStatus.ACTIVITY_PLAN_PENDING);
+        }
+
+        activityPlan.setDetails(activityPlanAppraisalDto.getDetails());
+        activityPlan.setStatus(activityPlanAppraisalDto.getStatus());
+
+        internshipService.update(internship);
         return activityPlanRepository.save(activityPlan);
     }
 
