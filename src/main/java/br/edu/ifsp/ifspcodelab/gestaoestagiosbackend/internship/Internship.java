@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -21,6 +22,8 @@ public class Internship {
     @Id
     private UUID id;
     @Enumerated(EnumType.STRING)
+    private InternshipType internshipType;
+    @Enumerated(EnumType.STRING)
     private InternshipStatus status;
 
     @OneToOne
@@ -31,6 +34,7 @@ public class Internship {
 
     public Internship(AdvisorRequest advisorRequest) {
         this.id = UUID.randomUUID();
+        this.internshipType = advisorRequest.getInternshipType();
         this.status = InternshipStatus.ACTIVITY_PLAN_PENDING;
         this.advisorRequest = advisorRequest;
     }

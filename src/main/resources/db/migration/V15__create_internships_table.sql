@@ -1,5 +1,6 @@
 CREATE TABLE internships(
      id UUID NOT NULL,
+     internship_type VARCHAR NOT NULL,
      status VARCHAR NOT NULL,
      advisor_request_id UUID NOT NULL,
      CONSTRAINT internships_pk PRIMARY KEY (id),

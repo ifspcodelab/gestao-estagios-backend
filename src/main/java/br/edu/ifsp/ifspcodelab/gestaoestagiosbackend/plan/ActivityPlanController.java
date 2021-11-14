@@ -38,4 +38,15 @@ public class ActivityPlanController {
             activityPlanMapper.to(activityPlanService.update(internshipId, activityPlanId, activityPlanUpdateDto))
         );
     }
+
+    @PutMapping("{activityPlanId}/appraisal")
+    public ResponseEntity<ActivityPlanDto> appraisal(
+        @PathVariable UUID internshipId,
+        @PathVariable UUID activityPlanId,
+        @RequestBody @Valid ActivityPlanAppraisalDto activityPlanAppraisalDto
+    ) {
+        return ResponseEntity.ok(
+            activityPlanMapper.to(activityPlanService.appraise(internshipId, activityPlanId, activityPlanAppraisalDto))
+        );
+    }
 }
