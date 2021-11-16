@@ -55,12 +55,26 @@ public abstract class CreatorParametersMail {
         return map;
     }
 
-    public static Map<String, String> setParametersPlanApproved(String isDeferred, String studentName, String advisorName, String details) {
+    public static Map<String, String> setParametersPlanApproved(String studentName, String advisorName, String details) {
         Map<String, String> map = new HashMap<>();
 
         map.put("$STUDENTNAME", studentName);
         map.put("$ADVISORNAME", advisorName);
         map.put("$DETAILS", details);
+
+        return map;
+    }
+
+    public static Map<String, String> setParametersPlanIndeferred(String studentName,
+                                                                String advisorName,
+                                                                String details,
+                                                                String link) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$STUDENTNAME", studentName);
+        map.put("$ADVISORNAME", advisorName);
+        map.put("$DETAILS", details);
+        map.put("$SYSTEMLINK", link);
 
         return map;
     }
