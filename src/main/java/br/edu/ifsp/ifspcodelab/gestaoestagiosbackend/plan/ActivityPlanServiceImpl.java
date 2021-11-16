@@ -148,7 +148,6 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                     .build();
 
             Map<String, String> params = CreatorParametersMail.setParametersPlanApproved(
-                    activityPlanAppraisalDto.getStatus().getName(),
                     internship.getAdvisorRequest().getStudent().getUser().getName(),
                     internship.getAdvisorRequest().getAdvisor().getUser().getName(),
                     activityPlanAppraisalDto.getDetails()
@@ -160,6 +159,23 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
             senderMail.sendEmail(email);
         } else {
             internship.setStatus(InternshipStatus.ACTIVITY_PLAN_PENDING);
+
+            MailDto email = MailDto.builder()
+                    .title("Indeferimento do plano de atividades")
+                    .msgHTML(TemplatesHtml.getPlanIndeferred())
+                    .build();
+
+            Map<String, String> params = CreatorParametersMail.setParametersPlanIndeferred(
+                    internship.getAdvisorRequest().getStudent().getUser().getName(),
+                    internship.getAdvisorRequest().getAdvisor().getUser().getName(),
+                    activityPlanAppraisalDto.getDetails(),
+                    "https://gestao-projetos-frontend.netlify.app/"
+            );
+            email = FormatterMail.build(email, params);
+
+            email.setRecipientTo(internship.getAdvisorRequest().getStudent().getUser().getEmail());
+
+            senderMail.sendEmail(email);
         }
 
         activityPlan.setDetails(activityPlanAppraisalDto.getDetails());
