@@ -7,6 +7,11 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DateInter
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.FileMaxSizeException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.FormatterMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.TemplatesHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
@@ -20,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,9 +37,11 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     private InternshipService internshipService;
     private UploadService uploadService;
     private ParameterService parameterService;
+    private final SenderMail senderMail;
 
-    public ActivityPlanServiceImpl(ActivityPlanRepository activityPlanRepository) {
+    public ActivityPlanServiceImpl(ActivityPlanRepository activityPlanRepository, SenderMail senderMail) {
         this.activityPlanRepository = activityPlanRepository;
+        this.senderMail = senderMail;
     }
 
     @Autowired
@@ -133,6 +141,23 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
         if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
             internship.setStatus(InternshipStatus.IN_PROGRESS);
+
+            MailDto email = MailDto.builder()
+                    .title("Deferimento do plano de atividades")
+                    .msgHTML(TemplatesHtml.getPlanApproved())
+                    .build();
+
+            Map<String, String> params = CreatorParametersMail.setParametersPlanApproved(
+                    activityPlanAppraisalDto.getStatus().getName(),
+                    internship.getAdvisorRequest().getStudent().getUser().getName(),
+                    internship.getAdvisorRequest().getAdvisor().getUser().getName(),
+                    activityPlanAppraisalDto.getDetails()
+            );
+            email = FormatterMail.build(email, params);
+
+            email.setRecipientTo(internship.getAdvisorRequest().getStudent().getUser().getEmail());
+
+            senderMail.sendEmail(email);
         } else {
             internship.setStatus(InternshipStatus.ACTIVITY_PLAN_PENDING);
         }
