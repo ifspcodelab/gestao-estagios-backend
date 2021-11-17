@@ -13,6 +13,5 @@ public class ActivityPlanAppraisalDto {
     @NotNull
     @NotBlank
     String details;
-    @NotNull
     Boolean isRequired;
 }

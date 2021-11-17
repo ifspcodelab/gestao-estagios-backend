@@ -33,4 +33,9 @@ public class InternshipRestController {
             .collect(Collectors.toList());
         return ResponseEntity.ok(internships);
     }
+
+    @GetMapping("api/v1/internships/{internshipId}")
+    public ResponseEntity<InternshipDto> show(@PathVariable UUID internshipId) {
+        return ResponseEntity.ok(internshipMapper.to(internshipService.findById(internshipId)));
+    }
 }

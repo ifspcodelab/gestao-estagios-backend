@@ -133,10 +133,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         ActivityPlan activityPlan = activityPlanRepository.findById(activityPlanId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
 
-        if (activityPlanAppraisalDto.getIsRequired()) {
-            internship.setInternshipType(InternshipType.REQUIRED);
-        } else {
-            internship.setInternshipType(InternshipType.NOT_REQUIRED);
+        if (activityPlanAppraisalDto.getIsRequired() != null) {
+            if (activityPlanAppraisalDto.getIsRequired()) {
+                internship.setInternshipType(InternshipType.REQUIRED);
+            } else {
+                internship.setInternshipType(InternshipType.NOT_REQUIRED);
+            }
         }
 
         if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
