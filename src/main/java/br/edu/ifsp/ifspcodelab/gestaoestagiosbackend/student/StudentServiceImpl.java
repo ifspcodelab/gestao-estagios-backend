@@ -19,9 +19,14 @@ public class StudentServiceImpl implements StudentService {
     private UserService userService;
 
     @Autowired
-    public UserService getUserService() {
-        return userService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
+    
+//     @Autowired
+//     public UserService getUserService() {
+//         return userService;
+//     }
 
     /*@Autowired
     public void setUserRepository(UserRepository userRepository) {
