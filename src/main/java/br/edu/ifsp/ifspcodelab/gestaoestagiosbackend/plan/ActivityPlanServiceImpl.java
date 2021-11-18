@@ -68,14 +68,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         });
         uploadService.activityPlanFileValidation(file);
 
-        String activityPlanUrl = uploadService.uploadFile(
-            file,
-                getStudentRegistration(internship) +
-                "/" +
-                getStudentInternshipId(internship) +
-                "/plano-atividades-" +
-                System.currentTimeMillis()
-        );
+        String activityPlanUrl = uploadService.uploadFile(file, getActivityPlanFileName(internship));
         ActivityPlan activityPlan = new ActivityPlan(
             Instant.now().plus(5, ChronoUnit.DAYS),
             activityPlanUrl,
@@ -173,11 +166,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         return activityPlanRepository.save(activityPlan);
     }
 
-    private String getStudentRegistration(Internship internship) {
-        return internship.getAdvisorRequest().getStudent().getUser().getRegistration();
-    }
-
-    private String getStudentInternshipId(Internship internship) {
-        return internship.getId().toString();
+    private String getActivityPlanFileName(Internship internship) {
+        return internship.getAdvisorRequest().getStudent().getUser().getRegistration() +
+            "/" +
+            internship.getId().toString() +
+            "/" +
+            System.currentTimeMillis() +
+            "-plano-atividades";
     }
 }
