@@ -4,7 +4,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStat
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DateIntervalException;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.FileMaxSizeException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
@@ -15,9 +14,8 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.creat
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.ParameterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +24,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -36,8 +33,10 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
     private InternshipService internshipService;
     private UploadService uploadService;
-    private ParameterService parameterService;
     private final SenderMail senderMail;
+
+    @Value("${application.frontend.url}")
+    private String frontendUrl;
 
     public ActivityPlanServiceImpl(ActivityPlanRepository activityPlanRepository, SenderMail senderMail) {
         this.activityPlanRepository = activityPlanRepository;
@@ -54,11 +53,6 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         this.uploadService = uploadService;
     }
 
-    @Autowired
-    public void setParameterService(ParameterService parameterService) {
-        this.parameterService = parameterService;
-    }
-
     @Override
     @Transactional
     public ActivityPlan create(UUID internshipId, MultipartFile file) {
@@ -72,15 +66,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                 throw new ActivityPlanAlreadyExistsByStatusException(i.getStatus());
             }
         });
-        if (!Objects.requireNonNull(file.getContentType()).equals(MediaType.APPLICATION_PDF_VALUE)) {
-            throw new FileExtensionPdfException(MediaType.APPLICATION_PDF_VALUE, file.getContentType());
-        }
-        if (file.getSize() > parameterService.findFirst().getActivityPlanFileSizeMegabytes() * 1048576) {
-            throw new FileMaxSizeException(
-                parameterService.findFirst().getActivityPlanFileSizeMegabytes() * 1048576,
-                file.getSize()
-            );
-        }
+        uploadService.activityPlanFileValidation(file);
 
         String activityPlanUrl = uploadService.uploadFile(
             file,
@@ -171,7 +157,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                     internship.getAdvisorRequest().getStudent().getUser().getName(),
                     internship.getAdvisorRequest().getAdvisor().getUser().getName(),
                     activityPlanAppraisalDto.getDetails(),
-                    "https://gestao-projetos-frontend.netlify.app/"
+                    frontendUrl
             );
             email = FormatterMail.build(email, params);
 
