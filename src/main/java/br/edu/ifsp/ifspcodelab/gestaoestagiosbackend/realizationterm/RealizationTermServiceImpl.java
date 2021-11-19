@@ -1,5 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
@@ -51,8 +53,18 @@ public class RealizationTermServiceImpl implements RealizationTermService {
     }
 
     @Override
-    public RealizationTerm update(UUID internshipId, UUID realizationTermId, RealizationTerm realizationTermUpdate) {
-        return null;
+    public RealizationTerm update(UUID internshipId,
+                                  UUID realizationTermId,
+                                  RealizationTermUpdateDto realizationTermUpdateDto) {
+        internshipService.findById(internshipId);
+
+        RealizationTerm realizationTerm = realizationTermRepository.findById(realizationTermId)
+                .orElseThrow(() -> new ResourceNotFoundException(ResourceName.REALIZATION_TERM, realizationTermId));
+
+        realizationTerm.setInternshipStartDate(realizationTermUpdateDto.getInternshipStartDate());
+        realizationTerm.setInternshipEndDate(realizationTermUpdateDto.getInternshipEndDate());
+
+        return realizationTermRepository.save(realizationTerm);
     }
 
     private String getRealizationTermFileName(Internship internship) {

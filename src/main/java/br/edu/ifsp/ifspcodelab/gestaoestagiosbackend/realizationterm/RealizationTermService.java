@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface RealizationTermService {
     RealizationTerm create(UUID internshipId, MultipartFile file);
-    RealizationTerm update(UUID internshipId, UUID realizationTermId, RealizationTerm realizationTermUpdate);
+    RealizationTerm update(UUID internshipId, UUID realizationTermId, RealizationTermUpdateDto realizationTermUpdateDto);
 }
