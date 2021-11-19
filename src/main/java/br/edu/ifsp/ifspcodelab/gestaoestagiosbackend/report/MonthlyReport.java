@@ -29,6 +29,7 @@ public class MonthlyReport {
     private ActivityPlan activityPlan;
 
     public MonthlyReport(LocalDate month, ActivityPlan activityPlan) {
+        this.id = UUID.randomUUID();
         this.month = month;
         this.status = ReportStatus.DRAFT_PENDING;
         this.activityPlan = activityPlan;

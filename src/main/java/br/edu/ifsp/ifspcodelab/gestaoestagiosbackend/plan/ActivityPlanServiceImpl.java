@@ -14,6 +14,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.creat
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
     private InternshipService internshipService;
     private UploadService uploadService;
+    private MonthlyReportService monthlyReportService;
     private final SenderMail senderMail;
 
     @Value("${application.frontend.url}")
@@ -51,6 +54,11 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     @Autowired
     public void setUploadService(UploadService uploadService) {
         this.uploadService = uploadService;
+    }
+
+    @Autowired
+    public void setMonthlyReportService(MonthlyReportService monthlyReportService) {
+        this.monthlyReportService = monthlyReportService;
     }
 
     @Override
@@ -122,6 +130,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
         if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
             internship.setStatus(InternshipStatus.IN_PROGRESS);
+
+            for (
+                LocalDate date = activityPlan.getInternshipStartDate().withDayOfMonth(1);
+                date.isBefore(activityPlan.getInternshipEndDate());
+                date = date.plusMonths(1)
+            ) monthlyReportService.create(date, activityPlan);
 
             MailDto email = MailDto.builder()
                     .title("Deferimento do plano de atividades")
