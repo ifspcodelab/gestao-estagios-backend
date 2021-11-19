@@ -1,7 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DateIntervalException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DraftDateSubmissionException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
@@ -82,14 +82,43 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
     ) {
         internshipService.findById(internshipId);
         monthlyReportService.findById(monthlyReportId);
-        DraftMonthlyReportSubmission draft = draftMonthlyReportSubmissionRepository.findById(draftMonthlyReportSubmissionId)
-            .orElseThrow(
-                () -> new ResourceNotFoundException(ResourceName.DRAFT_MONTHLY_REPORT_SUBMISSION, draftMonthlyReportSubmissionId)
-            );
+        DraftMonthlyReportSubmission draft = getDraft(draftMonthlyReportSubmissionId);
 
         draft.setReportStartDate(draftMonthlyReportSubmissionUpdateDto.getReportStartDate());
         draft.setReportEndDate(draftMonthlyReportSubmissionUpdateDto.getReportEndDate());
 
+        return draftMonthlyReportSubmissionRepository.save(draft);
+    }
+
+    @Override
+    public DraftMonthlyReportSubmission appraise(
+        UUID internshipId,
+        UUID monthlyReportId,
+        UUID draftMonthlyReportId,
+        DraftMonthlyReportSubmissionAppraisalDto draftMonthlyReportSubmissionAppraisalDto
+    ) {
+        internshipService.findById(internshipId);
+        MonthlyReport monthlyReport = monthlyReportService.findById(monthlyReportId);
+        DraftMonthlyReportSubmission draft = getDraft(draftMonthlyReportId);
+
+        if (draft.getStatus() == RequestStatus.ACCEPTED || draft.getStatus() == RequestStatus.REJECTED) {
+            throw new DraftMonthlyReportSubmissionAlreadyExistsByStatus(draft.getStatus());
+        }
+
+        if (draftMonthlyReportSubmissionAppraisalDto.getStatus() == RequestStatus.ACCEPTED) {
+            monthlyReport.setStatus(ReportStatus.FINAL_PENDING);
+            monthlyReport.setStartDate(draft.getReportStartDate());
+            monthlyReport.setEndDate(draft.getReportEndDate());
+
+            draft.setNumberOfApprovedHours(draftMonthlyReportSubmissionAppraisalDto.getNumberOfApprovedHours());
+        } else {
+            monthlyReport.setStatus(ReportStatus.DRAFT_PENDING);
+        }
+
+        draft.setDetails(draftMonthlyReportSubmissionAppraisalDto.getDetails());
+        draft.setStatus(draftMonthlyReportSubmissionAppraisalDto.getStatus());
+
+        monthlyReportService.update(monthlyReport);
         return draftMonthlyReportSubmissionRepository.save(draft);
     }
 
@@ -100,5 +129,12 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
             "/" +
             System.currentTimeMillis() +
             "-rascunho-relatorio-mensal";
+    }
+
+    private DraftMonthlyReportSubmission getDraft(UUID draftMonthlyReportSubmissionId) {
+        return draftMonthlyReportSubmissionRepository.findById(draftMonthlyReportSubmissionId)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(ResourceName.DRAFT_MONTHLY_REPORT_SUBMISSION, draftMonthlyReportSubmissionId)
+            );
     }
 }
