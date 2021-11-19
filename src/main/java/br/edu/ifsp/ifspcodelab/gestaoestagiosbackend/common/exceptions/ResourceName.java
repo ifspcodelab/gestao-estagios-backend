@@ -16,7 +16,8 @@ public enum ResourceName {
     CURRICULUM("Curriculum"),
     ADVISOR_REQUEST("Advisor Request"),
     INTERNSHIP("Internship"),
-    ACTIVITY_PLAN("Activity Plan");
+    ACTIVITY_PLAN("Activity Plan"),
+    MONTHLY_REPORT("Monthly Report");
 
     private String name;
 }
