@@ -2,12 +2,14 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft.DraftMonthlyReportSubmission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -26,8 +28,11 @@ public class MonthlyReport {
     private String attachmentUrl;
     @Enumerated(EnumType.STRING)
     private ReportStatus status;
+
     @OneToOne
     private ActivityPlan activityPlan;
+    @OneToMany
+    private Set<DraftMonthlyReportSubmission> draftMonthlyReportSubmissions;
 
     public MonthlyReport(LocalDate month, ActivityPlan activityPlan) {
         this.id = UUID.randomUUID();
