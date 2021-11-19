@@ -2,12 +2,14 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTerm;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermUpdateDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -51,5 +53,16 @@ public class InternshipRestController {
         RealizationTerm realizationTerm = realizationTermService.create(internshipId, file);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(realizationTerm.getId()).toUri();
         return ResponseEntity.created(uri).body(realizationTerm);
+    }
+
+    @PutMapping("api/v1/internships/{internshipId}/realization-terms/{realizationTermId}")
+    public ResponseEntity<RealizationTerm> update(
+            @PathVariable UUID internshipId,
+            @PathVariable UUID realizationTermId,
+            @RequestBody @Valid RealizationTermUpdateDto realizationTermUpdateDto
+            ) {
+        return ResponseEntity.ok(
+                realizationTermService.update(internshipId, realizationTermId, realizationTermUpdateDto)
+        );
     }
 }
