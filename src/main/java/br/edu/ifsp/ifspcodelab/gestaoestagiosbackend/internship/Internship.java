@@ -3,6 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -31,6 +32,8 @@ public class Internship {
     @OneToMany(fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<ActivityPlan> activityPlans;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<MonthlyReport> monthlyReports;
 
     public Internship(AdvisorRequest advisorRequest) {
         this.id = UUID.randomUUID();
@@ -41,5 +44,9 @@ public class Internship {
 
     public void addActivityPlan(ActivityPlan activityPlan) {
         this.activityPlans.add(activityPlan);
+    }
+
+    public void addMonthlyReport(MonthlyReport monthlyReport) {
+        this.monthlyReports.add(monthlyReport);
     }
 }
