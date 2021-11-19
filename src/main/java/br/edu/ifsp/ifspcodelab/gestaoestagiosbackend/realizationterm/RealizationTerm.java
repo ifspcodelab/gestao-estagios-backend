@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "activity_plans")
+@Table(name = "realization_terms")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -21,8 +21,8 @@ public class RealizationTerm {
     @Id
     private UUID id;
     private Instant createdAt;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate internshipStartDate;
+    private LocalDate internshipEndDate;
     private String realizationTermUrl;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
@@ -32,11 +32,11 @@ public class RealizationTerm {
     @JsonBackReference
     private Internship internship;
 
-    public RealizationTerm(LocalDate startDate, LocalDate endDate, String realizationTermUrl, String details, Internship internship) {
+    public RealizationTerm(LocalDate internshipStartDate, LocalDate internshipEndDate, String realizationTermUrl, String details, Internship internship) {
         this.id = UUID.randomUUID();
         this.createdAt = Instant.now();
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.internshipStartDate = internshipStartDate;
+        this.internshipEndDate = internshipEndDate;
         this.realizationTermUrl = realizationTermUrl;
         this.status = RequestStatus.PENDING;
         this.details = details;
