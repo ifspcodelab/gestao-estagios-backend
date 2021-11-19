@@ -41,4 +41,20 @@ public class DraftMonthlyReportSubmissionRestController {
         );
         return ResponseEntity.ok(draft);
     }
+
+    @PutMapping("{draftMonthlyReportSubmissionId}/appraisals")
+    public ResponseEntity<DraftMonthlyReportSubmission> appraise(
+        @PathVariable UUID internshipId,
+        @PathVariable UUID monthlyReportId,
+        @PathVariable UUID draftMonthlyReportSubmissionId,
+        @RequestBody DraftMonthlyReportSubmissionAppraisalDto draftMonthlyReportSubmissionAppraisalDto
+    ) {
+        DraftMonthlyReportSubmission draft = draftMonthlyReportSubmissionService.appraise(
+            internshipId,
+            monthlyReportId,
+            draftMonthlyReportSubmissionId,
+            draftMonthlyReportSubmissionAppraisalDto
+        );
+        return ResponseEntity.ok(draft);
+    }
 }

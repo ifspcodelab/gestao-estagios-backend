@@ -12,4 +12,10 @@ public interface DraftMonthlyReportSubmissionService {
         UUID draftMonthlyReportSubmissionId,
         DraftMonthlyReportSubmissionUpdateDto draftMonthlyReportSubmissionUpdateDto
     );
+    DraftMonthlyReportSubmission appraise(
+        UUID internshipId,
+        UUID monthlyReportId,
+        UUID draftMonthlyReportSubmissionId,
+        DraftMonthlyReportSubmissionAppraisalDto draftMonthlyReportSubmissionAppraisalDto
+    );
 }
