@@ -14,6 +14,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.creat
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,7 +136,10 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                 LocalDate date = activityPlan.getInternshipStartDate().withDayOfMonth(1);
                 date.isBefore(activityPlan.getInternshipEndDate());
                 date = date.plusMonths(1)
-            ) monthlyReportService.create(date, activityPlan);
+            ) {
+                MonthlyReport report = monthlyReportService.create(date, activityPlan);
+                internship.addMonthlyReport(report);
+            }
 
             MailDto email = MailDto.builder()
                     .title("Deferimento do plano de atividades")
