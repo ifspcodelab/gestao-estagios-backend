@@ -1,0 +1,10 @@
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
+
+public interface RealizationTermService {
+    RealizationTerm create(UUID internshipId, MultipartFile file);
+    RealizationTerm update(UUID internshipId, UUID realizationTermId, RealizationTerm realizationTermUpdate);
+}
