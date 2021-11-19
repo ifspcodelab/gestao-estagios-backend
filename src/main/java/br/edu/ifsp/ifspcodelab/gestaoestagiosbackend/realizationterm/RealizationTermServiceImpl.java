@@ -40,12 +40,10 @@ public class RealizationTermServiceImpl implements RealizationTermService {
         String realizationTermUrl = uploadService.uploadFile(file, getRealizationTermFileName(internship));
 
         RealizationTerm realizationTerm = new RealizationTerm(
-                internship.getActivityPlans().stream().reduce((first, second) -> second)
-                        .orElse(null).getInternshipStartDate(),
-                internship.getActivityPlans().stream().reduce((first, second) -> second)
-                        .orElse(null).getInternshipEndDate(),
-                realizationTermUrl,
                 null,
+                null,
+                realizationTermUrl,
+                "",
                 internship
         );
 
