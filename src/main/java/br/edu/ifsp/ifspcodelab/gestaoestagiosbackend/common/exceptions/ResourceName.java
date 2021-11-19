@@ -19,7 +19,8 @@ public enum ResourceName {
     ACTIVITY_PLAN("Activity Plan"),
     MONTHLY_REPORT("Monthly Report"),
     DRAFT_MONTHLY_REPORT_SUBMISSION("Draft Monthly Report Submission"),
-    FINAL_MONTHLY_REPORT_SUBMISSION("Final Monthly Report Submission");
+    FINAL_MONTHLY_REPORT_SUBMISSION("Final Monthly Report Submission"),
+    REALIZATION_TERM("Realization Term");
 
     private String name;
 }
