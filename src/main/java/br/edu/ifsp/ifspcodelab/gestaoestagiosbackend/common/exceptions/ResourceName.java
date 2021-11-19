@@ -17,7 +17,8 @@ public enum ResourceName {
     ADVISOR_REQUEST("Advisor Request"),
     INTERNSHIP("Internship"),
     ACTIVITY_PLAN("Activity Plan"),
-    MONTHLY_REPORT("Monthly Report");
+    MONTHLY_REPORT("Monthly Report"),
+    DRAFT_MONTHLY_REPORT_SUBMISSION("Draft Monthly Report Submission");
 
     private String name;
 }

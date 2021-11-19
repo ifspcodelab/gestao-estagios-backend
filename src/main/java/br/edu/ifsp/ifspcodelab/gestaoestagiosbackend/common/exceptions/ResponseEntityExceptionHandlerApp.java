@@ -163,4 +163,18 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(DraftDateSubmissionException.class)
+    public ResponseEntity<ProblemDetail> draftDateSubmission(DraftDateSubmissionException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                "Cannot send draft for: " +
+                    exception.getMonthlyReportDate().toString() +
+                    " Because the current date is: " +
+                    exception.getActualDate().toString(),
+                Collections.emptyList()
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
 }

@@ -21,8 +21,13 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
     }
 
     @Override
+    public MonthlyReport update(MonthlyReport monthlyReport) {
+        return monthlyReportRepository.save(monthlyReport);
+    }
+
+    @Override
     public MonthlyReport findById(UUID id) {
         return monthlyReportRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, id));
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.MONTHLY_REPORT, id));
     }
 }
