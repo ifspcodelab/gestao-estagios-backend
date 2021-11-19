@@ -19,7 +19,8 @@ public class MonthlyReport {
     @Id
     private UUID id;
     private LocalDate month;
-    private LocalDate acceptationDate;
+    private Boolean draftSubmittedOnDeadline;
+    private LocalDate finalAcceptationDate;
     private LocalDate startDate;
     private LocalDate endDate;
     private String attachmentUrl;

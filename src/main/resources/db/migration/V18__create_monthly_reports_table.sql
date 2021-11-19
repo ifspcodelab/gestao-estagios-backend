@@ -1,7 +1,8 @@
 CREATE TABLE monthly_reports(
     id UUID NOT NULL,
     month DATE NOT NULL,
-    acceptation_date DATE,
+    draft_submitted_on_deadline BOOLEAN,
+    final_acceptation_date DATE,
     start_date DATE,
     end_date DATE,
     attachment_url VARCHAR,
