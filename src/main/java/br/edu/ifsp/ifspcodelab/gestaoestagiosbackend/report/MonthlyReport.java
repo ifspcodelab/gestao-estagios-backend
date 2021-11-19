@@ -31,7 +31,7 @@ public class MonthlyReport {
 
     @OneToOne
     private ActivityPlan activityPlan;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<DraftMonthlyReportSubmission> draftMonthlyReportSubmissions;
 
     public MonthlyReport(LocalDate month, ActivityPlan activityPlan) {
@@ -39,5 +39,13 @@ public class MonthlyReport {
         this.month = month;
         this.status = ReportStatus.DRAFT_PENDING;
         this.activityPlan = activityPlan;
+    }
+
+    public void addDraftMonthlyReportSubmission(DraftMonthlyReportSubmission draftMonthlyReportSubmission) {
+        if (this.draftMonthlyReportSubmissions.isEmpty()) {
+            this.draftSubmittedOnDeadline = !LocalDate.now().withDayOfMonth(1).isAfter(this.month.plusMonths(2));
+        }
+        this.draftMonthlyReportSubmissions.add(draftMonthlyReportSubmission);
+        this.status = ReportStatus.DRAFT_SENT;
     }
 }
