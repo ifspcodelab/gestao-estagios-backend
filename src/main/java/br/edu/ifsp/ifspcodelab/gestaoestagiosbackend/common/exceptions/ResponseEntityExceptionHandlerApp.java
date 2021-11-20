@@ -177,4 +177,16 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(SubmissionException.class)
+    public ResponseEntity<ProblemDetail> finalSubmission(SubmissionException exception) {
+        return new ResponseEntity<>(
+            new ProblemDetail(
+                "Cannot send monthly report because status is: " +
+                    exception.getStatus().getName(),
+                Collections.emptyList()
+            ),
+            HttpStatus.CONFLICT
+        );
+    }
 }

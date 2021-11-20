@@ -5,6 +5,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DraftDateSubmissionException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.SubmissionException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
@@ -54,6 +55,9 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
                 throw new DraftMonthlyReportSubmissionAlreadyExistsByStatus(d.getStatus());
             }
         });
+        if (monthlyReport.getStatus() != ReportStatus.DRAFT_PENDING) {
+            throw new SubmissionException(monthlyReport.getStatus());
+        }
         if (LocalDate.now().withDayOfMonth(1).isBefore(monthlyReport.getMonth())) {
             throw new DraftDateSubmissionException(
                 monthlyReport.getMonth(),
