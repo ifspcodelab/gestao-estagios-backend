@@ -3,6 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft.DraftMonthlyReportSubmission;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.finalsubmission.FinalMonthlyReportSubmission;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +34,8 @@ public class MonthlyReport {
     private ActivityPlan activityPlan;
     @OneToMany(fetch = FetchType.EAGER)
     private Set<DraftMonthlyReportSubmission> draftMonthlyReportSubmissions;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<FinalMonthlyReportSubmission> finalMonthlyReportSubmissions;
 
     public MonthlyReport(LocalDate month, ActivityPlan activityPlan) {
         this.id = UUID.randomUUID();
@@ -47,5 +50,10 @@ public class MonthlyReport {
         }
         this.draftMonthlyReportSubmissions.add(draftMonthlyReportSubmission);
         this.status = ReportStatus.DRAFT_SENT;
+    }
+
+    public void addFinalMonthlyReportSubmission(FinalMonthlyReportSubmission finalMonthlyReportSubmission) {
+        this.finalMonthlyReportSubmissions.add(finalMonthlyReportSubmission);
+        this.status = ReportStatus.FINAL_SENT;
     }
 }
