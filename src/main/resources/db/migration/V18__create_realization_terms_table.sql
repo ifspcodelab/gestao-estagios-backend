@@ -1,8 +1,8 @@
 CREATE TABLE realization_terms(
     id UUID NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    internship_start_date DATE,
-    internship_end_date DATE,
+    term_start_date DATE,
+    term_end_date DATE,
     realization_term_url VARCHAR NOT NULL,
     status VARCHAR NOT NULL,
     details VARCHAR,
