@@ -785,4 +785,143 @@ public abstract class TemplatesHtml {
             "\n" +
             "</html>";
     }
+
+    public static String getRealizationTermSubmissionStudent() {
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"pt-br\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n" +
+                "    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap\" rel=\"stylesheet\">\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Roboto, \"Helvetica Neue\", sans-serif;\n" +
+                "            color: #494949;\n" +
+                "        }\n" +
+                "\n" +
+                "        .button-activate {\n" +
+                "            padding-left: 2.5rem;\n" +
+                "            padding-right: 2.5rem;\n" +
+                "            background-color: #673ab7;\n" +
+                "        }\n" +
+                "\n" +
+                "        .button-row a {\n" +
+                "            text-align: center;\n" +
+                "            margin-left: auto;\n" +
+                "            margin-right: auto;\n" +
+                "            padding-left: 1.5rem;\n" +
+                "            padding-right: 1.5rem;\n" +
+                "            padding-top: 10px;\n" +
+                "            padding-bottom: 10px;\n" +
+                "            color: #fff;\n" +
+                "            font-size: 14px;\n" +
+                "            font-weight: 500;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 4px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .lead {\n" +
+                "            font-weight: 400;\n" +
+                "        }\n" +
+                "\n" +
+                "        span {\n" +
+                "            font-weight: 700;\n" +
+                "        }\n" +
+                "\n" +
+                "        .activate {\n" +
+                "            margin-bottom: 30px;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"jumbotron\">\n" +
+                "            <h1 class=\"display-6\"><span>Termo de Realização de Estágio enviado!</span></h1>\n" +
+                "            <p class=\"lead\">Sistema de Apoio à Orientação de Estágios do Instituto Federal de São Paulo.</p>\n" +
+                "            <hr class=\"my-4\">\n" +
+                "            <p>Prezado(a) $STUDENTNAME, </p>" +
+                "            <p>Seu <b/>Termo de Realização de Estágio</b> foi submetido com sucesso. Agora aguarde a avaliação do Termo pelo seu orientador.</p>" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>";
+    }
+
+    public static String getRealizationTermSubmissionAdvisor() {
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"pt-br\">\n" +
+                "\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n" +
+                "    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n" +
+                "    <link href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap\" rel=\"stylesheet\">\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Roboto, \"Helvetica Neue\", sans-serif;\n" +
+                "            color: #494949;\n" +
+                "        }\n" +
+                "\n" +
+                "        .button-activate {\n" +
+                "            padding-left: 2.5rem;\n" +
+                "            padding-right: 2.5rem;\n" +
+                "            background-color: #673ab7;\n" +
+                "        }\n" +
+                "\n" +
+                "        .button-row a {\n" +
+                "            text-align: center;\n" +
+                "            margin-left: auto;\n" +
+                "            margin-right: auto;\n" +
+                "            padding-left: 1.5rem;\n" +
+                "            padding-right: 1.5rem;\n" +
+                "            padding-top: 10px;\n" +
+                "            padding-bottom: 10px;\n" +
+                "            color: #fff;\n" +
+                "            font-size: 14px;\n" +
+                "            font-weight: 500;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 4px;\n" +
+                "        }\n" +
+                "\n" +
+                "        .lead {\n" +
+                "            font-weight: 400;\n" +
+                "        }\n" +
+                "\n" +
+                "        span {\n" +
+                "            font-weight: 700;\n" +
+                "        }\n" +
+                "\n" +
+                "        .activate {\n" +
+                "            margin-bottom: 30px;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"jumbotron\">\n" +
+                "            <h1 class=\"display-6\"><span>Novo Termo de Realização de Estágio recebido!</span></h1>\n" +
+                "            <p class=\"lead\">Sistema de Apoio à Orientação de Estágios do Instituto Federal de São Paulo.</p>\n" +
+                "            <hr class=\"my-4\">\n" +
+                "            <p>Prezado(a) $ADVISORNAME, </p>" +
+                "            <p>O aluno $STUDENTNAME enviou o <b/>Termo de Realização de Estágio</b> e aguarda sua avaliação.</p>" +
+                "            <br/><br/><br/>" +
+                "                <div class=\"button-row\">\n" +
+                "                    <a class=\"button-activate\" href=\"$SYSTEMLINK\" role=\"button\">Acessar o sistema</a>\n" +
+                "                </div>\n" +
+                "            <br/>" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "\n" +
+                "</html>";
+    }
 }
