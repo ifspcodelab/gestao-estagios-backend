@@ -141,4 +141,24 @@ public abstract class CreatorParametersMail {
 
         return map;
     }
+    public static Map<String, String> setRealizationTermSubmissionStudent(String studentName) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$STUDENTNAME", studentName);
+
+        return map;
+    }
+
+    public static Map<String, String> setRealizationTermSubmissionAdvisor(String advisorName,
+                                                                          String studentName,
+                                                                          String link) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$STUDENTNAME", studentName);
+        map.put("$ADVISORNAME", advisorName);
+        map.put("$SYSTEMLINK", link);
+
+        return map;
+    }
+
 }
