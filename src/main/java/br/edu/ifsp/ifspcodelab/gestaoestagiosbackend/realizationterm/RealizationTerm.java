@@ -21,8 +21,8 @@ public class RealizationTerm {
     @Id
     private UUID id;
     private Instant createdAt;
-    private LocalDate internshipStartDate;
-    private LocalDate internshipEndDate;
+    private LocalDate termStartDate;
+    private LocalDate termEndDate;
     private String realizationTermUrl;
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
@@ -32,11 +32,11 @@ public class RealizationTerm {
     @JsonBackReference
     private Internship internship;
 
-    public RealizationTerm(LocalDate internshipStartDate, LocalDate internshipEndDate, String realizationTermUrl, String details, Internship internship) {
+    public RealizationTerm(LocalDate termStartDate, LocalDate termEndDate, String realizationTermUrl, String details, Internship internship) {
         this.id = UUID.randomUUID();
         this.createdAt = Instant.now();
-        this.internshipStartDate = internshipStartDate;
-        this.internshipEndDate = internshipEndDate;
+        this.termStartDate = termStartDate;
+        this.termEndDate = termEndDate;
         this.realizationTermUrl = realizationTermUrl;
         this.status = RequestStatus.PENDING;
         this.details = details;
