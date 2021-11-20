@@ -12,7 +12,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/internships/{internshipId}/monthly-reports/{monthlyReportId}/finals")
 @AllArgsConstructor
-public class finalMonthlyReportSubmissionRestController {
+public class FinalMonthlyReportSubmissionRestController {
     private final FinalMonthlyReportSubmissionService finalMonthlyReportSubmissionService;
 
     @PostMapping
