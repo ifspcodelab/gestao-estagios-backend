@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -21,6 +19,7 @@ public class FinalMonthlyReportSubmission {
     UUID id;
     private LocalDate submissionDate;
     private String finalMonthlyReportUrl;
+    @Enumerated(EnumType.STRING)
     private RequestStatus status;
     private String details;
 
