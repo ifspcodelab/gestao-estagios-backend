@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTerm;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermAppraisalDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermUpdateDto;
 import lombok.AllArgsConstructor;
@@ -63,6 +64,17 @@ public class InternshipRestController {
             ) {
         return ResponseEntity.ok(
                 realizationTermService.update(internshipId, realizationTermId, realizationTermUpdateDto)
+        );
+    }
+
+    @PutMapping("api/v1/internships/{internshipId}/realization-terms/{realizationTermId}/appraisal")
+    public ResponseEntity<RealizationTerm> appraisal(
+            @PathVariable UUID internshipId,
+            @PathVariable UUID realizationTermId,
+            @RequestBody @Valid RealizationTermAppraisalDto realizationTermAppraisalDto
+            ) {
+        return ResponseEntity.ok(
+                realizationTermService.appraisal(internshipId, realizationTermId, realizationTermAppraisalDto)
         );
     }
 }
