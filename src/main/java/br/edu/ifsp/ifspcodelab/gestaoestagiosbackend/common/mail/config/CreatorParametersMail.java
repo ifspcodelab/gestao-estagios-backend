@@ -79,4 +79,29 @@ public abstract class CreatorParametersMail {
         return map;
     }
 
+    public static Map<String, String> setParametersReportSentToStudent(String report, String month) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$REPORT", report);
+        map.put("$MONTH", month);
+
+        return map;
+    }
+
+    public static Map<String, String> setParametersReportSentToAdvisor(
+        String report,
+        String student,
+        String month,
+        String link
+    ) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$REPORT", report);
+        map.put("$STUDENT", student);
+        map.put("$MONTH", month);
+        map.put("$SYSTEMLINK", link);
+
+        return map;
+    }
+
 }
