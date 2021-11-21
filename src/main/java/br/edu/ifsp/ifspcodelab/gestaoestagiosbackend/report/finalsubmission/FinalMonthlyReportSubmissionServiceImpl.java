@@ -5,6 +5,11 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.SubmissionException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.MailDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.SenderMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.CreatorParametersMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.config.FormatterMail;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.createaccount.TemplatesHtml;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
@@ -12,22 +17,33 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReportService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft.DraftMonthlyReportSubmissionAlreadyExistsByStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyReportSubmissionService {
     private final FinalMonthlyReportSubmissionRepository finalMonthlyReportSubmissionRepository;
+    private final SenderMail senderMail;
 
     private InternshipService internshipService;
     private MonthlyReportService monthlyReportService;
     private UploadService uploadService;
 
-    public FinalMonthlyReportSubmissionServiceImpl(FinalMonthlyReportSubmissionRepository finalMonthlyReportSubmissionRepository) {
+    @Value("${application.frontend.url}")
+    private String frontendUrl;
+
+    public FinalMonthlyReportSubmissionServiceImpl(
+        FinalMonthlyReportSubmissionRepository finalMonthlyReportSubmissionRepository,
+        SenderMail senderMail
+    ) {
         this.finalMonthlyReportSubmissionRepository = finalMonthlyReportSubmissionRepository;
+        this.senderMail = senderMail;
     }
 
     @Autowired
@@ -67,6 +83,9 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
 
         monthlyReport.addFinalMonthlyReportSubmission(finalSubmission);
         monthlyReportService.update(monthlyReport);
+
+        sendEmailFinalSentToStudent(monthlyReport);
+        sendEmailFinalSentToAdvisor(monthlyReport);
 
         return finalSubmission;
     }
@@ -114,5 +133,48 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
             .orElseThrow(
                 () -> new ResourceNotFoundException(ResourceName.FINAL_MONTHLY_REPORT_SUBMISSION, finalMonthlyReportSubmissionId)
             );
+    }
+
+    private void sendEmailFinalSentToStudent(MonthlyReport monthlyReport) {
+        MailDto email = MailDto.builder()
+            .title("Relatório mensal")
+            .msgHTML(TemplatesHtml.getReportSentToStudent())
+            .build();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
+        Map<String, String> params = CreatorParametersMail.setParametersReportSentToStudent(
+            "Relatório mensal",
+            monthlyReport.getMonth().format(formatter)
+        );
+        email = FormatterMail.build(email, params);
+
+        email.setRecipientTo(
+            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getEmail()
+        );
+        senderMail.sendEmail(email);
+    }
+
+    private void sendEmailFinalSentToAdvisor(MonthlyReport monthlyReport) {
+        MailDto email = MailDto.builder()
+            .title("Relatório mensal recebido - [" +
+                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName() +
+                "]"
+            )
+            .msgHTML(TemplatesHtml.getReportSentToAdvisor())
+            .build();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
+        Map<String, String> params = CreatorParametersMail.setParametersReportSentToAdvisor(
+            "Relatório mensal",
+            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
+            monthlyReport.getMonth().format(formatter),
+            frontendUrl
+        );
+        email = FormatterMail.build(email, params);
+
+        email.setRecipientTo(
+            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getEmail()
+        );
+        senderMail.sendEmail(email);
     }
 }
