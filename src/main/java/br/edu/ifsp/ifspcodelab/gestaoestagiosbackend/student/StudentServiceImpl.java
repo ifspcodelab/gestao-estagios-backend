@@ -14,8 +14,7 @@ import java.util.UUID;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private final StudentRepository studentRepository;
-
+    private StudentRepository studentRepository;
     private UserService userService;
 
     @Autowired
@@ -23,27 +22,9 @@ public class StudentServiceImpl implements StudentService {
         this.userService = userService;
     }
     
-//     @Autowired
-//     public UserService getUserService() {
-//         return userService;
-//     }
-
-    /*@Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }*/
-
-    //private UserRepository userRepository;
-
-    public StudentServiceImpl(StudentRepository studentRepository, UserService userService) {
+    public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.userService = userService;
     }
-
-    /*@Autowired
-    public void setCurriculumService(CurriculumService curriculumService) {
-        this.curriculumService = curriculumService;
-    }*/
 
     @Override
     public Student create(Student student) {
