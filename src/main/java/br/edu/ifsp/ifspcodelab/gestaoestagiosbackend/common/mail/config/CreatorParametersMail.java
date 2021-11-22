@@ -104,4 +104,41 @@ public abstract class CreatorParametersMail {
         return map;
     }
 
+    public static Map<String, String> setParametersReportApproved(
+        String report,
+        String student,
+        String advisor,
+        String month,
+        String details
+    ) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$REPORT", report);
+        map.put("$STUDENT", student);
+        map.put("$ADVISOR", advisor);
+        map.put("$MONTH", month);
+        map.put("$DETAILS", details);
+
+        return map;
+    }
+
+    public static Map<String, String> setParametersReportIndeferred(
+        String report,
+        String student,
+        String advisor,
+        String month,
+        String details,
+        String link
+    ) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("$REPORT", report);
+        map.put("$STUDENT", student);
+        map.put("$ADVISOR", advisor);
+        map.put("$MONTH", month);
+        map.put("$DETAILS", details);
+        map.put("$SYSTEMLINK", link);
+
+        return map;
+    }
 }

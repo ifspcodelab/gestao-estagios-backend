@@ -133,6 +133,7 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         } else {
             monthlyReport.setStatus(ReportStatus.DRAFT_PENDING);
         }
+        sendEmailDraftAppraisal(monthlyReport, draftMonthlyReportSubmissionAppraisalDto);
 
         draft.setDetails(draftMonthlyReportSubmissionAppraisalDto.getDetails());
         draft.setStatus(draftMonthlyReportSubmissionAppraisalDto.getStatus());
@@ -196,6 +197,47 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
 
         email.setRecipientTo(
             monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getEmail()
+        );
+        senderMail.sendEmail(email);
+    }
+
+    private void sendEmailDraftAppraisal(MonthlyReport monthlyReport, DraftMonthlyReportSubmissionAppraisalDto dto) {
+        MailDto email;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
+        Map<String, String> params;
+
+        if (dto.getStatus() == RequestStatus.ACCEPTED) {
+            email = MailDto.builder()
+                .title("Deferimento de rascunho do relatório mensal")
+                .msgHTML(TemplatesHtml.getReportApproved())
+                .build();
+
+            params = CreatorParametersMail.setParametersReportApproved(
+                "rascunho do relatório mensal",
+                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
+                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getName(),
+                monthlyReport.getMonth().format(formatter),
+                dto.getDetails()
+            );
+        } else {
+            email = MailDto.builder()
+                .title("Indeferimento de rascunho do relatório mensal")
+                .msgHTML(TemplatesHtml.getReportIndeferred())
+                .build();
+
+            params = CreatorParametersMail.setParametersReportIndeferred(
+                "rascunho do relatório mensal",
+                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
+                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getName(),
+                monthlyReport.getMonth().format(formatter),
+                dto.getDetails(),
+                frontendUrl
+            );
+        }
+
+        email = FormatterMail.build(email, params);
+        email.setRecipientTo(
+            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }
