@@ -137,7 +137,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                 date.isBefore(activityPlan.getInternshipEndDate());
                 date = date.plusMonths(1)
             ) {
-                MonthlyReport report = monthlyReportService.create(date, activityPlan);
+                MonthlyReport report = monthlyReportService.create(date, activityPlan, internship);
                 internship.addMonthlyReport(report);
             }
 

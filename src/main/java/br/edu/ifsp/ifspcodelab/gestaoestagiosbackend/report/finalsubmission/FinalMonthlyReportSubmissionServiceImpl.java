@@ -78,14 +78,17 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
         uploadService.monthlyReportFileValidation(file);
         String finalMonthlyReportSubmissionUrl = uploadService.uploadFile(file, getFileName(internship));
 
-        FinalMonthlyReportSubmission finalSubmission = new FinalMonthlyReportSubmission(finalMonthlyReportSubmissionUrl);
+        FinalMonthlyReportSubmission finalSubmission = new FinalMonthlyReportSubmission(
+            finalMonthlyReportSubmissionUrl,
+            monthlyReport
+        );
         finalMonthlyReportSubmissionRepository.save(finalSubmission);
 
         monthlyReport.addFinalMonthlyReportSubmission(finalSubmission);
         monthlyReportService.update(monthlyReport);
 
-        sendEmailFinalSentToStudent(monthlyReport);
-        sendEmailFinalSentToAdvisor(monthlyReport);
+        sendEmailFinalSentToStudent(monthlyReport, internship);
+        sendEmailFinalSentToAdvisor(monthlyReport, internship);
 
         return finalSubmission;
     }
@@ -97,7 +100,7 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
         UUID finalMonthlyReportSubmissionId,
         FinalMonthlyReportSubmissionAppraisalDto finalMonthlyReportSubmissionAppraisalDto)
     {
-        internshipService.findById(internshipId);
+        Internship internship = internshipService.findById(internshipId);
         MonthlyReport monthlyReport = monthlyReportService.findById(monthlyReportId);
         FinalMonthlyReportSubmission finalSubmission = getFinalSubmission(finalMonthlyReportSubmissionId);
 
@@ -108,10 +111,11 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
         if (finalMonthlyReportSubmissionAppraisalDto.getStatus() == RequestStatus.ACCEPTED) {
             monthlyReport.setStatus(ReportStatus.FINAL_ACCEPTED);
             monthlyReport.setFinalAcceptationDate(LocalDate.now());
+            monthlyReport.setFinalMonthlyReportUrl(finalSubmission.getFinalMonthlyReportUrl());
         } else {
             monthlyReport.setStatus(ReportStatus.FINAL_PENDING);
         }
-        sendEmailFinalAppraisal(monthlyReport, finalMonthlyReportSubmissionAppraisalDto);
+        sendEmailFinalAppraisal(monthlyReport, finalMonthlyReportSubmissionAppraisalDto, internship);
 
         finalSubmission.setDetails(finalMonthlyReportSubmissionAppraisalDto.getDetails());
         finalSubmission.setStatus(finalMonthlyReportSubmissionAppraisalDto.getStatus());
@@ -136,7 +140,7 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
             );
     }
 
-    private void sendEmailFinalSentToStudent(MonthlyReport monthlyReport) {
+    private void sendEmailFinalSentToStudent(MonthlyReport monthlyReport, Internship internship) {
         MailDto email = MailDto.builder()
             .title("Relatório mensal")
             .msgHTML(TemplatesHtml.getReportSentToStudent())
@@ -150,15 +154,15 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getEmail()
+            internship.getStudent().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }
 
-    private void sendEmailFinalSentToAdvisor(MonthlyReport monthlyReport) {
+    private void sendEmailFinalSentToAdvisor(MonthlyReport monthlyReport, Internship internship) {
         MailDto email = MailDto.builder()
             .title("Relatório mensal recebido - [" +
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName() +
+                internship.getStudent().getUser().getName() +
                 "]"
             )
             .msgHTML(TemplatesHtml.getReportSentToAdvisor())
@@ -167,19 +171,19 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
         Map<String, String> params = CreatorParametersMail.setParametersReportSentToAdvisor(
             "Relatório mensal",
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
+            internship.getStudent().getUser().getName(),
             monthlyReport.getMonth().format(formatter),
             frontendUrl
         );
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getEmail()
+            internship.getAdvisor().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }
 
-    private void sendEmailFinalAppraisal(MonthlyReport monthlyReport, FinalMonthlyReportSubmissionAppraisalDto dto) {
+    private void sendEmailFinalAppraisal(MonthlyReport monthlyReport, FinalMonthlyReportSubmissionAppraisalDto dto, Internship internship) {
         MailDto email;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
         Map<String, String> params;
@@ -192,8 +196,8 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
 
             params = CreatorParametersMail.setParametersReportApproved(
                 "relatório mensal",
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getName(),
+                internship.getStudent().getUser().getName(),
+                internship.getAdvisor().getUser().getName(),
                 monthlyReport.getMonth().format(formatter),
                 dto.getDetails()
             );
@@ -205,8 +209,8 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
 
             params = CreatorParametersMail.setParametersReportIndeferred(
                 "relatório mensal",
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getName(),
+                internship.getStudent().getUser().getName(),
+                internship.getAdvisor().getUser().getName(),
                 monthlyReport.getMonth().format(formatter),
                 dto.getDetails(),
                 frontendUrl
@@ -215,7 +219,7 @@ public class FinalMonthlyReportSubmissionServiceImpl implements FinalMonthlyRepo
 
         email = FormatterMail.build(email, params);
         email.setRecipientTo(
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getEmail()
+            internship.getStudent().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }

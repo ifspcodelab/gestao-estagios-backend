@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DraftDateSubmissionException;
@@ -16,6 +17,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReportService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -81,7 +83,7 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         uploadService.monthlyReportFileValidation(file);
         String draftMonthlyReportSubmissionUrl = uploadService.uploadFile(file, getFileName(internship));
 
-        DraftMonthlyReportSubmission draft = new DraftMonthlyReportSubmission(draftMonthlyReportSubmissionUrl);
+        DraftMonthlyReportSubmission draft = new DraftMonthlyReportSubmission(draftMonthlyReportSubmissionUrl, monthlyReport);
         draftMonthlyReportSubmissionRepository.save(draft);
 
         monthlyReport.addDraftMonthlyReportSubmission(draft);
@@ -97,15 +99,15 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         UUID draftMonthlyReportSubmissionId,
         DraftMonthlyReportSubmissionUpdateDto draftMonthlyReportSubmissionUpdateDto
     ) {
-        internshipService.findById(internshipId);
+        Internship internship = internshipService.findById(internshipId);
         MonthlyReport monthlyReport = monthlyReportService.findById(monthlyReportId);
         DraftMonthlyReportSubmission draft = getDraft(draftMonthlyReportSubmissionId);
 
         draft.setReportStartDate(draftMonthlyReportSubmissionUpdateDto.getReportStartDate());
         draft.setReportEndDate(draftMonthlyReportSubmissionUpdateDto.getReportEndDate());
 
-        sendEmailDraftSentToStudent(monthlyReport);
-        sendEmailDraftSentToAdvisor(monthlyReport);
+        sendEmailDraftSentToStudent(monthlyReport, internship);
+        sendEmailDraftSentToAdvisor(monthlyReport, internship);
         return draftMonthlyReportSubmissionRepository.save(draft);
     }
 
@@ -116,7 +118,7 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         UUID draftMonthlyReportId,
         DraftMonthlyReportSubmissionAppraisalDto draftMonthlyReportSubmissionAppraisalDto
     ) {
-        internshipService.findById(internshipId);
+        Internship internship = internshipService.findById(internshipId);
         MonthlyReport monthlyReport = monthlyReportService.findById(monthlyReportId);
         DraftMonthlyReportSubmission draft = getDraft(draftMonthlyReportId);
 
@@ -125,15 +127,16 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         }
 
         if (draftMonthlyReportSubmissionAppraisalDto.getStatus() == RequestStatus.ACCEPTED) {
+            draft.setNumberOfApprovedHours(draftMonthlyReportSubmissionAppraisalDto.getNumberOfApprovedHours());
+
             monthlyReport.setStatus(ReportStatus.FINAL_PENDING);
             monthlyReport.setStartDate(draft.getReportStartDate());
             monthlyReport.setEndDate(draft.getReportEndDate());
-
-            draft.setNumberOfApprovedHours(draftMonthlyReportSubmissionAppraisalDto.getNumberOfApprovedHours());
+            monthlyReport.setNumberOfApprovedHours(draft.getNumberOfApprovedHours());
         } else {
             monthlyReport.setStatus(ReportStatus.DRAFT_PENDING);
         }
-        sendEmailDraftAppraisal(monthlyReport, draftMonthlyReportSubmissionAppraisalDto);
+        sendEmailDraftAppraisal(monthlyReport, draftMonthlyReportSubmissionAppraisalDto, internship);
 
         draft.setDetails(draftMonthlyReportSubmissionAppraisalDto.getDetails());
         draft.setStatus(draftMonthlyReportSubmissionAppraisalDto.getStatus());
@@ -158,7 +161,7 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
             );
     }
 
-    private void sendEmailDraftSentToStudent(MonthlyReport monthlyReport) {
+    private void sendEmailDraftSentToStudent(MonthlyReport monthlyReport, Internship internship) {
         MailDto email = MailDto.builder()
             .title("Envio de rascunho do relatório mensal")
             .msgHTML(TemplatesHtml.getReportSentToStudent())
@@ -172,15 +175,15 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getEmail()
+            internship.getStudent().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }
 
-    private void sendEmailDraftSentToAdvisor(MonthlyReport monthlyReport) {
+    private void sendEmailDraftSentToAdvisor(MonthlyReport monthlyReport, Internship internship) {
         MailDto email = MailDto.builder()
             .title("Rascunho de relatório mensal recebido - [" +
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName() +
+                internship.getAdvisor().getUser().getName() +
                 "]"
             )
             .msgHTML(TemplatesHtml.getReportSentToAdvisor())
@@ -189,19 +192,19 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
         Map<String, String> params = CreatorParametersMail.setParametersReportSentToAdvisor(
             "rascunho de relatório mensal",
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
+            internship.getAdvisor().getUser().getName(),
             monthlyReport.getMonth().format(formatter),
             frontendUrl
         );
         email = FormatterMail.build(email, params);
 
         email.setRecipientTo(
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getEmail()
+            internship.getAdvisor().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }
 
-    private void sendEmailDraftAppraisal(MonthlyReport monthlyReport, DraftMonthlyReportSubmissionAppraisalDto dto) {
+    private void sendEmailDraftAppraisal(MonthlyReport monthlyReport, DraftMonthlyReportSubmissionAppraisalDto dto, Internship internship) {
         MailDto email;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM 'de' yyyy");
         Map<String, String> params;
@@ -214,8 +217,8 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
 
             params = CreatorParametersMail.setParametersReportApproved(
                 "rascunho do relatório mensal",
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getName(),
+                internship.getStudent().getUser().getName(),
+                internship.getAdvisor().getUser().getName(),
                 monthlyReport.getMonth().format(formatter),
                 dto.getDetails()
             );
@@ -227,8 +230,8 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
 
             params = CreatorParametersMail.setParametersReportIndeferred(
                 "rascunho do relatório mensal",
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getName(),
-                monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getAdvisor().getUser().getName(),
+                internship.getStudent().getUser().getName(),
+                internship.getAdvisor().getUser().getName(),
                 monthlyReport.getMonth().format(formatter),
                 dto.getDetails(),
                 frontendUrl
@@ -237,7 +240,7 @@ public class DraftMonthlyReportSubmissionServiceImpl implements DraftMonthlyRepo
 
         email = FormatterMail.build(email, params);
         email.setRecipientTo(
-            monthlyReport.getActivityPlan().getInternship().getAdvisorRequest().getStudent().getUser().getEmail()
+            internship.getStudent().getUser().getEmail()
         );
         senderMail.sendEmail(email);
     }
