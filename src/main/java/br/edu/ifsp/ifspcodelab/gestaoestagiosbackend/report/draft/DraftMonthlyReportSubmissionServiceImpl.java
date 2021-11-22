@@ -1,6 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.DraftDateSubmissionException;
@@ -17,7 +16,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReportService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
