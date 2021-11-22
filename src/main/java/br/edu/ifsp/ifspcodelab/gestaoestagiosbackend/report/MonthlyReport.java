@@ -1,9 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.draft.DraftMonthlyReportSubmission;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.finalsubmission.FinalMonthlyReportSubmission;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,26 +30,34 @@ public class MonthlyReport {
     private LocalDate startDate;
     private LocalDate endDate;
     private String attachmentUrl;
+    private Integer numberOfApprovedHours;
+    private String finalMonthlyReportUrl;
     @Enumerated(EnumType.STRING)
     private ReportStatus status;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Internship internship;
+    @ManyToOne
     private ActivityPlan activityPlan;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "monthlyReport")
+    @JsonManagedReference
     private Set<DraftMonthlyReportSubmission> draftMonthlyReportSubmissions;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "monthlyReport")
+    @JsonManagedReference
     private Set<FinalMonthlyReportSubmission> finalMonthlyReportSubmissions;
 
-    public MonthlyReport(LocalDate month, ActivityPlan activityPlan) {
+    public MonthlyReport(LocalDate month, ActivityPlan activityPlan, Internship internship) {
         this.id = UUID.randomUUID();
         this.month = month;
         this.status = ReportStatus.DRAFT_PENDING;
         this.activityPlan = activityPlan;
+        this.internship = internship;
     }
 
     public void addDraftMonthlyReportSubmission(DraftMonthlyReportSubmission draftMonthlyReportSubmission) {
         if (this.draftMonthlyReportSubmissions.isEmpty()) {
-            this.draftSubmittedOnDeadline = !LocalDate.now().withDayOfMonth(1).isAfter(this.month.plusMonths(2));
+            this.draftSubmittedOnDeadline = !(LocalDate.now().isAfter(this.month.plusMonths(2)) || LocalDate.now().isEqual(this.month.plusMonths(2)));
         }
         this.draftMonthlyReportSubmissions.add(draftMonthlyReportSubmission);
         this.status = ReportStatus.DRAFT_SENT;

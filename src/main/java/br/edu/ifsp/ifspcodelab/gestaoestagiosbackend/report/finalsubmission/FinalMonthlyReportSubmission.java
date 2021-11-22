@@ -1,6 +1,8 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.finalsubmission;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,10 +25,15 @@ public class FinalMonthlyReportSubmission {
     private RequestStatus status;
     private String details;
 
-    public FinalMonthlyReportSubmission(String finalMonthlyReportUrl) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private MonthlyReport monthlyReport;
+
+    public FinalMonthlyReportSubmission(String finalMonthlyReportUrl, MonthlyReport monthlyReport) {
         this.id = UUID.randomUUID();
         this.submissionDate = LocalDate.now();
         this.finalMonthlyReportUrl = finalMonthlyReportUrl;
         this.status = RequestStatus.PENDING;
+        this.monthlyReport = monthlyReport;
     }
 }

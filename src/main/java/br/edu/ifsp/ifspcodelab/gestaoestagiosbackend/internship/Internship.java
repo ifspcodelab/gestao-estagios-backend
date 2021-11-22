@@ -1,10 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,10 +31,11 @@ public class Internship {
 
     @OneToOne
     private AdvisorRequest advisorRequest;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "internship")
     @JsonManagedReference
     private Set<ActivityPlan> activityPlans;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "internship")
+    @JsonManagedReference
     private Set<MonthlyReport> monthlyReports;
 
     public Internship(AdvisorRequest advisorRequest) {
@@ -48,5 +51,13 @@ public class Internship {
 
     public void addMonthlyReport(MonthlyReport monthlyReport) {
         this.monthlyReports.add(monthlyReport);
+    }
+
+    public Student getStudent() {
+        return this.advisorRequest.getStudent();
+    }
+
+    public Advisor getAdvisor() {
+        return this.advisorRequest.getAdvisor();
     }
 }

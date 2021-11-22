@@ -7,5 +7,7 @@ CREATE TABLE draft_monthly_report_submissions(
     status VARCHAR NOT NULL,
     details VARCHAR,
     number_of_approved_hours INT,
-    CONSTRAINT draft_monthly_report_submissions_pk PRIMARY KEY (id)
+    monthly_report_id UUID NOT NULL,
+    CONSTRAINT draft_monthly_report_submissions_pk PRIMARY KEY (id),
+    CONSTRAINT monthly_reports_fk FOREIGN KEY (monthly_report_id) REFERENCES monthly_reports(id)
 );

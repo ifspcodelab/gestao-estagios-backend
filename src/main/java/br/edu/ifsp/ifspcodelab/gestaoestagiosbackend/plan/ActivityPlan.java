@@ -30,7 +30,7 @@ public class ActivityPlan {
     private RequestStatus status;
     private String details;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Internship internship;
 

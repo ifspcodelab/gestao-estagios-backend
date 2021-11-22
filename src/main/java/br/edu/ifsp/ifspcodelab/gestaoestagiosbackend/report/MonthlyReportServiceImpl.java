@@ -35,8 +35,8 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
     }
 
     @Override
-    public MonthlyReport create(LocalDate month, ActivityPlan activityPlan) {
-        return monthlyReportRepository.save(new MonthlyReport(month, activityPlan));
+    public MonthlyReport create(LocalDate month, ActivityPlan activityPlan, Internship internship) {
+        return monthlyReportRepository.save(new MonthlyReport(month, activityPlan, internship));
     }
 
     @Override
