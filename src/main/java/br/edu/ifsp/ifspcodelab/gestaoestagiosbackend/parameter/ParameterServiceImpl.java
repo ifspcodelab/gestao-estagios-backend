@@ -27,6 +27,8 @@ public class ParameterServiceImpl implements ParameterService {
         parameters.setMonthlyReportDraftSubmissionDeadlineMonths(parameterCreateDto.getMonthlyReportDraftSubmissionDeadlineMonths());
         parameters.setMonthlyReportDraftAppraisalDeadlineDays(parameterCreateDto.getMonthlyReportDraftAppraisalDeadlineDays());
         parameters.setMonthlyReportAppraisalDeadlineDays(parameterCreateDto.getMonthlyReportAppraisalDeadlineDays());
+        parameters.setInitialDispatchHtml(parameterCreateDto.getInitialDispatchHtml());
+        parameters.setFinalDispatchHtml(parameterCreateDto.getFinalDispatchHtml());
 
         return parameterRepository.save(parameters);
     }

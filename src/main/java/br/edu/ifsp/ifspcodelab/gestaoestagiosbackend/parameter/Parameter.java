@@ -28,4 +28,6 @@ public class Parameter {
     private Integer monthlyReportDraftSubmissionDeadlineMonths;
     private Integer monthlyReportDraftAppraisalDeadlineDays;
     private Integer monthlyReportAppraisalDeadlineDays;
+    private String initialDispatchHtml;
+    private String finalDispatchHtml;
 }
