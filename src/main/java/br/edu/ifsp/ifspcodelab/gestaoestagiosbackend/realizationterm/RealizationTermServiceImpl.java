@@ -1,6 +1,5 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
@@ -12,7 +11,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.mail.templates.creat
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.upload.UploadService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlanAlreadyExistsByStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
