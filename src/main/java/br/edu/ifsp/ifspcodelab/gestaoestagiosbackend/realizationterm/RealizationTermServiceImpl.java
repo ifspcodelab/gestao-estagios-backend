@@ -76,8 +76,8 @@ public class RealizationTermServiceImpl implements RealizationTermService {
         RealizationTerm realizationTerm = realizationTermRepository.findById(realizationTermId)
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceName.REALIZATION_TERM, realizationTermId));
 
-        realizationTerm.setTermStartDate(realizationTermUpdateDto.getTermStartDate());
-        realizationTerm.setTermEndDate(realizationTermUpdateDto.getTermEndDate());
+        realizationTerm.setInternshipStartDate(realizationTermUpdateDto.getInternshipStartDate());
+        realizationTerm.setInternshipEndDate(realizationTermUpdateDto.getInternshipEndDate());
 
         RealizationTerm realizationTermSaved = realizationTermRepository.save(realizationTerm);
 
