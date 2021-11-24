@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Value
 public class RealizationTermUpdateDto {
     @NotNull
-    LocalDate termStartDate;
+    LocalDate internshipStartDate;
     @NotNull
-    LocalDate termEndDate;
+    LocalDate internshipEndDate;
 }
