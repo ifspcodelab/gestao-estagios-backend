@@ -41,4 +41,10 @@ public class ParameterCreateDto {
     @NotNull
     @Positive
     Integer monthlyReportAppraisalDeadlineDays;
+    @NotNull
+    @NotBlank
+    String initialDispatchHtml;
+    @NotNull
+    @NotBlank
+    String finalDispatchHtml;
 }

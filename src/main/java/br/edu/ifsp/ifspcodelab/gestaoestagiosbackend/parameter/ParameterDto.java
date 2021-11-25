@@ -18,4 +18,6 @@ public class ParameterDto {
     Integer monthlyReportDraftSubmissionDeadlineMonths;
     Integer monthlyReportDraftAppraisalDeadlineDays;
     Integer monthlyReportAppraisalDeadlineDays;
+    String initialDispatchHtml;
+    String finalDispatchHtml;
 }
