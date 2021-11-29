@@ -97,7 +97,7 @@ VALUES (
 
     <p style="margin-left: 40px; text-align: justify; font-family: Arial, Sans Serif;">
       Venho, por meio deste, apresentar &agrave; Vossa Senhoria o DESPACHO a seguir, por mim emitido, que aprova o Plano de Atividades de Est&aacute;gio do(a) estudante
-      $STUDENTNAME($REGISTRATION),regularmente matriculado(a) no $COURSENAME desta institui&ccedil;&atilde;o. O est&aacute;gio dever&aacute; ser registrado como $INTERNSHIPTYPE.
+      $STUDENTNAME($REGISTRATION),regularmente matriculado(a) no Curso $COURSENAME desta institui&ccedil;&atilde;o. O est&aacute;gio dever&aacute; ser registrado como $INTERNSHIPTYPE.
     </p>
 
     <p style="margin-left: 40px; text-align: justify; font-family: Arial, Sans Serif;">&nbsp;</p>
@@ -384,7 +384,7 @@ VALUES (
                           width="59">
                           <p align="center" class="MsoNormal" style="text-align:center">
                               <span class="GramE">
-                                  <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($REQUIREDORNOT)</span>
+                                  <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($REQUIRED)</span>
                               </span>
                               <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">sim</span>
                           </p>
@@ -401,7 +401,7 @@ VALUES (
                               height:14.25pt"
                           width="64">
                           <p align="center" class="MsoNormal" style="text-align:center">
-                              <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($REQUIREDORNOT) n&atilde;o</span>
+                              <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($NOTREQUIRED) n&atilde;o</span>
                           </p>
                       </td>
                       <td style="
@@ -941,7 +941,7 @@ VALUES (
                           width="59">
                           <p align="center" class="MsoNormal" style="text-align:center">
                               <span class="GramE">
-                                  <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($REQUIREDORNOT)</span>
+                                  <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($REQUIRED)</span>
                               </span>
                               <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black"> sim</span>
                           </p>
@@ -958,7 +958,7 @@ VALUES (
                               height:14.25pt"
                           width="64">
                           <p align="center" class="MsoNormal" style="text-align:center">
-                              <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($REQUIREDORNOT) n&atilde;o</span>
+                              <span style="font-size:9.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">($NOTREQUIRED) n&atilde;o</span>
                           </p>
                       </td>
                       <td style="
@@ -1057,7 +1057,7 @@ VALUES (
                           <p align="center" style="text-align:center">
                               <span style="font-size:9.0pt">
                                   <span style="font-family:&quot;Arial&quot;,sans-serif">
-                                      <span style="color:black">($REQUIREDORNOT)</span>
+                                      <span style="color:black">($REQUIRED)</span>
                                   </span>
                               </span>
                               <span style="font-size:9.0pt">
@@ -1072,7 +1072,7 @@ VALUES (
                           <p align="center" style="text-align:center">
                               <span style="font-size:9.0pt">
                                   <span style="font-family:&quot;Arial&quot;,sans-serif">
-                                      <span style="color:black">($REQUIREDORNOT) n&atilde;o</span>
+                                      <span style="color:black">($NOTREQUIRED) n&atilde;o</span>
                                   </span>
                               </span>
                           </p>
@@ -1172,7 +1172,7 @@ VALUES (
                           <p align="center" style="text-align:center">
                               <span style="font-size:9.0pt">
                                   <span style="font-family:&quot;Arial&quot;,sans-serif">
-                                      <span style="color:black">($REQUIREDORNOT)</span>
+                                      <span style="color:black">($REQUIRED)</span>
                                   </span>
                               </span>
                               <span style="font-size:9.0pt">
@@ -1194,7 +1194,7 @@ VALUES (
                           <p align="center" style="text-align:center">
                               <span style="font-size:9.0pt">
                                   <span style="font-family:&quot;Arial&quot;,sans-serif">
-                                      <span style="color:black">($REQUIREDORNOT) n&atilde;o</span>
+                                      <span style="color:black">($NOTREQUIRED) n&atilde;o</span>
                                   </span>
                               </span>
                           </p>
