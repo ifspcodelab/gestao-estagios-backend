@@ -94,7 +94,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
     @Override
     public ActivityPlan update(UUID internshipId, UUID activityPlanId, ActivityPlanUpdateDto activityPlanUpdateDto) {
-        internshipService.findById(internshipId);
+        Internship internship = internshipService.findById(internshipId);
         ActivityPlan activityPlan = getActivityPlan(activityPlanId);
 
         if(ChronoUnit.DAYS.between(
@@ -106,7 +106,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                 365
             );
         }
-        activityPlan.setCompanyName(activityPlanUpdateDto.getCompanyName());
+
+        if (!internship.isInProgress()) {
+            activityPlan.setCompanyName(activityPlanUpdateDto.getCompanyName());
+        } else {
+            activityPlan.setCompanyName(getPreviousActivityPlan(activityPlanId).getCompanyName());
+        }
         activityPlan.setInternshipStartDate(activityPlanUpdateDto.getInternshipStartDate());
         activityPlan.setInternshipEndDate(activityPlanUpdateDto.getInternshipEndDate());
 
@@ -124,7 +129,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
         if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
             if (internship.isInProgress()) {
-                ActivityPlan previousActivityPlan = activityPlanRepository.findByIdIsNotAndStatusEqualsOrderByCreatedAtDesc(activityPlanId, RequestStatus.ACCEPTED);
+                ActivityPlan previousActivityPlan = getPreviousActivityPlan(activityPlanId);
                 monthlyReportService.deleteAllByActivityPlanIdAndMonthAfter(previousActivityPlan.getId(), activityPlan.startDateFirstDay());
                 createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay().plusMonths(1));
             } else {
@@ -139,6 +144,10 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
         internshipService.update(internship);
         return activityPlanRepository.save(activityPlan);
+    }
+
+    private ActivityPlan getPreviousActivityPlan(UUID id) {
+        return activityPlanRepository.findByIdIsNotAndStatusEqualsOrderByCreatedAtDesc(id, RequestStatus.ACCEPTED);
     }
 
     private void setInternshipStatusToActivityPlanPending(Internship internship) {
