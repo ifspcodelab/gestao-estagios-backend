@@ -171,6 +171,13 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         }
     }
 
+    @Override
+    public ActivityPlan findById(UUID activityPlanId) {
+        return activityPlanRepository.findById(activityPlanId).orElseThrow(() ->
+           new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId)
+        );
+    }
+
     private String getActivityPlanFileName(Internship internship) {
         return internship.getAdvisorRequest().getStudent().getUser().getRegistration() +
             "/" +
