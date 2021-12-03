@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -62,19 +61,19 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         this.monthlyReportService = monthlyReportService;
     }
 
+    private void verifyIfExistsActivityPlanPending(Internship internship) {
+        internship.getActivityPlans().forEach(plan -> {
+            if (plan.getStatus().equals(RequestStatus.PENDING)) {
+                throw new ActivityPlanAlreadyExistsByStatusException(plan.getStatus());
+            }
+        });
+    }
+
     @Override
     @Transactional
     public ActivityPlan create(UUID internshipId, MultipartFile file) {
         Internship internship = internshipService.findById(internshipId);
-
-        List<Internship> internships =
-            internshipService.findAllByAdvisorRequestStudentId(internship.getAdvisorRequest().getStudent().getId());
-
-        internships.forEach(i -> {
-            if (i.getStatus() == InternshipStatus.ACTIVITY_PLAN_SENT) {
-                throw new ActivityPlanAlreadyExistsByStatusException(i.getStatus());
-            }
-        });
+        verifyIfExistsActivityPlanPending(internship);
         uploadService.activityPlanFileValidation(file);
 
         String activityPlanUrl = uploadService.uploadFile(file, getActivityPlanFileName(internship));
@@ -87,7 +86,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         activityPlanRepository.save(activityPlan);
 
         internship.addActivityPlan(activityPlan);
-        internship.setStatus(InternshipStatus.ACTIVITY_PLAN_SENT);
+        setInternshipStatusToActivityPlanPending(internship);
         internshipService.update(internship);
 
         return activityPlan;
@@ -96,8 +95,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     @Override
     public ActivityPlan update(UUID internshipId, UUID activityPlanId, ActivityPlanUpdateDto activityPlanUpdateDto) {
         internshipService.findById(internshipId);
-        ActivityPlan activityPlan = activityPlanRepository.findById(activityPlanId)
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
+        ActivityPlan activityPlan = getActivityPlan(activityPlanId);
 
         if(ChronoUnit.DAYS.between(
             activityPlanUpdateDto.getInternshipStartDate(),
@@ -116,11 +114,45 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     }
 
     @Override
+    @Transactional
     public ActivityPlan appraise(UUID internshipId, UUID activityPlanId, ActivityPlanAppraisalDto activityPlanAppraisalDto) {
         Internship internship = internshipService.findById(internshipId);
-        ActivityPlan activityPlan = activityPlanRepository.findById(activityPlanId)
-            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
+        ActivityPlan activityPlan = getActivityPlan(activityPlanId);
+        activityPlan.setDetails(activityPlanAppraisalDto.getDetails());
+        activityPlan.setStatus(activityPlanAppraisalDto.getStatus());
+        setInternshipType(internship, activityPlanAppraisalDto);
 
+        if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
+            if (internship.isInProgress()) {
+                ActivityPlan previousActivityPlan = activityPlanRepository.findByIdIsNotOrderByCreatedAtDesc(activityPlanId);
+                monthlyReportService.deleteAllByActivityPlanIdAndMonthAfter(previousActivityPlan.getId(), activityPlan.startDateFirstDay());
+                createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay().plusMonths(1));
+            } else {
+                internship.setStatus(InternshipStatus.IN_PROGRESS);
+                createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay());
+            }
+            sendEmailActivityPlanDeferred(internship, activityPlanAppraisalDto);
+        } else {
+            setInternshipStatusToActivityPlanPending(internship);
+            sendEmailActivityPlanIndeferred(internship, activityPlanAppraisalDto);
+        }
+
+        internshipService.update(internship);
+        return activityPlanRepository.save(activityPlan);
+    }
+
+    private void setInternshipStatusToActivityPlanPending(Internship internship) {
+        if (!internship.isInProgress()) {
+            internship.setStatus(InternshipStatus.ACTIVITY_PLAN_PENDING);
+        }
+    }
+
+    private ActivityPlan getActivityPlan(UUID activityPlanId) {
+        return activityPlanRepository.findById(activityPlanId)
+            .orElseThrow(() -> new ResourceNotFoundException(ResourceName.ACTIVITY_PLAN, activityPlanId));
+    }
+
+    private void setInternshipType(Internship internship, ActivityPlanAppraisalDto activityPlanAppraisalDto) {
         if (activityPlanAppraisalDto.getIsRequired() != null) {
             if (activityPlanAppraisalDto.getIsRequired()) {
                 internship.setInternshipType(InternshipType.REQUIRED);
@@ -128,60 +160,6 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
                 internship.setInternshipType(InternshipType.NOT_REQUIRED);
             }
         }
-
-        if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
-            internship.setStatus(InternshipStatus.IN_PROGRESS);
-
-            for (
-                LocalDate date = activityPlan.getInternshipStartDate().withDayOfMonth(1);
-                date.isBefore(activityPlan.getInternshipEndDate());
-                date = date.plusMonths(1)
-            ) {
-                MonthlyReport report = monthlyReportService.create(date, activityPlan, internship);
-                internship.addMonthlyReport(report);
-            }
-
-            MailDto email = MailDto.builder()
-                    .title("Deferimento do plano de atividades")
-                    .msgHTML(TemplatesHtml.getPlanApproved())
-                    .build();
-
-            Map<String, String> params = CreatorParametersMail.setParametersPlanApproved(
-                    internship.getAdvisorRequest().getStudent().getUser().getName(),
-                    internship.getAdvisorRequest().getAdvisor().getUser().getName(),
-                    activityPlanAppraisalDto.getDetails()
-            );
-            email = FormatterMail.build(email, params);
-
-            email.setRecipientTo(internship.getAdvisorRequest().getStudent().getUser().getEmail());
-
-            senderMail.sendEmail(email);
-        } else {
-            internship.setStatus(InternshipStatus.ACTIVITY_PLAN_PENDING);
-
-            MailDto email = MailDto.builder()
-                    .title("Indeferimento do plano de atividades")
-                    .msgHTML(TemplatesHtml.getPlanIndeferred())
-                    .build();
-
-            Map<String, String> params = CreatorParametersMail.setParametersPlanIndeferred(
-                    internship.getAdvisorRequest().getStudent().getUser().getName(),
-                    internship.getAdvisorRequest().getAdvisor().getUser().getName(),
-                    activityPlanAppraisalDto.getDetails(),
-                    frontendUrl
-            );
-            email = FormatterMail.build(email, params);
-
-            email.setRecipientTo(internship.getAdvisorRequest().getStudent().getUser().getEmail());
-
-            senderMail.sendEmail(email);
-        }
-
-        activityPlan.setDetails(activityPlanAppraisalDto.getDetails());
-        activityPlan.setStatus(activityPlanAppraisalDto.getStatus());
-
-        internshipService.update(internship);
-        return activityPlanRepository.save(activityPlan);
     }
 
     private String getActivityPlanFileName(Internship internship) {
@@ -191,5 +169,52 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
             "/" +
             System.currentTimeMillis() +
             "-plano-atividades";
+    }
+
+    private void createMonthlyReports(ActivityPlan activityPlan, Internship internship, LocalDate fromCurrentMonth) {
+        for (;
+            fromCurrentMonth.isBefore(activityPlan.getInternshipEndDate());
+            fromCurrentMonth = fromCurrentMonth.plusMonths(1)
+        ) {
+            MonthlyReport report = monthlyReportService.create(fromCurrentMonth, activityPlan, internship);
+            internship.addMonthlyReport(report);
+        }
+    }
+
+    private void sendEmailActivityPlanDeferred(Internship internship, ActivityPlanAppraisalDto activityPlanAppraisalDto) {
+        MailDto email = MailDto.builder()
+            .title("Deferimento do plano de atividades")
+            .msgHTML(TemplatesHtml.getPlanApproved())
+            .build();
+
+        Map<String, String> params = CreatorParametersMail.setParametersPlanApproved(
+            internship.getAdvisorRequest().getStudent().getUser().getName(),
+            internship.getAdvisorRequest().getAdvisor().getUser().getName(),
+            activityPlanAppraisalDto.getDetails()
+        );
+        email = FormatterMail.build(email, params);
+
+        email.setRecipientTo(internship.getAdvisorRequest().getStudent().getUser().getEmail());
+
+        senderMail.sendEmail(email);
+    }
+
+    private void sendEmailActivityPlanIndeferred(Internship internship, ActivityPlanAppraisalDto activityPlanAppraisalDto) {
+        MailDto email = MailDto.builder()
+            .title("Indeferimento do plano de atividades")
+            .msgHTML(TemplatesHtml.getPlanIndeferred())
+            .build();
+
+        Map<String, String> params = CreatorParametersMail.setParametersPlanIndeferred(
+            internship.getAdvisorRequest().getStudent().getUser().getName(),
+            internship.getAdvisorRequest().getAdvisor().getUser().getName(),
+            activityPlanAppraisalDto.getDetails(),
+            frontendUrl
+        );
+        email = FormatterMail.build(email, params);
+
+        email.setRecipientTo(internship.getAdvisorRequest().getStudent().getUser().getEmail());
+
+        senderMail.sendEmail(email);
     }
 }

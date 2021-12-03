@@ -42,4 +42,8 @@ public class ActivityPlan {
         this.internship = internship;
         this.status = RequestStatus.PENDING;
     }
+
+    public LocalDate startDateFirstDay() {
+        return this.internshipStartDate.withDayOfMonth(1);
+    }
 }
