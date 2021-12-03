@@ -62,6 +62,11 @@ public class MonthlyReportServiceImpl implements MonthlyReportService {
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.MONTHLY_REPORT, id));
     }
 
+    @Override
+    public void deleteAllByActivityPlanIdAndMonthAfter(UUID activityPlanId, LocalDate month) {
+        monthlyReportRepository.deleteAllByActivityPlanIdAndMonthAfter(activityPlanId, month);
+    }
+
     private String getFileName(Internship internship) {
         return internship.getAdvisorRequest().getStudent().getUser().getRegistration() +
             "/" +

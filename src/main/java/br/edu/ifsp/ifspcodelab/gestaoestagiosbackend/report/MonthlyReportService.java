@@ -12,4 +12,5 @@ public interface MonthlyReportService {
     MonthlyReport update(MonthlyReport monthlyReport);
     MonthlyReport sendAttachment(UUID internshipId, UUID monthlyReportId, MultipartFile file);
     MonthlyReport findById(UUID id);
+    void deleteAllByActivityPlanIdAndMonthAfter(UUID activityPlanId, LocalDate month);
 }

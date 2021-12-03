@@ -64,4 +64,8 @@ public class Internship {
     public Advisor getAdvisor() {
         return this.advisorRequest.getAdvisor();
     }
+
+    public boolean isInProgress() {
+        return this.status.equals(InternshipStatus.IN_PROGRESS);
+    }
 }

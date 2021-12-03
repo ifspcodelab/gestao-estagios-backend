@@ -11,4 +11,5 @@ import java.util.UUID;
 @Repository
 public interface ActivityPlanRepository extends JpaRepository<ActivityPlan, UUID> {
     List<ActivityPlan> findAllByExpiresAtBeforeAndStatusEquals(Instant expiresAt, RequestStatus status);
+    ActivityPlan findByIdIsNotOrderByCreatedAtDesc(UUID activityPlanId);
 }
