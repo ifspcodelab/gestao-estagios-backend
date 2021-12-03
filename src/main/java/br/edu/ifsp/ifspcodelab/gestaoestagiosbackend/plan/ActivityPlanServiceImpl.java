@@ -124,7 +124,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
         if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
             if (internship.isInProgress()) {
-                ActivityPlan previousActivityPlan = activityPlanRepository.findByIdIsNotOrderByCreatedAtDesc(activityPlanId);
+                ActivityPlan previousActivityPlan = activityPlanRepository.findByIdIsNotAndStatusEqualsOrderByCreatedAtDesc(activityPlanId, RequestStatus.ACCEPTED);
                 monthlyReportService.deleteAllByActivityPlanIdAndMonthAfter(previousActivityPlan.getId(), activityPlan.startDateFirstDay());
                 createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay().plusMonths(1));
             } else {
