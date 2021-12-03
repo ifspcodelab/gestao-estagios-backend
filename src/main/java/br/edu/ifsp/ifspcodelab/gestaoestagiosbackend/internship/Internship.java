@@ -66,6 +66,6 @@ public class Internship {
     }
 
     public boolean isInProgress() {
-        return this.status.equals(InternshipStatus.IN_PROGRESS);
+        return this.status == InternshipStatus.IN_PROGRESS;
     }
 }
