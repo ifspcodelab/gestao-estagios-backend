@@ -17,6 +17,8 @@ spring:
   servlet:
     multipart:
       max-file-size: 5MB
+  flyway:
+    placeholder-replacement: false
 application:
   jwt:
     secretKey: ${JWT_SECRETKEY:bcd38b5a-95f7-4750-a4e8-a215430cc515}
