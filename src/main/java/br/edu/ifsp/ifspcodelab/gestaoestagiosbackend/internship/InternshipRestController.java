@@ -77,4 +77,9 @@ public class InternshipRestController {
                 realizationTermService.appraisal(internshipId, realizationTermId, realizationTermAppraisalDto)
         );
     }
+
+    @PatchMapping("api/v1/internships/{internshipId}/update-status")
+    public ResponseEntity<InternshipDto> updateInternshipStatus(@PathVariable UUID internshipId) {
+        return ResponseEntity.ok(internshipMapper.to(internshipService.updateStatus(internshipId)));
+    }
 }

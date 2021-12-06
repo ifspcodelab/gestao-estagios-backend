@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
@@ -43,11 +44,11 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     @Override
-    public Internship updateStatus(InternshipUpdateDto internshipUpdateDto, UUID internshipId) {
+    public Internship updateStatus(UUID internshipId) {
         Internship internship = this.internshipRepository.findById(internshipId)
                 .orElseThrow(() -> new ResourceNotFoundException(ResourceName.INTERNSHIP, internshipId));
 
-        internship.setStatus(internshipUpdateDto.getStatus());
+        internship.setStatus(InternshipStatus.FINISHED);
 
         return this.internshipRepository.save(internship);
     }
