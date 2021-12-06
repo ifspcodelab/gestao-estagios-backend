@@ -1,14 +1,11 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.dispatch;
 
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.Parameter;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter.ParameterService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlanService;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTerm;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.report.MonthlyReport;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
