@@ -5,10 +5,10 @@ import lombok.Value;
 @Value
 public class FinalDocumentationDto {
     byte[] bytes;
-    String filename;
+    String fileName;
 
     public FinalDocumentationDto(byte[] bytes, Internship internship) {
         this.bytes = bytes;
-        this.filename = "documentacao-final-" + internship.getStudent().getUser().getRegistration() + ".pdf";
+        this.fileName = "documentacao-final-" + internship.getStudent().getUser().getRegistration() + ".pdf";
     }
 }
