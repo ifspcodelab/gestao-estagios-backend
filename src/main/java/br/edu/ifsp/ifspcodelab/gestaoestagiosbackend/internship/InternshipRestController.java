@@ -5,6 +5,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.Realization
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.realizationterm.RealizationTermUpdateDto;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -81,5 +82,18 @@ public class InternshipRestController {
     @PatchMapping("api/v1/internships/{internshipId}/update-status")
     public ResponseEntity<InternshipDto> updateInternshipStatus(@PathVariable UUID internshipId) {
         return ResponseEntity.ok(internshipMapper.to(internshipService.updateStatus(internshipId)));
+    }
+
+    @GetMapping("api/v1/internships/{internshipId}/final-documentation")
+    public ResponseEntity<byte[]> finalDocumentation(@PathVariable UUID internshipId) {
+        // 1° Status do estágio está como termo de realização aceito?
+        // 2°
+        byte[] bytes = this.internshipService.generateFinalDocumentation(internshipId);
+        return ResponseEntity.ok()
+                .header("Content-Disposition",
+                        "attachment; filename="+internshipId+"-documentacao-final.pdf")
+                .contentLength(bytes.length)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(bytes);
     }
 }
