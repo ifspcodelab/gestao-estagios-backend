@@ -660,7 +660,7 @@ VALUES (
 
   <p style="margin-left: 40px; text-align: justify; font-family: Arial, Sans Serif;">
     Venho, por meio deste, apresentar &agrave; Vossa Senhoria o DESPACHO a seguir, por mim emitido, que aprova os documentos de finaliza&ccedil;&atilde;o do Est&aacute;gio Supervisionado <span data-th-text="${internship.internshipType.description}">$INTERNSHIPTYPE</span> do(a) estudante
-    <span data-th-text="${internship.advisorRequest.student.user.name}">$STUDENTNAME</span> (<span data-th-text="${internship.advisorRequest.student.user.registration}">$REGISTRATION</span>), regularmente matriculado(a) no Curso <span data-th-text="${internship.advisorRequest.curriculum.course.name}">$COURSENAME</span>desta institui&ccedil;&atilde;o. O est&aacute;gio dever&aacute; ser registrado como <span data-th-text="${internship.internshipType.description}">$INTERNSHIPTYPE</span>.
+    <span data-th-text="${internship.advisorRequest.student.user.name}">$STUDENTNAME</span> (<span data-th-text="${internship.advisorRequest.student.user.registration}">$REGISTRATION</span>), regularmente matriculado(a) no Curso <span data-th-text="${internship.advisorRequest.curriculum.course.name}">$COURSENAME</span> desta institui&ccedil;&atilde;o. O est&aacute;gio dever&aacute; ser registrado como <span data-th-text="${internship.internshipType.description}">$INTERNSHIPTYPE</span>.
   </p>
 
 
@@ -729,7 +729,7 @@ VALUES (
                         width="326">
                         <p align="right" class="MsoNormal" style="text-align:right">
                             <b>
-                                <span style="font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Matr&iacute;culan&ordm;: </span>
+                                <span style="font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">Matr&iacute;cula n&ordm;: </span>
                             </b>
                             <span style="color:null;">
                                 <span data-th-text="${internship.advisorRequest.student.user.registration}" style="font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif">$REGISTRATION</span>

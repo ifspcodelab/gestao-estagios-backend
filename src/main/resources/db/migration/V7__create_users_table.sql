@@ -7,3 +7,5 @@ CREATE TABLE users(
     is_activated VARCHAR NOT NULL,
     CONSTRAINT users_pk PRIMARY KEY (id)
 );
+
+INSERT INTO users VALUES ('9dfc3dbf-b2ca-4111-95f4-074d9cd847d1', '$$APP_ADMIN_REGISTRATION$', 'Admin', '$$APP_ADMIN_PASSWORD$', '$$APP_ADMIN_EMAIL$', 'ENABLED');
