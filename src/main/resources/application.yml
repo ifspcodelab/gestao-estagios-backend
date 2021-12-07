@@ -18,7 +18,12 @@ spring:
     multipart:
       max-file-size: 5MB
   flyway:
-    placeholder-replacement: false
+    placeholder-prefix: $$
+    placeholder-suffix: $
+    placeholders:
+      APP_ADMIN_REGISTRATION: ${APP_ADMIN_REGISTRATION}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
 application:
   jwt:
     secretKey: ${JWT_SECRETKEY:bcd38b5a-95f7-4750-a4e8-a215430cc515}
