@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.dispatch;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.Internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship.InternshipService;
@@ -76,6 +77,7 @@ public class DispatchRestController {
         dict.put("internship", internship);
         dict.put("activityPlan", activityPlan);
         dict.put("monthlyReports", new ArrayList<>(internship.getMonthlyReports().stream()
+            .filter(r -> r.getStatus().equals(ReportStatus.FINAL_ACCEPTED))
             .sorted(Comparator.comparing(MonthlyReport::getMonth)).collect(Collectors.toList())));
         dict.put("realizationTerm", internship.getRealizationTerms().stream()
             .filter(term -> term.getStatus().equals(RequestStatus.ACCEPTED))
@@ -83,6 +85,7 @@ public class DispatchRestController {
             .orElse(null)
         );
         dict.put("totalNumberOfApprovedHours", internship.getMonthlyReports().stream()
+            .filter(r -> r.getStatus().equals(ReportStatus.FINAL_ACCEPTED))
             .map(MonthlyReport::getNumberOfApprovedHours)
             .reduce(0, Integer::sum)
             .toString()
