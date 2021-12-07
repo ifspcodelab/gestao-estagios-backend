@@ -32,14 +32,11 @@ public class RealizationTerm {
     @JsonBackReference
     private Internship internship;
 
-    public RealizationTerm(LocalDate internshipStartDate, LocalDate internshipEndDate, String realizationTermUrl, String details, Internship internship) {
+    public RealizationTerm(String realizationTermUrl, Internship internship) {
         this.id = UUID.randomUUID();
         this.createdAt = Instant.now();
-        this.internshipStartDate = internshipStartDate;
-        this.internshipEndDate = internshipEndDate;
         this.realizationTermUrl = realizationTermUrl;
         this.status = RequestStatus.PENDING;
-        this.details = details;
         this.internship = internship;
     }
 }
