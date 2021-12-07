@@ -62,7 +62,7 @@ public class InternshipServiceImpl implements InternshipService {
     }
 
     @Override
-    public byte[] generateFinalDocumentation(UUID internshipId) {
+    public FinalDocumentationDto generateFinalDocumentation(UUID internshipId) {
         Internship internship = findById(internshipId);
 
 //        if(!internship.getStatus().equals(InternshipStatus.REALIZATION_TERM_ACCEPTED)){
@@ -70,60 +70,25 @@ public class InternshipServiceImpl implements InternshipService {
 //        }
         List<String> urls = new ArrayList<>();
 
-//        for(ActivityPlan plan : internship.getActivityPlans()) {
-//            if(plan.getStatus().equals(RequestStatus.ACCEPTED)){
-//                urls.add(plan.getActivityPlanUrl());
-//
-//                internship.getMonthlyReports().stream()
-//                        .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
-//                                m.getActivityPlan().getId() == plan.getId())
-//                        .sorted(Comparator.comparing(MonthlyReport::getMonth))
-//                        .forEach(m -> {
-//                            urls.add(m.getFinalMonthlyReportUrl());
-//                            if(m.getAttachmentUrl() != null){
-//                                urls.add(m.getAttachmentUrl());
-//                            }
-//                        });
-//            }
-//        }
-
-
-//        internship.getActivityPlans().stream()
-//                .filter(a -> a.getStatus().equals(RequestStatus.ACCEPTED))
-//                .sorted(Comparator.comparing(ActivityPlan::getCreatedAt))
-//                .forEach(a -> urls.add(a.getActivityPlanUrl()));
-
         internship.getActivityPlans().stream()
-                .filter(a -> a.getStatus().equals(RequestStatus.ACCEPTED))
-                .sorted(Comparator.comparing(ActivityPlan::getCreatedAt))
-                .forEach(a -> {
-                    urls.add(a.getActivityPlanUrl());
-
-                    internship.getMonthlyReports().stream()
-                        .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
-                             m.getActivityPlan().getId() == a.getId())
-                        .sorted(Comparator.comparing(MonthlyReport::getMonth))
-                        .forEach(m -> {
-                            urls.add(m.getFinalMonthlyReportUrl());
-                            if(m.getAttachmentUrl() != null){
-                                urls.add(m.getAttachmentUrl());
-                            }
-                        });
-                });
-
-//        internship.getMonthlyReports().stream()
-//                .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED))
-//                .sorted(Comparator.comparing(MonthlyReport::getMonth))
-//                .forEach(m -> {
-//                    urls.add(m.getFinalMonthlyReportUrl());
-//                    if(m.getAttachmentUrl() != null){
-//                        urls.add(m.getAttachmentUrl());
-//                    }
-//                });
+            .filter(a -> a.getStatus().equals(RequestStatus.ACCEPTED))
+            .sorted(Comparator.comparing(ActivityPlan::getCreatedAt))
+            .forEach(a -> {
+                urls.add(a.getActivityPlanUrl());
+                internship.getMonthlyReports().stream()
+                    .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) && m.getActivityPlan().getId() == a.getId())
+                    .sorted(Comparator.comparing(MonthlyReport::getMonth))
+                    .forEach(m -> {
+                        urls.add(m.getFinalMonthlyReportUrl());
+                        if(m.getAttachmentUrl() != null){
+                            urls.add(m.getAttachmentUrl());
+                        }
+                    });
+            });
 
         internship.getRealizationTerms().stream()
-                .filter(a -> a.getStatus().equals(RequestStatus.ACCEPTED))
-                .forEach(a -> urls.add(a.getRealizationTermUrl()));
+            .filter(a -> a.getStatus().equals(RequestStatus.ACCEPTED))
+            .forEach(a -> urls.add(a.getRealizationTermUrl()));
 
         List<InputStream> inputStreams = new ArrayList<>();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -140,6 +105,6 @@ public class InternshipServiceImpl implements InternshipService {
             //criar exceção personalizada
         }
 
-        return output.toByteArray();
+        return new FinalDocumentationDto(output.toByteArray(), internship);
     }
 }
