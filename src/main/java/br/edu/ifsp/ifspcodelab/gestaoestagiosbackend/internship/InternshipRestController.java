@@ -90,7 +90,7 @@ public class InternshipRestController {
 
         byte[] bytes = finalDocumentationDto.getBytes();
         return ResponseEntity.ok()
-            .header("Content-Disposition", "attachment; filename=" + finalDocumentationDto.getFilename())
+            .header("Content-Disposition", "attachment; filename=" + finalDocumentationDto.getFileName())
             .contentLength(bytes.length)
             .contentType(MediaType.APPLICATION_PDF)
             .body(bytes);
