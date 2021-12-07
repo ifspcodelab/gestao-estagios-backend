@@ -14,5 +14,5 @@ public interface InternshipService {
     List<Internship> findAllByAdvisorRequestAdvisorId(UUID advisorId);
     Internship update(Internship internship);
     Internship updateStatus(UUID internshipId);
-    byte[] generateFinalDocumentation(UUID internshipId);
+    FinalDocumentationDto generateFinalDocumentation(UUID internshipId);
 }

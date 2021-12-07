@@ -86,14 +86,13 @@ public class InternshipRestController {
 
     @GetMapping("api/v1/internships/{internshipId}/final-documentation")
     public ResponseEntity<byte[]> finalDocumentation(@PathVariable UUID internshipId) {
-        // 1° Status do estágio está como termo de realização aceito?
-        // 2°
-        byte[] bytes = this.internshipService.generateFinalDocumentation(internshipId);
+        FinalDocumentationDto finalDocumentationDto = internshipService.generateFinalDocumentation(internshipId);
+
+        byte[] bytes = finalDocumentationDto.getBytes();
         return ResponseEntity.ok()
-                .header("Content-Disposition",
-                        "attachment; filename="+internshipId+"-documentacao-final.pdf")
-                .contentLength(bytes.length)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(bytes);
+            .header("Content-Disposition", "attachment; filename=" + finalDocumentationDto.getFilename())
+            .contentLength(bytes.length)
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(bytes);
     }
 }
