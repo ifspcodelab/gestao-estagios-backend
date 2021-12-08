@@ -76,16 +76,7 @@ public class InternshipServiceImpl implements InternshipService {
             .sorted(Comparator.comparing(ActivityPlan::getCreatedAt))
             .forEach(a -> {
                 urls.add(a.getActivityPlanUrl());
-                internship.getMonthlyReports().stream()
-                    .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
-                            m.getActivityPlan().getId() == a.getId())
-                    .sorted(Comparator.comparing(MonthlyReport::getMonth))
-                    .forEach(m -> {
-                        urls.add(m.getFinalMonthlyReportUrl());
-                        if(m.getAttachmentUrl() != null){
-                            urls.add(m.getAttachmentUrl());
-                        }
-                    });
+                urls.addAll(getMonthlyReportsAndAttachments(internship, a));
             });
 
         internship.getRealizationTerms().stream()
@@ -108,5 +99,23 @@ public class InternshipServiceImpl implements InternshipService {
         }
 
         return new FinalDocumentationDto(output.toByteArray(), internship);
+    }
+
+    private List<String> getMonthlyReportsAndAttachments(Internship internship,
+                                                         ActivityPlan activityPlan) {
+        List<String> urls = new ArrayList<>();
+
+        internship.getMonthlyReports().stream()
+                .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
+                        m.getActivityPlan().getId() == activityPlan.getId())
+                .sorted(Comparator.comparing(MonthlyReport::getMonth))
+                .forEach(m -> {
+                    urls.add(m.getFinalMonthlyReportUrl());
+                    if(m.getAttachmentUrl() != null){
+                        urls.add(m.getAttachmentUrl());
+                    }
+                });
+
+        return urls;
     }
 }
