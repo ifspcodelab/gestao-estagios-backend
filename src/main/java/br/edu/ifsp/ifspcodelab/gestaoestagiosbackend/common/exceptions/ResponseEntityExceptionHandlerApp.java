@@ -202,4 +202,15 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
                 HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(MergeFilesException.class)
+    public ResponseEntity<ProblemDetail> mergeFiles(MergeFilesException exception) {
+        return new ResponseEntity<>(
+                new ProblemDetail(
+                        "Cannot read files to merge. Exception throw " + exception.getExceptionMessage(),
+                        Collections.emptyList()
+                ),
+                HttpStatus.CONFLICT
+        );
+    }
 }

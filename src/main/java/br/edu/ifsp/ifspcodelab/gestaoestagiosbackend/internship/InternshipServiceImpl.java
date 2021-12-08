@@ -4,6 +4,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStat
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.InternshipWithoutRealizationTermAcceptedException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.MergeFilesException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
@@ -104,7 +105,7 @@ public class InternshipServiceImpl implements InternshipService {
             pdf.addSources(inputStreams);
             pdf.mergeDocuments(null);
         } catch (IOException ex) {
-            //criar exceção personalizada
+            throw new MergeFilesException(ex.getMessage());
         }
 
         return new FinalDocumentationDto(output.toByteArray(), internship);
