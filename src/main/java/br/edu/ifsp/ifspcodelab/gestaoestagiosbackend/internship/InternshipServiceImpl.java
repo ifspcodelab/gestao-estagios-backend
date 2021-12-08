@@ -55,8 +55,7 @@ public class InternshipServiceImpl implements InternshipService {
 
     @Override
     public Internship updateStatus(UUID internshipId) {
-        Internship internship = this.internshipRepository.findById(internshipId)
-                .orElseThrow(() -> new ResourceNotFoundException(ResourceName.INTERNSHIP, internshipId));
+        Internship internship = findById(internshipId);
 
         internship.setStatus(InternshipStatus.FINISHED);
 
