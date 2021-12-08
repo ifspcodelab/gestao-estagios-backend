@@ -3,6 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.ReportStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.InternshipWithoutRealizationTermAcceptedException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.plan.ActivityPlan;
@@ -65,9 +66,9 @@ public class InternshipServiceImpl implements InternshipService {
     public FinalDocumentationDto generateFinalDocumentation(UUID internshipId) {
         Internship internship = findById(internshipId);
 
-//        if(!internship.getStatus().equals(InternshipStatus.REALIZATION_TERM_ACCEPTED)){
-//            throw new
-//        }
+        if(!internship.getStatus().equals(InternshipStatus.REALIZATION_TERM_ACCEPTED)){
+            throw new InternshipWithoutRealizationTermAcceptedException(internship.getId());
+        }
         List<String> urls = new ArrayList<>();
 
         internship.getActivityPlans().stream()
@@ -76,7 +77,8 @@ public class InternshipServiceImpl implements InternshipService {
             .forEach(a -> {
                 urls.add(a.getActivityPlanUrl());
                 internship.getMonthlyReports().stream()
-                    .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) && m.getActivityPlan().getId() == a.getId())
+                    .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
+                            m.getActivityPlan().getId() == a.getId())
                     .sorted(Comparator.comparing(MonthlyReport::getMonth))
                     .forEach(m -> {
                         urls.add(m.getFinalMonthlyReportUrl());
