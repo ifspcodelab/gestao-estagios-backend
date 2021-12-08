@@ -189,4 +189,17 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
             HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(InternshipWithoutRealizationTermAcceptedException.class)
+    public ResponseEntity<ProblemDetail> internshipWithoutRealizationTermAccepted(
+            InternshipWithoutRealizationTermAcceptedException exception) {
+        return new ResponseEntity<>(
+                new ProblemDetail(
+                        "Internship with id " + exception.getInternshipId() +
+                                " has not realization term with status accepted.",
+                        Collections.emptyList()
+                ),
+                HttpStatus.CONFLICT
+        );
+    }
 }
