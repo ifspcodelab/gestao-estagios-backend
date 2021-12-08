@@ -39,13 +39,12 @@ public class DispatchRestController {
         return getTemplateEngine().process(parameter.getInitialDispatchHtml(), getInitialContext(internship, activityPlan));
     }
 
-    @GetMapping("api/v1/internships/{internshipId}/activity-plans/{activityPlanId}/final-dispatch")
-    public String finalShow(@PathVariable UUID internshipId, @PathVariable UUID activityPlanId) {
+    @GetMapping("api/v1/internships/{internshipId}/final-dispatch")
+    public String finalShow(@PathVariable UUID internshipId) {
         Internship internship = internshipService.findById(internshipId);
-        ActivityPlan activityPlan = activityPlanService.findById(activityPlanId);
         Parameter parameter = parameterService.findFirst();
 
-        return getTemplateEngine().process(parameter.getFinalDispatchHtml(), getFinalContext(internship, activityPlan));
+        return getTemplateEngine().process(parameter.getFinalDispatchHtml(), getFinalContext(internship));
     }
 
     private TemplateEngine getTemplateEngine() {
@@ -71,11 +70,13 @@ public class DispatchRestController {
         return context;
     }
 
-    private Context getFinalContext(Internship internship, ActivityPlan activityPlan) {
+    private Context getFinalContext(Internship internship) {
         Context context = new Context();
         Map<String, Object> dict = new HashMap<>();
         dict.put("internship", internship);
-        dict.put("activityPlan", activityPlan);
+        dict.put("activityPlans", new ArrayList<>(internship.getActivityPlans().stream()
+            .filter(a -> a.getStatus().equals(RequestStatus.ACCEPTED))
+            .sorted(Comparator.comparing(ActivityPlan::getCreatedAt)).collect(Collectors.toList())));
         dict.put("monthlyReports", new ArrayList<>(internship.getMonthlyReports().stream()
             .filter(r -> r.getStatus().equals(ReportStatus.FINAL_ACCEPTED))
             .sorted(Comparator.comparing(MonthlyReport::getMonth)).collect(Collectors.toList())));

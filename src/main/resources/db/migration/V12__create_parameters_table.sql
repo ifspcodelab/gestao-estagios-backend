@@ -753,7 +753,7 @@ VALUES (
                             <b>
                                 <span style="font-size:11.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black">Nome da Unidade Concedente: </span>
                             </b>
-                            <span data-th-text="${activityPlan.companyName}">$COMPANYNAME</span>
+                            <span data-th-text="${activityPlans[0].companyName}"></span>
                         </p>
                     </td>
                 </tr>
@@ -857,7 +857,7 @@ VALUES (
                         </p>
                     </td>
                 </tr>
-                <tr style="mso-yfti-irow:3;mso-yfti-lastrow:yes;height:14.25pt">
+                <tr style="mso-yfti-irow:3;mso-yfti-lastrow:yes;height:14.25pt" data-th-each="activityPlan : ${activityPlans}">
                     <td nowrap="nowrap"
                         style="
                             width:140.05pt;
