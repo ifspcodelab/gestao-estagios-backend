@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.internship;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,7 @@ public class InternshipRestController {
         byte[] bytes = finalDocumentationDto.getBytes();
         return ResponseEntity.ok()
             .header("Content-Disposition", "attachment; filename=" + finalDocumentationDto.getFileName())
+            .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION)
             .contentLength(bytes.length)
             .contentType(MediaType.APPLICATION_PDF)
             .body(bytes);

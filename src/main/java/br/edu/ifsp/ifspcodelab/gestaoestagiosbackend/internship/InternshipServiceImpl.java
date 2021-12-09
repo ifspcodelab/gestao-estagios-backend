@@ -101,20 +101,19 @@ public class InternshipServiceImpl implements InternshipService {
         return new FinalDocumentationDto(output.toByteArray(), internship);
     }
 
-    private List<String> getMonthlyReportsAndAttachments(Internship internship,
-                                                         ActivityPlan activityPlan) {
+    private List<String> getMonthlyReportsAndAttachments(Internship internship, ActivityPlan activityPlan) {
         List<String> urls = new ArrayList<>();
 
         internship.getMonthlyReports().stream()
-                .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
-                        m.getActivityPlan().getId() == activityPlan.getId())
-                .sorted(Comparator.comparing(MonthlyReport::getMonth))
-                .forEach(m -> {
-                    urls.add(m.getFinalMonthlyReportUrl());
-                    if(m.getAttachmentUrl() != null){
-                        urls.add(m.getAttachmentUrl());
-                    }
-                });
+            .filter(m -> m.getStatus().equals(ReportStatus.FINAL_ACCEPTED) &&
+                m.getActivityPlan().getId() == activityPlan.getId())
+            .sorted(Comparator.comparing(MonthlyReport::getMonth))
+            .forEach(m -> {
+                urls.add(m.getFinalMonthlyReportUrl());
+                if(m.getAttachmentUrl() != null){
+                    urls.add(m.getAttachmentUrl());
+                }
+            });
 
         return urls;
     }
