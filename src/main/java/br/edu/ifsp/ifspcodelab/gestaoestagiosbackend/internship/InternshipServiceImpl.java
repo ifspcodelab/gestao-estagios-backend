@@ -66,7 +66,7 @@ public class InternshipServiceImpl implements InternshipService {
     public FinalDocumentationDto generateFinalDocumentation(UUID internshipId) {
         Internship internship = findById(internshipId);
 
-        if(!internship.getStatus().equals(InternshipStatus.REALIZATION_TERM_ACCEPTED)){
+        if(!internship.canGenerateFinalDocumentation()) {
             throw new InternshipWithoutRealizationTermAcceptedException(internship.getId());
         }
         List<String> urls = new ArrayList<>();
