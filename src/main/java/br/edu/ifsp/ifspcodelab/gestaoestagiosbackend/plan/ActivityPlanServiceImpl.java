@@ -181,11 +181,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
     }
 
     private void createMonthlyReports(ActivityPlan activityPlan, Internship internship, LocalDate fromCurrentMonth) {
-        for (;
-            fromCurrentMonth.isBefore(activityPlan.getInternshipEndDate());
-            fromCurrentMonth = fromCurrentMonth.plusMonths(1)
+        for (
+            LocalDate currentMonth = fromCurrentMonth;
+            currentMonth.isBefore(activityPlan.getInternshipEndDate());
+            currentMonth = currentMonth.plusMonths(1)
         ) {
-            MonthlyReport report = monthlyReportService.create(fromCurrentMonth, activityPlan, internship);
+            MonthlyReport report = monthlyReportService.create(currentMonth, activityPlan, internship);
             internship.addMonthlyReport(report);
         }
     }
