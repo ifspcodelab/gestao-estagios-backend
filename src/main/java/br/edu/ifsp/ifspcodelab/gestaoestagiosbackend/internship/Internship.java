@@ -68,4 +68,9 @@ public class Internship {
     public boolean isInProgress() {
         return this.status == InternshipStatus.IN_PROGRESS;
     }
+
+    public boolean canGenerateFinalDocumentation() {
+        return this.getStatus().equals(InternshipStatus.REALIZATION_TERM_ACCEPTED) ||
+            this.getStatus().equals(InternshipStatus.FINISHED);
+    }
 }
