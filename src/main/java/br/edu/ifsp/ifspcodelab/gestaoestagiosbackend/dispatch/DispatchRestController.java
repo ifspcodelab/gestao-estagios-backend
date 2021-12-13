@@ -62,7 +62,7 @@ public class DispatchRestController {
     }
 
     private Context getInitialContext(Internship internship, ActivityPlan activityPlan) {
-        Context context = new Context();
+        Context context = new Context(new Locale("pt", "BR"));
         Map<String, Object> dict = new HashMap<>();
         dict.put("internship", internship);
         dict.put("activityPlan", activityPlan);
@@ -71,7 +71,7 @@ public class DispatchRestController {
     }
 
     private Context getFinalContext(Internship internship) {
-        Context context = new Context();
+        Context context = new Context(new Locale("pt", "BR"));
         Map<String, Object> dict = new HashMap<>();
         dict.put("internship", internship);
         dict.put("activityPlans", new ArrayList<>(internship.getActivityPlans().stream()
