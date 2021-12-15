@@ -110,7 +110,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         if (!internship.isInProgress()) {
             activityPlan.setCompanyName(activityPlanUpdateDto.getCompanyName());
         } else {
-            activityPlan.setCompanyName(getPreviousActivityPlan(activityPlanId).getCompanyName());
+            activityPlan.setCompanyName(getPreviousActivityPlan(activityPlanId, internship.getId()).getCompanyName());
         }
         activityPlan.setInternshipStartDate(activityPlanUpdateDto.getInternshipStartDate());
         activityPlan.setInternshipEndDate(activityPlanUpdateDto.getInternshipEndDate());
@@ -129,7 +129,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
         if (activityPlanAppraisalDto.getStatus().equals(RequestStatus.ACCEPTED)) {
             if (internship.isInProgress()) {
-                ActivityPlan previousActivityPlan = getPreviousActivityPlan(activityPlanId);
+                ActivityPlan previousActivityPlan = getPreviousActivityPlan(activityPlanId, internship.getId());
                 monthlyReportService.deleteAllByActivityPlanIdAndMonthAfter(previousActivityPlan.getId(), activityPlan.startDateFirstDay());
                 createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay().plusMonths(1));
             } else {
@@ -146,8 +146,8 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         return activityPlanRepository.save(activityPlan);
     }
 
-    private ActivityPlan getPreviousActivityPlan(UUID id) {
-        return activityPlanRepository.findByIdIsNotAndStatusEqualsOrderByCreatedAtDesc(id, RequestStatus.ACCEPTED);
+    private ActivityPlan getPreviousActivityPlan(UUID activityPlanId, UUID internshipId) {
+        return activityPlanRepository.findFirstByIdIsNotAndInternshipIdAndStatusEqualsOrderByCreatedAtDesc(activityPlanId, internshipId, RequestStatus.ACCEPTED);
     }
 
     private void setInternshipStatusToActivityPlanPending(Internship internship) {
