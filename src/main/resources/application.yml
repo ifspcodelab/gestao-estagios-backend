@@ -24,6 +24,9 @@ spring:
       APP_ADMIN_REGISTRATION: ${APP_ADMIN_REGISTRATION}
       APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD}
       APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
+springdoc:
+  api-docs:
+    path: /api-docs
 application:
   jwt:
     secretKey: ${JWT_SECRETKEY:bcd38b5a-95f7-4750-a4e8-a215430cc515}

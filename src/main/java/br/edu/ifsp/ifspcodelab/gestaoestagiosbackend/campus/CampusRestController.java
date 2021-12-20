@@ -1,6 +1,12 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ProblemDetail;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +25,17 @@ public class CampusRestController {
     private final CampusService campusService;
     private final CampusMapper campusMapper;
 
+    @Operation(summary = "Create a new campus")
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200", description = "OK",
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = CampusDto.class))}
+        ),
+        @ApiResponse(
+            responseCode = "400", description = "Bad Request",
+            content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetail.class))}
+        )
+    })
     @PostMapping
     public ResponseEntity<CampusDto> create(@Valid @RequestBody CampusCreateDto campusCreateDto) {
         Campus campus = campusService.create(campusCreateDto);
