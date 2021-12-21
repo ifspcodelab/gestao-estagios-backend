@@ -131,7 +131,11 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
             if (internship.isInProgress()) {
                 ActivityPlan previousActivityPlan = getPreviousActivityPlan(activityPlanId, internship.getId());
                 monthlyReportService.deleteAllByActivityPlanIdAndMonthAfter(previousActivityPlan.getId(), activityPlan.startDateFirstDay());
-                createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay().plusMonths(1));
+                if (activityPlan.startDateFirstDay().isAfter(previousActivityPlan.getInternshipEndDate().withDayOfMonth(1))) {
+                    createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay());
+                } else {
+                    createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay().plusMonths(1));
+                }
             } else {
                 internship.setStatus(InternshipStatus.IN_PROGRESS);
                 createMonthlyReports(activityPlan, internship, activityPlan.startDateFirstDay());

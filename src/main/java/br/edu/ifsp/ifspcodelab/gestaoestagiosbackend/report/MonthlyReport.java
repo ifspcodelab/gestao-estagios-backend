@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -53,6 +54,8 @@ public class MonthlyReport {
         this.status = ReportStatus.DRAFT_PENDING;
         this.activityPlan = activityPlan;
         this.internship = internship;
+        this.draftMonthlyReportSubmissions = new HashSet<>();
+        this.finalMonthlyReportSubmissions = new HashSet<>();
     }
 
     public void addDraftMonthlyReportSubmission(DraftMonthlyReportSubmission draftMonthlyReportSubmission) {
