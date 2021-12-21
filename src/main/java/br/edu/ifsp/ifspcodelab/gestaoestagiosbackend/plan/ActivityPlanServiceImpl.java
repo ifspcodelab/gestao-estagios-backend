@@ -86,7 +86,7 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
         activityPlanRepository.save(activityPlan);
 
         internship.addActivityPlan(activityPlan);
-        setInternshipStatusToActivityPlanPending(internship);
+        setInternshipStatusToActivityPlanSent(internship);
         internshipService.update(internship);
 
         return activityPlan;
@@ -148,6 +148,12 @@ public class ActivityPlanServiceImpl implements ActivityPlanService {
 
     private ActivityPlan getPreviousActivityPlan(UUID activityPlanId, UUID internshipId) {
         return activityPlanRepository.findFirstByIdIsNotAndInternshipIdAndStatusEqualsOrderByCreatedAtDesc(activityPlanId, internshipId, RequestStatus.ACCEPTED);
+    }
+
+    private void setInternshipStatusToActivityPlanSent(Internship internship) {
+        if (!internship.isInProgress()) {
+            internship.setStatus(InternshipStatus.ACTIVITY_PLAN_SENT);
+        }
     }
 
     private void setInternshipStatusToActivityPlanPending(Internship internship) {
