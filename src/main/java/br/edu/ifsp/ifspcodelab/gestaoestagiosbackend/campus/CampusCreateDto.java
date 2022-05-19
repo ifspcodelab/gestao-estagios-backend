@@ -17,6 +17,10 @@ public class CampusCreateDto {
     @Size(min = 3, max = 3)
     String abbreviation;
     @NotNull
+    @NotBlank
+    @Size(min = 2, max = 2)
+    String initialRegistrationPattern;
+    @NotNull
     @Valid
     AddressCreateDto address;
     @NotNull
