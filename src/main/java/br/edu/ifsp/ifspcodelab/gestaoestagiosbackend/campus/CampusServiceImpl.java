@@ -121,6 +121,7 @@ public class CampusServiceImpl implements CampusService {
         return new Campus(
             campusCreateDto.getName(),
             campusCreateDto.getAbbreviation(),
+            campusCreateDto.getInitialRegistrationPattern(),
             toAddress(campusCreateDto.getAddress(), city),
             toInternshipSector(campusCreateDto.getInternshipSector())
         );

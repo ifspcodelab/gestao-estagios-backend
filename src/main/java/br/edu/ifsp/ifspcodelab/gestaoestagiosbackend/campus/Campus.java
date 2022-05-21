@@ -20,6 +20,7 @@ public class Campus {
     private UUID id;
     private String name;
     private String abbreviation;
+    private String initialRegistrationPattern;
     @Embedded
     private Address address;
     @Embedded
@@ -27,10 +28,11 @@ public class Campus {
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
-    public Campus(String name, String abbreviation, Address address, InternshipSector internshipSector) {
+    public Campus(String name, String abbreviation, String initialRegistrationPattern, Address address, InternshipSector internshipSector) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.abbreviation = abbreviation;
+        this.initialRegistrationPattern = initialRegistrationPattern;
         this.address = address;
         this.internshipSector = internshipSector;
         this.status = EntityStatus.ENABLED;
