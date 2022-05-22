@@ -6,6 +6,7 @@ public class CampusFactoryUtils {
     public static Campus sampleCampus(City city) {
         String name = "Test Campus";
         String abbreviation = "TCS";
+        String initialRegistrationPattern = "SP";
         String postalCode = "123456";
         String street = "Test Street";
         String neighborhood = "Test Neighborhood";
@@ -17,6 +18,6 @@ public class CampusFactoryUtils {
         String website = "https://testcampus.com";
         InternshipSector internshipSector = new InternshipSector(telephone, email, website);
 
-        return new Campus(name, abbreviation, address, internshipSector);
+        return new Campus(name, abbreviation, initialRegistrationPattern, address, internshipSector);
     }
 }
