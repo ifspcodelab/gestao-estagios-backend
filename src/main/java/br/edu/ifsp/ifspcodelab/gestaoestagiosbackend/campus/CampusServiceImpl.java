@@ -42,6 +42,9 @@ public class CampusServiceImpl implements CampusService {
         if (campusRepository.existsByAbbreviation(campusCreateDto.getAbbreviation())) {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
         }
+        if (campusRepository.existsByInitialRegistrationPattern(campusCreateDto.getInitialRegistrationPattern())){
+            throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getAbbreviation());
+        }
         if (campusRepository.existsByInternshipSectorEmail(campusCreateDto.getInternshipSector().getEmail())) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
         }
@@ -73,6 +76,9 @@ public class CampusServiceImpl implements CampusService {
         getCampus(id);
         if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation(), id)) {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
+        }
+        if (campusRepository.existsByInitialRegistrationPattern(campusCreateDto.getInitialRegistrationPattern())){
+            throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getAbbreviation());
         }
         if (campusRepository.existsByEmailExcludedId(campusCreateDto.getInternshipSector().getEmail(), id)) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());

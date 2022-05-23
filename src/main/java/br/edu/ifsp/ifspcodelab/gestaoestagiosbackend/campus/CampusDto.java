@@ -10,6 +10,7 @@ public class CampusDto {
     UUID id;
     String name;
     String abbreviation;
+    String initialRegistrationPatter;
     AddressDto address;
     InternshipSectorDto internshipSector;
     EntityStatus status;
