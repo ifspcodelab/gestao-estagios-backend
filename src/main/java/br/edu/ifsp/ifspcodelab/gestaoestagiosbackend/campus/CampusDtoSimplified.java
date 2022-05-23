@@ -9,5 +9,5 @@ public class CampusDtoSimplified {
     UUID id;
     String name;
     String abbreviation;
-    String initialRegistrationPatter;
+    String initialRegistrationPattern;
 }
