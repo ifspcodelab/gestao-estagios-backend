@@ -16,6 +16,7 @@ public enum ResourceName {
     CURRICULUM("Curriculum"),
     ADVISOR_REQUEST("Advisor Request"),
     INTERNSHIP("Internship"),
+    INITIAL_REGISTRATION_PATTERN("Initial Registration Pattern"),
     ACTIVITY_PLAN("Activity Plan"),
     MONTHLY_REPORT("Monthly Report"),
     DRAFT_MONTHLY_REPORT_SUBMISSION("Draft Monthly Report Submission"),
