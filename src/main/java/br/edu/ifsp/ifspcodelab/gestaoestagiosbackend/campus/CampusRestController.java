@@ -38,6 +38,15 @@ public class CampusRestController {
                     .collect(Collectors.toList());
             return ResponseEntity.ok(campuses);
         }
+
+        if(status == EntityStatus.DISABLED) {
+            campuses = campusService.findAll().stream()
+                    .filter(c -> c.getStatus() == EntityStatus.DISABLED)
+                    .map(campusMapper::to)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(campuses);
+        }
+
         campuses = campusService.findAll().stream()
             .map(campusMapper::to)
             .collect(Collectors.toList());
