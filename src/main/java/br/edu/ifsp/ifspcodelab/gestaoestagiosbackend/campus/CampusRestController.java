@@ -29,7 +29,16 @@ public class CampusRestController {
 
     @GetMapping
     public ResponseEntity<List<CampusDto>> index(@RequestParam EntityStatus status) {
-        List<CampusDto> campuses = campusService.findAll().stream()
+        List<CampusDto> campuses;
+
+        if(status == EntityStatus.ENABLED) {
+            campuses = campusService.findAll().stream()
+                    .filter(c -> c.getStatus() == EntityStatus.ENABLED)
+                    .map(campusMapper::to)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(campuses);
+        }
+        campuses = campusService.findAll().stream()
             .map(campusMapper::to)
             .collect(Collectors.toList());
         return ResponseEntity.ok(campuses);
