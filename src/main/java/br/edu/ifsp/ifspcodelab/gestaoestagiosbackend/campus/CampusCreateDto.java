@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.annotations.Alpha;
 import lombok.Value;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ public class CampusCreateDto {
     @NotNull
     @NotBlank
     @Size(min = 2, max = 2)
+    @Alpha
     String initialRegistrationPattern;
     @NotNull
     @Valid
