@@ -59,6 +59,11 @@ public class CampusServiceImpl implements CampusService {
     }
 
     @Override
+    public List<Campus> findAllByStatus(EntityStatus status) {
+        return campusRepository.findAllByStatus(status);
+    }
+
+    @Override
     public Campus findById(UUID id) {
         return getCampus(id);
     }
