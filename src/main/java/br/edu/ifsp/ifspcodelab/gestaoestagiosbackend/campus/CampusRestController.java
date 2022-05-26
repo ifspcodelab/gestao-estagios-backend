@@ -31,17 +31,8 @@ public class CampusRestController {
     public ResponseEntity<List<CampusDto>> index(@RequestParam (required = false) EntityStatus status) {
         List<CampusDto> campuses;
 
-        if(status == EntityStatus.ENABLED) {
-            campuses = campusService.findAll().stream()
-                    .filter(c -> c.getStatus() == EntityStatus.ENABLED)
-                    .map(campusMapper::to)
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(campuses);
-        }
-
-        if(status == EntityStatus.DISABLED) {
-            campuses = campusService.findAll().stream()
-                    .filter(c -> c.getStatus() == EntityStatus.DISABLED)
+        if(status != null) {
+            campuses = campusService.findAllByStatus(status).stream()
                     .map(campusMapper::to)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(campuses);
