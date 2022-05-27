@@ -28,7 +28,7 @@ public class CampusRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CampusDto>> index(@RequestParam (required = false) EntityStatus status) {
+    public ResponseEntity<List<CampusDto>> index(@RequestParam(required = false) EntityStatus status) {
         List<CampusDto> campuses;
 
         if(status != null) {
