@@ -77,7 +77,7 @@ public class CampusServiceImpl implements CampusService {
         if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation(), id)) {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
         }
-        if (campusRepository.existsByInitialRegistrationPattern(campusCreateDto.getInitialRegistrationPattern())){
+        if (campusRepository.existsByInitialRegistrationPatternExcludedId(campusCreateDto.getInitialRegistrationPattern(), id)){
             throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern());
         }
         if (campusRepository.existsByEmailExcludedId(campusCreateDto.getInternshipSector().getEmail(), id)) {
