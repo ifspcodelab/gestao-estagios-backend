@@ -2,11 +2,16 @@ plugins {
 	id 'org.springframework.boot' version '2.5.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'pmd'
 }
 
 group = 'br.edu.ifsp.ifspcodelab'
 version = '0.0.1'
 sourceCompatibility = '11'
+
+ext {
+  pmdVersion = '6.46.0'
+}
 
 configurations {
 	compileOnly {
@@ -52,3 +57,14 @@ test {
 }
 
 apply from: "${rootProject.projectDir}/gradle/jacoco.gradle"
+
+
+
+pmd {
+	toolVersion = pmdVersion
+	ruleSets = [] 
+	ruleSetConfig = rootProject.resources.text.fromFile('config/pmd/ruleset.xml')
+	ignoreFailures = true
+	consoleOutput = true
+}
+
