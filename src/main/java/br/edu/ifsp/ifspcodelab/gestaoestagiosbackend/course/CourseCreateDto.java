@@ -19,6 +19,7 @@ public class CourseCreateDto {
     String abbreviation;
     @NotNull
     @Positive
+    @Max(value = 20)
     Integer numberOfPeriods;
     @NotNull
     UUID departmentId;
