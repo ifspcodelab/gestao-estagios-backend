@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,8 @@ public class CurriculumRestController {
 
     @GetMapping
     public ResponseEntity<List<CurriculumDto>> index(
-        @PathVariable UUID courseId
+        @PathVariable UUID courseId,
+        @RequestParam(required = false) EntityStatus status
     ) {
         return ResponseEntity.ok(curriculumService.findAll(courseId)
             .stream()
