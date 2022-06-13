@@ -5,6 +5,7 @@ import lombok.Value;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @Value
 public class CurriculumCreateDto {
@@ -23,4 +24,8 @@ public class CurriculumCreateDto {
     @NotNull
     @NotBlank
     String internshipAllowedActivities;
+    @NotNull
+    LocalDate validityStartDate;
+    @NotNull
+    LocalDate validityEndDate;
 }
