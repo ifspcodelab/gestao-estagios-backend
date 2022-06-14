@@ -1,8 +1,10 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +21,6 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     boolean existsByDepartmentId(UUID departmentId);
     List<Course> findAllByDepartmentId(UUID departmentId);
     List<Course> findByIdIn(List<UUID> coursesIds);
+    @Query("select u from Course u where u.status = :status")
+    List<Course> findAllByStatus(@Param("status") EntityStatus status);
 }
