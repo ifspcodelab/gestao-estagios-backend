@@ -67,6 +67,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> findAllByStatus(EntityStatus status) {
+        return courseRepository.findAllByStatus(status);
+    }
+
+    @Override
     public Course findById(UUID courseId) {
         return getCourse(courseId);
     }
