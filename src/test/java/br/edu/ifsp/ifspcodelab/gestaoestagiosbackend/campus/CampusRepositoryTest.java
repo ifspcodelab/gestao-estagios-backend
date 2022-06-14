@@ -6,8 +6,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -39,6 +37,7 @@ public class CampusRepositoryTest {
         assertThat(campusFound.getId()).isEqualTo(campus.getId());
         assertThat(campusFound.getName()).isEqualTo(campus.getName());
         assertThat(campusFound.getAbbreviation()).isEqualTo(campus.getAbbreviation());
+        assertThat(campusFound.getInitialRegistrationPattern()).isEqualTo(campus.getInitialRegistrationPattern());
         assertThat(campusFound.getAddress().getPostalCode()).isEqualTo(campus.getAddress().getPostalCode());
         assertThat(campusFound.getAddress().getStreet()).isEqualTo(campus.getAddress().getStreet());
         assertThat(campusFound.getAddress().getNeighborhood()).isEqualTo(campus.getAddress().getNeighborhood());
@@ -49,15 +48,15 @@ public class CampusRepositoryTest {
         assertThat(campusFound.getInternshipSector().getEmail()).isEqualTo(campus.getInternshipSector().getEmail());
         assertThat(campusFound.getInternshipSector().getWebsite()).isEqualTo(campus.getInternshipSector().getWebsite());
     }
-//    @ParameterizedTest
-//    @ValueSource(strings = { "SP", "Sp", "sP", "sp" })
-//    public void campusExistsByInitialRegistrationPattern(String initialRegistrationPattern){
-//        campusRepository.save(campus);
-//
-//        boolean result = campusRepository.existsByInitialRegistrationPattern(initialRegistrationPattern);
-//
-//        assertThat(result).isTrue();
-//    }
+
+    @Test
+    public void campusExistsByInitialRegistrationPattern(){
+        campusRepository.save(campus);
+
+        boolean result = campusRepository.existsByInitialRegistrationPattern("SP");
+
+        assertThat(result).isTrue();
+    }
 
     @Test
     public void campusNotExistsByInitialRegistrationPattern(){
