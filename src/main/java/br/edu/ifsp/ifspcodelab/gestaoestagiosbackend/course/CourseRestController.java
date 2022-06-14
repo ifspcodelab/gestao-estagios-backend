@@ -30,7 +30,16 @@ public class CourseRestController {
 
     @GetMapping
     public ResponseEntity<List<CourseDto>> index(@RequestParam(required = false) EntityStatus status) {
-        List<CourseDto> courses = courseService.findAll().stream()
+        List<CourseDto> courses;
+
+        if (status == EntityStatus.ENABLED) {
+            courses = courseService.findAll().stream()
+                    .filter(c -> c.getStatus() == EntityStatus.ENABLED)
+                    .map(courseMapper::to)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(courses);
+        }
+        courses = courseService.findAll().stream()
             .map(courseMapper::to)
             .collect(Collectors.toList());
         return ResponseEntity.ok(courses);
