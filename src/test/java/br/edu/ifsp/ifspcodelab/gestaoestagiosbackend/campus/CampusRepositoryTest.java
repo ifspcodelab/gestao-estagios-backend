@@ -7,8 +7,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -108,5 +106,23 @@ public class CampusRepositoryTest {
         List<Campus> campuses = campusRepository.findAllByStatus(EntityStatus.DISABLED);
 
         assertThat(campuses).isEmpty();
+    }
+
+    @Test
+    public void existsByAbbreviationShouldReturnTrueWhenThereIsCampusWithSpecifiedAbbreviation() {
+        entityManager.persistAndFlush(campus);
+
+        boolean result = campusRepository.existsByAbbreviation("TCS");
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void existsByAbbreviationShouldReturnFalseWhenThereIsNotCampusWithSpecifiedAbbreviation() {
+        entityManager.persistAndFlush(campus);
+
+        boolean result = campusRepository.existsByAbbreviation("SPO");
+
+        assertThat(result).isFalse();
     }
 }
