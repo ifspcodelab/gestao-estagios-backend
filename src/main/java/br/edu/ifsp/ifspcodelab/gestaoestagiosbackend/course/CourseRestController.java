@@ -32,16 +32,16 @@ public class CourseRestController {
     public ResponseEntity<List<CourseDto>> index(@RequestParam(required = false) EntityStatus status) {
         List<CourseDto> courses;
 
-        if (status == EntityStatus.ENABLED) {
-            courses = courseService.findAll().stream()
-                    .filter(c -> c.getStatus() == EntityStatus.ENABLED)
+        if (status != null) {
+            courses = courseService.findAllByStatus(status).stream()
                     .map(courseMapper::to)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(courses);
         }
+
         courses = courseService.findAll().stream()
-            .map(courseMapper::to)
-            .collect(Collectors.toList());
+                .map(courseMapper::to)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(courses);
     }
 
