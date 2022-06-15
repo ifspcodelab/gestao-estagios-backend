@@ -25,6 +25,7 @@ public class CurriculumCreateDto {
     @NotBlank
     String internshipAllowedActivities;
     @NotNull
+    @NotBlank
     LocalDate validityStartDate;
     @NotNull
     LocalDate validityEndDate;
