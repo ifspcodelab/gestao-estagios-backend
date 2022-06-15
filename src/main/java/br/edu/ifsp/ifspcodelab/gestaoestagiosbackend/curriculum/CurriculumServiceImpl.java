@@ -37,6 +37,8 @@ public class CurriculumServiceImpl implements CurriculumService {
             curriculumCreateDto.getInternshipCourseLoad(),
             curriculumCreateDto.getInternshipStartCriteria(),
             curriculumCreateDto.getInternshipAllowedActivities(),
+            curriculumCreateDto.getValidityStartDate(),
+            curriculumCreateDto.getValidityEndDate(),
             course
         ));
     }
@@ -70,6 +72,8 @@ public class CurriculumServiceImpl implements CurriculumService {
             curriculumCreateDto.getInternshipCourseLoad(),
             curriculumCreateDto.getInternshipStartCriteria(),
             curriculumCreateDto.getInternshipAllowedActivities(),
+            curriculumCreateDto.getValidityStartDate(),
+            curriculumCreateDto.getValidityEndDate(),
             course
         );
         curriculumUpdated.setId(curriculumId);
