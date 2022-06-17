@@ -54,6 +54,12 @@ public class CurriculumServiceImpl implements CurriculumService {
     }
 
     @Override
+    public List<Curriculum> findByStatus(UUID courseId, EntityStatus status){
+        courseService.findById(courseId);
+        return curriculumRepository.findByStatus(status);
+    }
+
+    @Override
     public Curriculum findByCurriculumId(UUID curriculumId) {
         return curriculumRepository.findById(curriculumId).orElseThrow(
                 () -> new ResourceNotFoundException(ResourceName.CURRICULUM, curriculumId));
