@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface CurriculumRepository extends JpaRepository<Curriculum, UUID> {
     List<Curriculum> findAllByCourseId(UUID courseId);
     Optional<Curriculum> findAllByCourseIdAndId(UUID courseId, UUID curriculumId);
-    List<Curriculum> findAllByStatus(EntityStatus status);
+    List<Curriculum> findByStatus(EntityStatus status);
     @Modifying
     @Query("update Curriculum c set c.status = 'DISABLED' where c.course.id = ?1")
     void disableAllByCourseId(UUID courseId);
