@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public interface CurriculumRepository extends JpaRepository<Curriculum, UUID> {
     List<Curriculum> findAllByCourseId(UUID courseId);
     Optional<Curriculum> findAllByCourseIdAndId(UUID courseId, UUID curriculumId);
+    List<Curriculum> findAllByStatus(EntityStatus status);
     @Modifying
     @Query("update Curriculum c set c.status = 'DISABLED' where c.course.id = ?1")
     void disableAllByCourseId(UUID courseId);
