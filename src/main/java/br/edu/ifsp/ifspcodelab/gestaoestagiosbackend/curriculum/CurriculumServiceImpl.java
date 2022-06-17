@@ -56,7 +56,7 @@ public class CurriculumServiceImpl implements CurriculumService {
     @Override
     public List<Curriculum> findByStatus(UUID courseId, EntityStatus status){
         courseService.findById(courseId);
-        return curriculumRepository.findByStatus(status);
+        return curriculumRepository.findByCourseIdAndStatus(courseId, status);
     }
 
     @Override
