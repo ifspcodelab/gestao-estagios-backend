@@ -36,6 +36,15 @@ public class CurriculumRestController {
         @PathVariable UUID courseId,
         @RequestParam(required = false) EntityStatus status
     ) {
+        if (status != null)
+        {
+            return ResponseEntity.ok(curriculumService.findByStatus(courseId, status)
+                    .stream()
+                    .map(curriculumMapper::to)
+                    .collect(Collectors.toList())
+            );
+        }
+
         return ResponseEntity.ok(curriculumService.findAll(courseId)
             .stream()
             .map(curriculumMapper::to)
