@@ -144,19 +144,15 @@ public class CurriculumServiceImpl implements CurriculumService {
             if(!existedCurriculums.isEmpty()){
                 verifyDatesChronology(startDate,endDate);
                 for (Curriculum c : existedCurriculums) {
-                    if(c.getValidityEndDate() == null){
-                        if(startDate.isAfter(c.getValidityStartDate()) || startDate.isEqual(c.getValidityStartDate())
-                                || endDate.isAfter(c.getValidityStartDate()) || endDate.isEqual(c.getValidityStartDate())){
+                    if(c.getValidityEndDate() == null && (startDate.isAfter(c.getValidityStartDate()) || startDate.isEqual(c.getValidityStartDate())
+                                || endDate.isAfter(c.getValidityStartDate()) || endDate.isEqual(c.getValidityStartDate()))){
                             throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), LocalDate.now());
-                        }
-                    else if(c.getValidityEndDate() != null){
-                        if(startDate.isAfter(c.getValidityStartDate()) && startDate.isBefore(c.getValidityEndDate())
+                    }
+                    else if(c.getValidityEndDate() != null && (startDate.isAfter(c.getValidityStartDate()) && startDate.isBefore(c.getValidityEndDate())
                                 || endDate.isAfter(c.getValidityStartDate()) && endDate.isBefore(c.getValidityEndDate())
                                 || startDate.isEqual(c.getValidityStartDate()) || startDate.isEqual(c.getValidityEndDate())
-                                || endDate.isEqual(c.getValidityStartDate()) || endDate.isEqual(c.getValidityEndDate())){
+                                || endDate.isEqual(c.getValidityStartDate()) || endDate.isEqual(c.getValidityEndDate()))){
                             throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), c.getValidityEndDate());
-                            }
-                        }
                     }
                 }
             }
@@ -186,19 +182,15 @@ public class CurriculumServiceImpl implements CurriculumService {
             verifyDatesChronology(startDate,endDate);
             for (Curriculum c : existedCurriculums) {
                 if (!curriculumId.equals(c.getId())){
-                    if (c.getValidityEndDate() == null) {
-                        if (startDate.isAfter(c.getValidityStartDate()) || startDate.isEqual(c.getValidityStartDate())
-                                || endDate.isAfter(c.getValidityStartDate()) || endDate.isEqual(c.getValidityStartDate())) {
+                    if (c.getValidityEndDate() == null && (startDate.isAfter(c.getValidityStartDate()) || startDate.isEqual(c.getValidityStartDate())
+                                || endDate.isAfter(c.getValidityStartDate()) || endDate.isEqual(c.getValidityStartDate()))) {
                             throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), LocalDate.now());
-                        }
                     }
-                    else if (c.getValidityEndDate() != null){
-                        if (startDate.isAfter(c.getValidityStartDate()) && startDate.isBefore(c.getValidityEndDate())
+                    else if (c.getValidityEndDate() != null && (startDate.isAfter(c.getValidityStartDate()) && startDate.isBefore(c.getValidityEndDate())
                                     || endDate.isAfter(c.getValidityStartDate()) && endDate.isBefore(c.getValidityEndDate())
                                     || startDate.isEqual(c.getValidityStartDate()) || startDate.isEqual(c.getValidityEndDate())
-                                    || endDate.isEqual(c.getValidityStartDate()) || endDate.isEqual(c.getValidityEndDate())) {
+                                    || endDate.isEqual(c.getValidityStartDate()) || endDate.isEqual(c.getValidityEndDate()))) {
                             throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), c.getValidityEndDate());
-                        }
                     }
                 }
             }
