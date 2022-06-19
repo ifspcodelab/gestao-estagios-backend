@@ -6,7 +6,7 @@ CREATE TABLE curriculums(
     internship_start_criteria VARCHAR NOT NULL,
     internship_allowed_activities VARCHAR NOT NULL,
     validity_start_date DATE NOT NULL,
-    validity_end_date DATE NOT NULL,
+    validity_end_date DATE,
     status VARCHAR NOT NULL,
     course_id UUID NOT NULL,
     CONSTRAINT curriculums_pk PRIMARY KEY (id),
