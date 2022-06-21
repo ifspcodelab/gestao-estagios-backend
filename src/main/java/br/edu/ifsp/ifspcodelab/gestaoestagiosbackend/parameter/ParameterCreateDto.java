@@ -5,6 +5,7 @@ import lombok.Value;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constrains.Max;
 
 @Value
 public class ParameterCreateDto {
@@ -19,6 +20,7 @@ public class ParameterCreateDto {
     String professionalValidationMessage;
     @NotNull
     @Positive
+    @Max(value = 12)
     Integer advisorRequestDeadline;
     @NotNull
     @Positive
