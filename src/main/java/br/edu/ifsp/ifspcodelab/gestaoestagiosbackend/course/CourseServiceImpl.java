@@ -78,7 +78,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course update(UUID courseId, CourseCreateDto courseCreateDto) {
-        getCourse(courseId);
+        Course course = getCourse(courseId);
         Department department = departmentService.findById(courseCreateDto.getDepartmentId());
 
         if (courseRepository.existsByAbbreviationAndDepartmentIdExcludedId(
@@ -91,14 +91,12 @@ public class CourseServiceImpl implements CourseService {
             );
         }
 
-        Course courseUpdated = new Course(
-            courseCreateDto.getName(),
-            courseCreateDto.getAbbreviation(),
-            courseCreateDto.getNumberOfPeriods(),
-            department
-        );
-        courseUpdated.setId(courseId);
-        return courseRepository.save(courseUpdated);
+        course.setName(courseCreateDto.getName());
+        course.setAbbreviation(courseCreateDto.getAbbreviation());
+        course.setNumberOfPeriods(courseCreateDto.getNumberOfPeriods());
+        course.setDepartment(department);
+
+        return courseRepository.save(course);
     }
 
     @Transactional
