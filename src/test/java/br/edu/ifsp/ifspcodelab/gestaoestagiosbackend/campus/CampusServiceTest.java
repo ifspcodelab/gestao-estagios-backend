@@ -1,63 +1,103 @@
-//package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
-//
-//import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
-//import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentRepository;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.UUID;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.assertj.core.api.Assertions.assertThatThrownBy;
-//import static org.mockito.Mockito.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class CampusServiceTest {
-//    @Mock
-//    private CampusRepository campusRepository;
-//    @Mock
-//    private DepartmentRepository departmentRepository;
-//    @InjectMocks
-//    private CampusServiceImpl campusService;
-//
-//    private Campus campus;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        campus = CampusFactoryUtils.sampleCampus();
-//    }
-//
-//    @Test
-//    public void createCampus() {
-//        when(campusRepository.save(any(Campus.class))).thenReturn(CampusFactoryUtils.sampleCampus());
-//
-//        Campus campusCreated = campusService.create(sampleCampusCreateDto(campus));
-//
-//        verify(campusRepository, times(1)).save(any(Campus.class));
-//
-//        assertThat(campusCreated).isNotNull();
-//        assertThat(campusCreated.getId()).isNotNull();
-//        assertThat(campusCreated.getName()).isEqualTo(campus.getName());
-//        assertThat(campusCreated.getAbbreviation()).isEqualTo(campus.getAbbreviation());
-//        assertThat(campusCreated.getAddress()).isEqualTo(campus.getAddress());
-//        assertThat(campusCreated.getInternshipSector()).isEqualTo(campus.getInternshipSector());
-//    }
-//
-//    @Test
-//    public void createCampusAlreadyExistsByEmail() {
-//        when (campusRepository.existsByInternshipSectorEmail(any(String.class))).thenReturn(true);
-//
-//        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
-//            .isInstanceOf(CampusAlreadyExistsByEmailException.class);
-//    }
-//
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
+
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class CampusServiceTest {
+    @Mock
+    private CampusRepository campusRepository;
+    @Mock
+    private CityService cityService;
+    @Mock
+    private DepartmentService departmentService;
+    private CampusServiceImpl campusService;
+
+    @BeforeEach
+    public void setUp() {
+        campusService = new CampusServiceImpl(campusRepository);
+        campusService.setCityService(cityService);
+        campusService.setDepartmentService(departmentService);
+    }
+
+    @Test
+    public void createCampus() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Optional<City> optionalCity = Optional.of(city);
+        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
+        when(cityService.findById(any(UUID.class))).thenReturn(optionalCity);
+
+        Campus campusCreated = campusService.create(sampleCampusCreateDto(campus));
+
+        verify(campusRepository, times(1)).save(any(Campus.class));
+        verify(cityService, times(1)).findById(any(UUID.class));
+
+        assertThat(campusCreated).isNotNull();
+        assertThat(campusCreated.getId()).isNotNull();
+        assertThat(campusCreated.getName()).isEqualTo(campus.getName());
+        assertThat(campusCreated.getAbbreviation()).isEqualTo(campus.getAbbreviation());
+        assertThat(campusCreated.getAddress()).isEqualTo(campus.getAddress());
+        assertThat(campusCreated.getInternshipSector()).isEqualTo(campus.getInternshipSector());
+    }
+
+    @Test
+    public void createCampusAlreadyExistsByEmail() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.existsByInternshipSectorEmail(any(String.class))).thenReturn(true);
+
+        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByEmailException.class);
+    }
+
+    @Test
+    public void createCampusAlreadyExistsByAbbreviation() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.existsByAbbreviation(any(String.class))).thenReturn(true);
+
+        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByAbbreviationException.class);
+    }
+
+    @Test
+    public void createCampusCityIsEmpty() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(cityService.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    //
 //    @Test
 //    public void createCampusAlreadyExistsByAbbreviation() {
 //        when (campusRepository.existsByAbbreviation(any(String.class))).thenReturn(true);
@@ -118,25 +158,25 @@
 //            .isInstanceOf(ResourceNotFoundException.class);
 //    }
 //
-//    private CampusCreateDto sampleCampusCreateDto(Campus campus) {
-//        return new CampusCreateDto(
-//            campus.getName(),
-//            campus.getAbbreviation(),
-//            AddressDto.builder()
-//                .postalCode(campus.getAddress().getPostalCode())
-//                .street(campus.getAddress().getStreet())
-//                .neighborhood(campus.getAddress().getNeighborhood())
-//                .city(campus.getAddress().getCity())
-//                .state(campus.getAddress().getState())
-//                .number(campus.getAddress().getNumber())
-//                .complement(campus.getAddress().getComplement())
-//                .build(),
-//            InternshipSectorDto.builder()
-//                .telephone(campus.getInternshipSector().getTelephone())
-//                .email(campus.getInternshipSector().getEmail())
-//                .website(campus.getInternshipSector().getWebsite())
-//                .build()
-//        );
-//    }
-//
-//}
+    private CampusCreateDto sampleCampusCreateDto(Campus campus) {
+        return new CampusCreateDto(
+                campus.getName(),
+                campus.getAbbreviation(),
+                campus.getInitialRegistrationPattern(),
+                AddressCreateDto.builder()
+                        .postalCode(campus.getAddress().getPostalCode())
+                        .street(campus.getAddress().getStreet())
+                        .neighborhood(campus.getAddress().getNeighborhood())
+                        .cityId(campus.getAddress().getCity().getId())
+                        .number(campus.getAddress().getNumber())
+                        .complement(campus.getAddress().getComplement())
+                        .build(),
+                InternshipSectorDto.builder()
+                        .telephone(campus.getInternshipSector().getTelephone())
+                        .email(campus.getInternshipSector().getEmail())
+                        .website(campus.getInternshipSector().getWebsite())
+                        .build()
+        );
+    }
+
+}

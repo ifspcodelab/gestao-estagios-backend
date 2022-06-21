@@ -28,6 +28,11 @@ public class CampusServiceImpl implements CampusService {
     }
 
     @Autowired
+    public void setCampusRepository(CampusRepository campusRepository) {
+        this.campusRepository = campusRepository;
+    }
+
+    @Autowired
     public void setCityService(CityService cityService) {
         this.cityService = cityService;
     }
@@ -43,7 +48,7 @@ public class CampusServiceImpl implements CampusService {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation().toUpperCase());
         }
         if (campusRepository.existsByInitialRegistrationPattern(campusCreateDto.getInitialRegistrationPattern().toUpperCase())){
-            throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern().toUpperCase());
+            throw new CampusAlreadyExistsByInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern().toUpperCase());
         }
         if (campusRepository.existsByInternshipSectorEmail(campusCreateDto.getInternshipSector().getEmail())) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
@@ -78,7 +83,7 @@ public class CampusServiceImpl implements CampusService {
             throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation().toUpperCase());
         }
         if (campusRepository.existsByInitialRegistrationPatternExcludedId(campusCreateDto.getInitialRegistrationPattern().toUpperCase(), id)){
-            throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern().toUpperCase());
+            throw new CampusAlreadyExistsByInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern().toUpperCase());
         }
         if (campusRepository.existsByEmailExcludedId(campusCreateDto.getInternshipSector().getEmail(), id)) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
