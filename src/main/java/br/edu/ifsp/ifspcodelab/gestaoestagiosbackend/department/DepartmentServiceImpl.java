@@ -36,6 +36,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         this.courseService = courseService;
     }
 
+    @Autowired
+    public void setDepartmentRepository(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
+
     @Override
     public Department create(UUID campusId, DepartmentCreateDto departmentCreateDto) {
         Campus campus = campusService.findById(campusId);
