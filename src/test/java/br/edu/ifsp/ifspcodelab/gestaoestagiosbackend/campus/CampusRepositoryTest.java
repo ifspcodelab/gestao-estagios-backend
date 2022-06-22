@@ -30,7 +30,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void saveNewCampus() {
-        campusRepository.save(campus);
+        entityManager.persistAndFlush(campus);
         Campus campusFound = entityManager.find(Campus.class, campus.getId());
 
         assertThat(campusFound).isNotNull();
@@ -51,7 +51,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void campusExistsByInitialRegistrationPattern(){
-        campusRepository.save(campus);
+        entityManager.persistAndFlush(campus);
 
         boolean result = campusRepository.existsByInitialRegistrationPattern("SP");
 
@@ -60,7 +60,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void campusNotExistsByInitialRegistrationPattern(){
-        campusRepository.save(campus);
+        entityManager.persistAndFlush(campus);
 
         boolean result = campusRepository.existsByInitialRegistrationPattern("SU");
 
@@ -69,7 +69,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void campusExistsByInternshipSectorEmail(){
-        campusRepository.save(campus);
+        entityManager.persistAndFlush(campus);
 
         boolean result = campusRepository.existsByInternshipSectorEmail("testcampus@email.com");
 
@@ -78,7 +78,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void campusNotExistsByInternshipSectorEmail(){
-        campusRepository.save(campus);
+        entityManager.persistAndFlush(campus);
 
         boolean result = campusRepository.existsByInitialRegistrationPattern("test22campus@email.com");
 
