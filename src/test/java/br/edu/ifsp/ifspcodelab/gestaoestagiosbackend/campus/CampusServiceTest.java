@@ -57,6 +57,7 @@ public class CampusServiceTest {
         assertThat(campusCreated.getId()).isNotNull();
         assertThat(campusCreated.getName()).isEqualTo(campus.getName());
         assertThat(campusCreated.getAbbreviation()).isEqualTo(campus.getAbbreviation());
+        assertThat(campusCreated.getInitialRegistrationPattern()).isEqualTo(campus.getInitialRegistrationPattern());
         assertThat(campusCreated.getAddress()).isEqualTo(campus.getAddress());
         assertThat(campusCreated.getInternshipSector()).isEqualTo(campus.getInternshipSector());
     }
@@ -86,6 +87,18 @@ public class CampusServiceTest {
     }
 
     @Test
+    public void createCampusAlreadyExistsByInitialRegistrationPattern() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.existsByInitialRegistrationPattern(any(String.class))).thenReturn(true);
+
+        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByInitialRegistrationPatternException.class);
+    }
+
+    @Test
     public void createCampusCityIsEmpty() {
         State state = StateFactoryUtils.sampleState();
         City city = CityFactoryUtils.sampleCity(state);
@@ -97,14 +110,6 @@ public class CampusServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
-    //
-//    @Test
-//    public void createCampusAlreadyExistsByAbbreviation() {
-//        when (campusRepository.existsByAbbreviation(any(String.class))).thenReturn(true);
-//
-//        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
-//            .isInstanceOf(CampusAlreadyExistsByAbbreviationException.class);
-//    }
 //
 //    @Test
 //    public void findAll() {
