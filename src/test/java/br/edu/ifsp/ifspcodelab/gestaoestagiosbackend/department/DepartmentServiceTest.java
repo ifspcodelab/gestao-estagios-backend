@@ -1,79 +1,96 @@
-//package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
-//
-//import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusRepository;
-//import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.Optional;
-//import java.util.UUID;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//import static org.assertj.core.api.Assertions.assertThatThrownBy;
-//import static org.mockito.Mockito.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class DepartmentServiceTest {
-//    @Mock
-//    private CampusRepository campusRepository;
-//    @Mock
-//    private DepartmentRepository departmentRepository;
-//    @InjectMocks
-//    private DepartmentServiceImpl departmentService;
-//
-//    private Department department;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        department = DepartmentFactoryUtils.sampleDepartment();
-//    }
-//
-//    @Test
-//    public void createDepartment() {
-//        getCampus();
-//        when(departmentRepository.save(any(Department.class))).thenReturn(DepartmentFactoryUtils.sampleDepartment());
-//
-//        Department departmentCreated = departmentService.create(
-//            department.getCampus().getId(),
-//            new DepartmentCreateDto(
-//                department.getName(),
-//                department.getAbbreviation()
-//            )
-//        );
-//
-//        verify(departmentRepository, times(1)).save(any(Department.class));
-//
-//        assertThat(departmentCreated).isNotNull();
-//        assertThat(departmentCreated.getId()).isNotNull();
-//        assertThat(departmentCreated.getName()).isEqualTo(department.getName());
-//        assertThat(departmentCreated.getAbbreviation()).isEqualTo(department.getAbbreviation());
-//        assertThat(departmentCreated.getCampus().getName()).isEqualTo(department.getCampus().getName());
-//        assertThat(departmentCreated.getCampus().getInternshipSector().getEmail()).
-//            isEqualTo(department.getCampus().getInternshipSector().getEmail());
-//    }
-//
-//    @Test
-//    public void createDepartmentAlreadyExistsByAbbreviationAndCampusId() {
-//        getCampus();
-//        when(departmentRepository.existsByAbbreviationAndCampusId(
-//            department.getAbbreviation(),
-//            department.getCampus().getId())
-//        ).thenReturn(true);
-//
-//        assertThatThrownBy(() -> departmentService.create(
-//            department.getCampus().getId(),
-//            new DepartmentCreateDto(
-//                department.getName(),
-//                department.getAbbreviation()
-//            )
-//        )).isInstanceOf(DepartmentAlreadyExistsByAbbreviationAndCampusIdException.class);
-//    }
+package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
+
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.UUID;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class DepartmentServiceTest {
+    @Mock
+    private DepartmentRepository departmentRepository;
+    @Mock
+    private CampusService campusService;
+    @Mock
+    private CourseService courseService;
+    private DepartmentServiceImpl departmentService;
+
+    @BeforeEach
+    public void setUp() {
+       departmentService = new DepartmentServiceImpl(departmentRepository);
+       departmentService.setCampusService(campusService);
+       departmentService.setCourseService(courseService);
+    }
+
+    @Test
+    public void createDepartment() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Department department = new Department("Departamento A","DPA", campus);
+        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
+        when(campusService.findById(any(UUID.class)))
+                .thenReturn(campus);
+        when(departmentRepository.existsByAbbreviationAndCampusId(anyString(), any(UUID.class)))
+                .thenReturn(false);
+        when(departmentRepository.save(any(Department.class)))
+                .thenReturn(department);
+
+        var departmentCreated = departmentService.create(campus.getId(), departmentCreateDto);
+
+        verify(departmentRepository, times(1)).save(any(Department.class));
+        assertThat(departmentCreated).isNotNull();
+        assertThat(departmentCreated.getId()).isNotNull();
+        assertThat(departmentCreated.getName()).isEqualTo(departmentCreateDto.getName());
+        assertThat(departmentCreated.getAbbreviation()).isEqualTo(departmentCreateDto.getAbbreviation());
+    }
+
+    @Test
+    public void createDepartmentAlreadyExistsByAbbreviationAndCampusId() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
+        when(departmentRepository.existsByAbbreviationAndCampusId(
+                departmentCreateDto.getAbbreviation(),
+                campus.getId())
+        ).thenReturn(true);
+        when(campusService.findById(any(UUID.class)))
+                .thenReturn(campus);
+
+        assertThatThrownBy(() -> departmentService.create(campus.getId(), departmentCreateDto))
+                .isInstanceOf(DepartmentAlreadyExistsByAbbreviationAndCampusIdException.class);
+    }
+
+    @Test
+    public void createDepartmentWithDisabledCampus() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        campus.setStatus(EntityStatus.DISABLED);
+        Department department = new Department("Departamento A","DPA", campus);
+        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
+        when(campusService.findById(any(UUID.class)))
+                .thenReturn(campus);
+
+        assertThatThrownBy(() -> departmentService.create(campus.getId(), departmentCreateDto))
+                .isInstanceOf(ResourceReferentialIntegrityException.class);
+    }
 //
 //    @Test
 //    public void findAll() {
@@ -184,14 +201,4 @@
 //    }
 //
 //
-//    private void getCampus() {
-//        when(campusRepository.findById(any(UUID.class))).thenReturn(
-//            Optional.of(DepartmentFactoryUtils.sampleDepartment().getCampus())
-//        );
-//    }
-//
-//    private void getDepartment() {
-//        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
-//            .thenReturn(Optional.of(department));
-//    }
-//}
+}
