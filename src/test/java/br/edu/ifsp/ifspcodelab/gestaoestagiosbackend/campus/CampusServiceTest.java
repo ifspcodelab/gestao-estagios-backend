@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -110,42 +112,53 @@ public class CampusServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
-//
-//    @Test
-//    public void findAll() {
-//        when(campusRepository.findAll()).thenReturn(List.of(campus));
-//
-//        List<Campus> campuses = campusService.findAll();
-//
-//        assertThat(campuses).hasSize(1);
-//    }
-//
-//    @Test
-//    public void findAllEmpty() {
-//        when(campusRepository.findAll()).thenReturn(Collections.emptyList());
-//
-//        List<Campus> campuses = campusService.findAll();
-//
-//        assertThat(campuses).isEmpty();
-//    }
-//
-//    @Test
-//    public void findById() {
-//        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
-//
-//        Campus campusFound = campusService.findById(campus.getId());
-//
-//        assertThat(campusFound).isNotNull();
-//        assertThat(campusFound.getId()).isEqualTo(campus.getId());
-//    }
-//
-//    @Test
-//    public void findByIdNotFound() {
-//        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-//
-//        assertThatThrownBy(() -> campusService.findById(campus.getId()))
-//            .isInstanceOf(ResourceNotFoundException.class);
-//    }
+    @Test
+    public void findAll() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findAll()).thenReturn(List.of(campus));
+
+        List<Campus> campuses = campusService.findAll();
+
+        assertThat(campuses).hasSize(1);
+    }
+
+    @Test
+    public void findAllEmpty() {
+        when(campusRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Campus> campuses = campusService.findAll();
+
+        assertThat(campuses).isEmpty();
+    }
+
+    @Test
+    public void findById() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        Campus campusFound = campusService.findById(campus.getId());
+
+        assertThat(campusFound).isNotNull();
+        assertThat(campusFound.getId()).isEqualTo(campus.getId());
+    }
+
+    @Test
+    public void findByIdNotFound() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> campusService.findById(campus.getId()))
+            .isInstanceOf(ResourceNotFoundException.class);
+    }
 //
 //    @Test
 //    public void deleteCampus() {
