@@ -6,6 +6,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -119,26 +121,32 @@ public class DepartmentServiceTest {
 
         assertThat(departments).isEmpty();
     }
-//
-//    @Test
-//    public void findById() {
-//        getCampus();
-//        getDepartment();
-//
-//        Department departmentFound = departmentService.findById(department.getCampus().getId(), department.getId());
-//
-//        assertThat(departmentFound).isNotNull();
-//        assertThat(departmentFound.getId()).isEqualTo(department.getId());
-//    }
-//
-//    @Test
-//    public void findByIdNotFound() {
-//        getCampus();
-//        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class))).thenReturn(Optional.empty());
-//
-//        assertThatThrownBy(() -> departmentService.findById(department.getCampus().getId(), department.getId()))
-//            .isInstanceOf(ResourceNotFoundException.class);
-//    }
+
+    @Test
+    public void findById() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Department department = new Department("Departamento A","DPA", campus);
+        when(departmentRepository.findById(any(UUID.class))).thenReturn(Optional.of(department));
+
+        Department departmentFound = departmentService.findById(department.getId());
+
+        assertThat(departmentFound).isNotNull();
+        assertThat(departmentFound.getId()).isEqualTo(department.getId());
+    }
+
+    @Test
+    public void findByIdNotFound() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Department department = new Department("Departamento A","DPA", campus);
+        when(departmentRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> departmentService.findById(department.getId()))
+            .isInstanceOf(ResourceNotFoundException.class);
+    }
 //
 //    @Test
 //    public void updateDepartment() {
