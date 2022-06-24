@@ -15,6 +15,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -65,15 +68,14 @@ public class DepartmentServiceTest {
         State state = StateFactoryUtils.sampleState();
         City city = CityFactoryUtils.sampleCity(state);
         Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Department department = new Department("Departamento A","DPA", campus);
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
-        when(departmentRepository.existsByAbbreviationAndCampusId(
-                departmentCreateDto.getAbbreviation(),
-                campus.getId())
-        ).thenReturn(true);
+        when(departmentRepository.existsByAbbreviationAndCampusId(anyString(), any(UUID.class)))
+                .thenReturn(true);
         when(campusService.findById(any(UUID.class)))
                 .thenReturn(campus);
 
-        assertThatThrownBy(() -> departmentService.create(campus.getId(), departmentCreateDto))
+        assertThatThrownBy(() -> departmentService.create(department.getCampus().getId(), departmentCreateDto))
                 .isInstanceOf(DepartmentAlreadyExistsByAbbreviationAndCampusIdException.class);
     }
 
@@ -82,35 +84,41 @@ public class DepartmentServiceTest {
         State state = StateFactoryUtils.sampleState();
         City city = CityFactoryUtils.sampleCity(state);
         Campus campus = CampusFactoryUtils.sampleCampus(city);
-        campus.setStatus(EntityStatus.DISABLED);
         Department department = new Department("Departamento A","DPA", campus);
+        campus.setStatus(EntityStatus.DISABLED);
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
         when(campusService.findById(any(UUID.class)))
                 .thenReturn(campus);
 
-        assertThatThrownBy(() -> departmentService.create(campus.getId(), departmentCreateDto))
+        assertThatThrownBy(() -> departmentService.create(department.getCampus().getId(), departmentCreateDto))
                 .isInstanceOf(ResourceReferentialIntegrityException.class);
     }
-//
-//    @Test
-//    public void findAll() {
-//        getCampus();
-//        when(departmentRepository.findAllByCampusId(department.getCampus().getId())).thenReturn(List.of(department));
-//
-//        List<Department> departments = departmentService.findAll(department.getCampus().getId());
-//
-//        assertThat(departments).hasSize(1);
-//    }
-//
-//    @Test
-//    public void findAllEmpty() {
-//        getCampus();
-//        when(departmentRepository.findAllByCampusId(department.getCampus().getId())).thenReturn(Collections.emptyList());
-//
-//        List<Department> departments = departmentService.findAll(department.getCampus().getId());
-//
-//        assertThat(departments).isEmpty();
-//    }
+
+    @Test
+    public void findAll() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Department department = new Department("Departamento A","DPA", campus);
+        when(departmentRepository.findAllByCampusId(any(UUID.class))).thenReturn(List.of(department));
+
+        List<Department> departments = departmentService.findAll(department.getCampus().getId());
+
+        assertThat(departments).hasSize(1);
+    }
+
+    @Test
+    public void findAllEmpty() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+        Department department = new Department("Departamento A","DPA", campus);
+        when(departmentRepository.findAllByCampusId(any(UUID.class))).thenReturn(Collections.emptyList());
+
+        List<Department> departments = departmentService.findAll(department.getCampus().getId());
+
+        assertThat(departments).isEmpty();
+    }
 //
 //    @Test
 //    public void findById() {
