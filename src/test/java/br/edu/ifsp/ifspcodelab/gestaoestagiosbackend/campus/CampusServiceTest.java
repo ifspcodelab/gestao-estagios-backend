@@ -3,6 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
@@ -131,6 +132,32 @@ public class CampusServiceTest {
         when(campusRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<Campus> campuses = campusService.findAll();
+
+        assertThat(campuses).isEmpty();
+    }
+
+    @Test
+    public void findAllByStatus(){
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(List.of(campus));
+
+        List<Campus> campusFound = campusService.findAllByStatus(campus.getStatus());
+
+        assertThat(campusFound).hasSize(1);
+    }
+
+    @Test
+    public void findAllByStatusIsEmpty(){
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(Collections.emptyList());
+
+        List<Campus> campuses = campusService.findAllByStatus(campus.getStatus());
 
         assertThat(campuses).isEmpty();
     }
