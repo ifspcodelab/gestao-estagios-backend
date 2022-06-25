@@ -4,6 +4,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
@@ -157,25 +158,46 @@ public class CampusServiceTest {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> campusService.findById(campus.getId()))
-            .isInstanceOf(ResourceNotFoundException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
-//
-//    @Test
-//    public void deleteCampus() {
-//        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
-//        when(departmentRepository.countAllByCampusId(any(UUID.class))).thenReturn(0L);
-//        campusService.delete(campus.getId());
-//        verify(campusRepository, times(1)).deleteById(campus.getId());
-//    }
-//
-//    @Test
-//    public void deleteCampusNotFound() {
-//        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-//
-//        assertThatThrownBy(() -> campusService.delete(campus.getId()))
-//            .isInstanceOf(ResourceNotFoundException.class);
-//    }
-//
+
+    @Test
+    public void deleteCampus() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        campusService.delete(campus.getId());
+        verify(campusRepository, times(1)).deleteById(campus.getId());
+    }
+
+    @Test
+    public void deleteCampusDepartmentServiceExistsByCampusId() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+
+        when(departmentService.existsByCampusId(any(UUID.class))).thenReturn(true);
+
+        assertThatThrownBy(() -> campusService.delete(campus.getId()))
+                .isInstanceOf(ResourceReferentialIntegrityException.class);
+    }
+
+    @Test
+    public void deleteCampusNotFound() {
+        State state = StateFactoryUtils.sampleState();
+        City city = CityFactoryUtils.sampleCity(state);
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> campusService.delete(campus.getId()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     private CampusCreateDto sampleCampusCreateDto(Campus campus) {
         return new CampusCreateDto(
                 campus.getName(),
