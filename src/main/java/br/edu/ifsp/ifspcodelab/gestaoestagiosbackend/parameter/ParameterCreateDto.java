@@ -31,6 +31,7 @@ public class ParameterCreateDto {
     String activityPlanLink;
     @NotNull
     @Positive
+    @Max(value = 100)
     Integer activityPlanFileSizeMegabytes;
     @NotNull
     @Positive
