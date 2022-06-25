@@ -20,7 +20,7 @@ public class ParameterCreateDto {
     String professionalValidationMessage;
     @NotNull
     @Positive
-    @Max(value = 12)
+    @Max(value = 180)
     Integer advisorRequestDeadline;
     @NotNull
     @Positive
@@ -39,6 +39,7 @@ public class ParameterCreateDto {
     Integer monthlyReportFileSizeMegabytes;
     @NotNull
     @Positive
+    @Max(value = 12)
     Integer monthlyReportDraftSubmissionDeadlineMonths;
     @NotNull
     @Positive
