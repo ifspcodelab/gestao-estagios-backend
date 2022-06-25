@@ -2,10 +2,10 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.parameter;
 
 import lombok.Value;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import javax.validation.constrains.Max;
 
 @Value
 public class ParameterCreateDto {
@@ -24,6 +24,7 @@ public class ParameterCreateDto {
     Integer advisorRequestDeadline;
     @NotNull
     @Positive
+    @Max(value = 180)
     Integer activityPlanAppraisalDeadline;
     @NotNull
     @NotBlank
