@@ -43,6 +43,7 @@ public class ParameterCreateDto {
     Integer monthlyReportDraftSubmissionDeadlineMonths;
     @NotNull
     @Positive
+    @Max(value = 180)
     Integer monthlyReportDraftAppraisalDeadlineDays;
     @NotNull
     @Positive
