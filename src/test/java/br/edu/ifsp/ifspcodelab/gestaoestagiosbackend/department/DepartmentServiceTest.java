@@ -189,32 +189,30 @@ public class DepartmentServiceTest {
                 departmentCreateDto
         )).isInstanceOf(DepartmentAlreadyExistsByAbbreviationAndCampusIdException.class);
     }
-//
-//    @Test
-//    public void deleteCampus() {
-//        getCampus();
-//        getDepartment();
-//
-//        departmentService.delete(department.getCampus().getId(), department.getId());
-//
-//        verify(departmentRepository, times(1)).deleteById(department.getId());
-//    }
-//
-//    @Test
-//    public void deleteCampusNotFound() {
-//        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-//        assertThatThrownBy(() -> departmentService.delete(department.getCampus().getId(), department.getId()))
-//            .isInstanceOf(ResourceNotFoundException.class);
-//    }
-//
-//    @Test
-//    public void deleteDepartmentNotFound() {
-//        getCampus();
-//        when(departmentRepository.findByCampusIdAndId(department.getCampus().getId(), department.getId()))
-//            .thenReturn(Optional.empty());
-//        assertThatThrownBy(() -> departmentService.delete(department.getCampus().getId(), department.getId()))
-//            .isInstanceOf(ResourceNotFoundException.class);
-//    }
-//
-//
+
+    @Test
+    public void deleteCampus() {
+        when(campusService.findById(any(UUID.class)))
+                .thenReturn(department.getCampus());
+        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
+                .thenReturn(Optional.of(department));
+        when(courseService.existsByDepartmentId(any(UUID.class)))
+                .thenReturn(false);
+
+        departmentService.delete(department.getCampus().getId(), department.getId());
+
+        verify(departmentRepository, times(1)).deleteById(department.getId());
+    }
+
+    @Test
+    public void deleteDepartmentNotFound() {
+        when(campusService.findById(any(UUID.class)))
+                .thenReturn(department.getCampus());
+        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> departmentService.delete(department.getCampus().getId(), department.getId()))
+            .isInstanceOf(ResourceNotFoundException.class);
+    }
+
 }
