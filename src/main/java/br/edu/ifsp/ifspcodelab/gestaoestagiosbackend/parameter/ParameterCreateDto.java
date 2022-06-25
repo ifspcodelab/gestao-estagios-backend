@@ -35,6 +35,7 @@ public class ParameterCreateDto {
     Integer activityPlanFileSizeMegabytes;
     @NotNull
     @Positive
+    @Max(value = 100)
     Integer monthlyReportFileSizeMegabytes;
     @NotNull
     @Positive
