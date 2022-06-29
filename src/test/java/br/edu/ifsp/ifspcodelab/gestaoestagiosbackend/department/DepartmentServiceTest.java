@@ -35,7 +35,6 @@ public class DepartmentServiceTest {
     private CourseService courseService;
     private DepartmentServiceImpl departmentService;
     private Department department;
-    private Campus campus;
 
     @BeforeEach
     public void setUp() {
@@ -44,7 +43,7 @@ public class DepartmentServiceTest {
        departmentService.setCourseService(courseService);
        State state = StateFactoryUtils.sampleState();
        City city = CityFactoryUtils.sampleCity(state);
-       campus = CampusFactoryUtils.sampleCampus(city);
+       Campus campus = CampusFactoryUtils.sampleCampus(city);
        department = new Department("Departamento A","DPA", campus);
     }
 
@@ -130,7 +129,7 @@ public class DepartmentServiceTest {
 
     @Test
     public void updateDepartment() {
-        Department departmentReturnedByRepository = new Department("Departamento B","DPB", campus);
+        Department departmentReturnedByRepository = new Department("Departamento B","DPB", department.getCampus());
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento B", "DPB");
         when(campusService.findById(any(UUID.class)))
                 .thenReturn(department.getCampus());
@@ -157,7 +156,7 @@ public class DepartmentServiceTest {
 
     @Test
     public void updateDepartmentNotFound() {
-        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
+        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento B", "DPB");
         when(campusService.findById(any(UUID.class)))
                 .thenReturn(department.getCampus());
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
@@ -172,7 +171,7 @@ public class DepartmentServiceTest {
 
     @Test
     public void updateDepartmentAlreadyExistsByAbbreviationAndCampusIdExcludedId() {
-        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
+        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento B", "DPB");
         when(campusService.findById(any(UUID.class)))
                 .thenReturn(department.getCampus());
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
@@ -191,7 +190,7 @@ public class DepartmentServiceTest {
     }
 
     @Test
-    public void deleteCampus() {
+    public void deleteDepartment() {
         when(campusService.findById(any(UUID.class)))
                 .thenReturn(department.getCampus());
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
@@ -213,6 +212,26 @@ public class DepartmentServiceTest {
 
         assertThatThrownBy(() -> departmentService.delete(department.getCampus().getId(), department.getId()))
             .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    public void existsByCampusId() {
+       when(departmentRepository.existsByCampusId(any(UUID.class)))
+               .thenReturn(true);
+
+       boolean result = departmentService.existsByCampusId(department.getCampus().getId());
+
+       assertThat(result).isTrue();
+    }
+
+    @Test
+    public void departmentNotExistsByCampusId() {
+        when(departmentRepository.existsByCampusId(any(UUID.class)))
+                .thenReturn(false);
+
+        boolean result = departmentService.existsByCampusId(department.getCampus().getId());
+
+        assertThat(result).isFalse();
     }
 
 }
