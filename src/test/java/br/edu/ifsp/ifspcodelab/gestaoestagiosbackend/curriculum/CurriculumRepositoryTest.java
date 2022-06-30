@@ -11,9 +11,15 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentFactor
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class CurriculumRepositoryTest {
@@ -33,6 +39,24 @@ public class CurriculumRepositoryTest {
         Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
         Course course = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department));
         curriculum = CurriculumFactoryUtils.sampleCurriculum(course);
+    }
+
+    @Test
+    public void findAllByCourseIdAndId() {
+        entityManager.persistAndFlush(curriculum);
+
+        Optional<Curriculum> result = curriculumRepository.findAllByCourseIdAndId(curriculum.getCourse().getId(), curriculum.getId());
+
+        assertThat(result.get().getId()).isEqualTo(curriculum.getId());
+    }
+
+    @Test
+    public void isEmptyFindAllByCourseIdAndId() {
+        entityManager.persistAndFlush(curriculum);
+
+        Optional<Curriculum> result = curriculumRepository.findAllByCourseIdAndId(UUID.randomUUID(), curriculum.getId());
+
+        assertThat(result).isEmpty();
     }
 
 }
