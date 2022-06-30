@@ -36,4 +36,21 @@ public class CourseRepositoryTest {
         course = CourseFactoryUtils.sampleCourse(department);
     }
 
+    @Test
+    public void existsByDepartmentId() {
+        entityManager.persistAndFlush(course);
+
+        boolean result = courseRepository.existsByDepartmentId(course.getDepartment().getId());
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void notExistsByDepartmentId() {
+        entityManager.persistAndFlush(course);
+
+        boolean result = courseRepository.existsByDepartmentId(UUID.randomUUID());
+
+        assertThat(result).isFalse();
+    }
 }
