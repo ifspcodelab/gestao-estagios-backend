@@ -36,18 +36,24 @@ public class CampusServiceTest {
     private DepartmentService departmentService;
     private CampusServiceImpl campusService;
 
+    private State state;
+
+    private City city;
+
+    private Campus campus;
+
     @BeforeEach
     public void setUp() {
         campusService = new CampusServiceImpl(campusRepository);
         campusService.setCityService(cityService);
         campusService.setDepartmentService(departmentService);
+        state = StateFactoryUtils.sampleState();
+        city = CityFactoryUtils.sampleCity(state);
+        campus = CampusFactoryUtils.sampleCampus(city);
     }
 
     @Test
     public void createCampus() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
         Optional<City> optionalCity = Optional.of(city);
         when(campusRepository.save(any(Campus.class))).thenReturn(campus);
         when(cityService.findById(any(UUID.class))).thenReturn(optionalCity);
@@ -67,23 +73,7 @@ public class CampusServiceTest {
     }
 
     @Test
-    public void createCampusAlreadyExistsByEmail() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
-        when(campusRepository.existsByInternshipSectorEmail(any(String.class))).thenReturn(true);
-
-        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
-                .isInstanceOf(CampusAlreadyExistsByEmailException.class);
-    }
-
-    @Test
     public void createCampusAlreadyExistsByAbbreviation() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.existsByAbbreviation(any(String.class))).thenReturn(true);
 
         assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
@@ -92,10 +82,6 @@ public class CampusServiceTest {
 
     @Test
     public void createCampusAlreadyExistsByInitialRegistrationPattern() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.existsByInitialRegistrationPattern(any(String.class))).thenReturn(true);
 
         assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
@@ -103,11 +89,15 @@ public class CampusServiceTest {
     }
 
     @Test
-    public void createCampusCityIsEmpty() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
+    public void createCampusAlreadyExistsByEmail() {
+        when(campusRepository.existsByInternshipSectorEmail(any(String.class))).thenReturn(true);
 
+        assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByEmailException.class);
+    }
+
+    @Test
+    public void createCampusCityIsEmpty() {
         when(cityService.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> campusService.create(sampleCampusCreateDto(campus)))
@@ -116,10 +106,6 @@ public class CampusServiceTest {
 
     @Test
     public void findAll() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.findAll()).thenReturn(List.of(campus));
 
         List<Campus> campuses = campusService.findAll();
@@ -137,11 +123,7 @@ public class CampusServiceTest {
     }
 
     @Test
-    public void findAllByStatus(){
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
+    public void findAllByStatus() {
         when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(List.of(campus));
 
         List<Campus> campusFound = campusService.findAllByStatus(campus.getStatus());
@@ -150,11 +132,7 @@ public class CampusServiceTest {
     }
 
     @Test
-    public void findAllByStatusIsEmpty(){
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
+    public void findAllByStatusIsEmpty() {
         when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(Collections.emptyList());
 
         List<Campus> campuses = campusService.findAllByStatus(campus.getStatus());
@@ -164,10 +142,6 @@ public class CampusServiceTest {
 
     @Test
     public void findById() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
 
         Campus campusFound = campusService.findById(campus.getId());
@@ -178,10 +152,6 @@ public class CampusServiceTest {
 
     @Test
     public void findByIdNotFound() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> campusService.findById(campus.getId()))
@@ -190,10 +160,6 @@ public class CampusServiceTest {
 
     @Test
     public void deleteCampus() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
 
         campusService.delete(campus.getId());
@@ -202,11 +168,6 @@ public class CampusServiceTest {
 
     @Test
     public void deleteCampusDepartmentServiceExistsByCampusId() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
-
         when(departmentService.existsByCampusId(any(UUID.class))).thenReturn(true);
 
         assertThatThrownBy(() -> campusService.delete(campus.getId()))
@@ -215,10 +176,6 @@ public class CampusServiceTest {
 
     @Test
     public void deleteCampusNotFound() {
-        State state = StateFactoryUtils.sampleState();
-        City city = CityFactoryUtils.sampleCity(state);
-        Campus campus = CampusFactoryUtils.sampleCampus(city);
-
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> campusService.delete(campus.getId()))
