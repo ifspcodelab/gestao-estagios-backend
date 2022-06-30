@@ -9,14 +9,12 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.StateFactoryUtils;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
