@@ -4,6 +4,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.state.State;
@@ -34,6 +35,28 @@ public class CourseRepositoryTest {
         Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
         Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
         course = CourseFactoryUtils.sampleCourse(department);
+    }
+
+    @Test
+    public void disableAllByDepartmentId() {
+        entityManager.persistAndFlush(course);
+
+        courseRepository.disableAllByDepartmentId(course.getDepartment().getId());
+        entityManager.clear();
+        Course course1 = entityManager.find(Course.class, course.getId());
+
+        assertThat(course1.getStatus()).isEqualTo(EntityStatus.DISABLED);
+    }
+
+    @Test
+    public void notDisableAllByDepartmentId() {
+        entityManager.persistAndFlush(course);
+
+        courseRepository.disableAllByDepartmentId(UUID.randomUUID());
+        entityManager.clear();
+        Course course1 = entityManager.find(Course.class, course.getId());
+
+        assertThat(course1.getStatus()).isEqualTo(EntityStatus.ENABLED);
     }
 
     @Test
