@@ -109,5 +109,31 @@ public class CurriculumRepositoryTest {
         assertThat(exists).isFalse();
     }
 
-    //TODO disableAllByCourseId(UUID courseId);
+    @Test
+    public void disableAllByCourseId()
+    {
+        Curriculum curriculum0 = CurriculumFactoryUtils.sampleCurriculum(course);
+        Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        entityManager.persistAndFlush(curriculum0);
+        entityManager.persistAndFlush(curriculum1);
+
+        curriculumRepository.disableAllByCourseId(curriculum.getCourse().getId());
+
+        assertThat(curriculum0.getStatus().equals(EntityStatus.DISABLED));
+        assertThat(curriculum1.getStatus().equals(EntityStatus.DISABLED));
+    }
+
+    @Test
+    public void disableAllByCourseId_DoesNotDisableCurriculumsFromOtherCourses()
+    {
+        Curriculum curriculum0 = CurriculumFactoryUtils.sampleCurriculum(course);
+        Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        entityManager.persistAndFlush(curriculum0);
+        entityManager.persistAndFlush(curriculum1);
+
+        curriculumRepository.disableAllByCourseId(UUID.randomUUID());
+
+        assertThat(curriculum0.getStatus().equals(EntityStatus.ENABLED));
+        assertThat(curriculum1.getStatus().equals(EntityStatus.ENABLED));
+    }
 }
