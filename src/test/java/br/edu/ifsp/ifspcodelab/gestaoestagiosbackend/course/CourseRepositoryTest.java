@@ -64,32 +64,26 @@ class CourseRepositoryTest {
 
     @Test
     public void findAllByStatusWithArgumentEnabledReturnsOnlyEnabledCourses() {
-
         List<Course> enabledCourses = courseRepository.findAllByStatus(EntityStatus.ENABLED);
 
         assertThat(enabledCourses)
                 .isNotEmpty()
                 .isInstanceOf(ArrayList.class)
                 .doesNotContain(disabledCourse);
-        
-
     }
 
     @Test
     public void findAllByStatusWithArgumentDisabledReturnsOnlyDisabledCourses() {
-
         List<Course> disabledCourses = courseRepository.findAllByStatus(EntityStatus.DISABLED);
 
         assertThat(disabledCourses)
                 .isNotEmpty()
                 .isInstanceOf(ArrayList.class)
                 .doesNotContain(enabledCourse);
-
     }
 
     @Test
     public void findAllByStatusWithoutCoursesReturnsAnEmptyList() {
-
         entityManager.remove(course);
         entityManager.remove(enabledCourse);
         entityManager.remove(disabledCourse);
@@ -99,12 +93,10 @@ class CourseRepositoryTest {
         assertThat(emptyCourseList)
                 .isInstanceOf(ArrayList.class)
                 .isEmpty();
-
     }
 
     @Test
     public void findAllByDepartmentIdWithDepartmentIdReturnsCourseListWithTheSameDepartmentId() {
-
         UUID departmentId = course.getDepartment().getId();
 
         List<Course> coursesWithTheSameDepartmentId = courseRepository.findAllByDepartmentId(departmentId);
@@ -117,11 +109,9 @@ class CourseRepositoryTest {
         assertThat(coursesWithTheSameDepartmentId.get(0).getDepartment().getId()).isEqualTo(departmentId);
         assertThat(coursesWithTheSameDepartmentId.get(1).getDepartment().getId()).isEqualTo(departmentId);
         assertThat(coursesWithTheSameDepartmentId.get(2).getDepartment().getId()).isEqualTo(departmentId);
-
     }
     @Test
     public void findAllByDepartmentIdWithoutCoursesReturnsEmptyList() {
-
         entityManager.remove(course);
         entityManager.remove(enabledCourse);
         entityManager.remove(disabledCourse);
@@ -133,12 +123,10 @@ class CourseRepositoryTest {
         assertThat(emptyCourseList)
                 .isInstanceOf(ArrayList.class)
                 .isEmpty();
-
     }
 
     @Test
     public void findAllByDepartmentIdWithNewIdReturnsEmptyList() {
-
         UUID sampleUuid = UUID.randomUUID();
 
         List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(sampleUuid);
@@ -146,20 +134,16 @@ class CourseRepositoryTest {
         assertThat(emptyCourseList)
                 .isInstanceOf(ArrayList.class)
                 .isEmpty();
-
     }
 
     @Test
     public void existsByAbbreviationAndDepartmentIdWithExistingCourseByAbbreviationAndDepartmentIdReturnsTrue() {
-
         Boolean courseExists = courseRepository.existsByAbbreviationAndDepartmentId(course.getAbbreviation(),course.getDepartment().getId());
 
         assertThat(courseExists).isTrue();
-
     }
     @Test
     public void existsByAbbreviationAndDepartmentIdWithNonExistingCourseByAbbreviationAndDepartmentIdReturnsFalse() {
-
         String courseAbbreviation = course.getAbbreviation();
         UUID courseId = course.getId();
 
@@ -168,12 +152,10 @@ class CourseRepositoryTest {
         Boolean courseDoesNotExists = courseRepository.existsByAbbreviationAndDepartmentId(courseAbbreviation, courseId);
 
         assertThat(courseDoesNotExists).isFalse();
-
     }
 
     @Test
     public void existsByAbbreviationAndDepartmentIdWithoutCoursesReturnsFalse() {
-
         entityManager.remove(course);
         entityManager.remove(course);
         entityManager.remove(course);
@@ -181,7 +163,6 @@ class CourseRepositoryTest {
         Boolean courseDoesNotExists = courseRepository.existsByAbbreviationAndDepartmentId("RAN", UUID.randomUUID() );
 
         assertThat(courseDoesNotExists).isFalse();
-
     }
 
 }
