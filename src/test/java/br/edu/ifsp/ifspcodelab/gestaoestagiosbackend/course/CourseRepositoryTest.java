@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,13 +88,60 @@ class CourseRepositoryTest {
     }
 
     @Test
-    public void findAllByStatusInAnEmptyListReturnsAnEmptyList() {
+    public void findAllByStatusWithoutCoursesReturnsAnEmptyList() {
 
         entityManager.remove(course);
         entityManager.remove(enabledCourse);
         entityManager.remove(disabledCourse);
 
         List<Course> emptyCourseList = courseRepository.findAllByStatus(EntityStatus.ENABLED);
+
+        assertThat(emptyCourseList)
+                .isInstanceOf(ArrayList.class)
+                .isEmpty();
+
+    }
+
+    @Test
+    public void findAllByDepartmentIdWithDepartmentIdReturnsCourseListWithTheSameDepartmentId() {
+
+        UUID departmentId = course.getDepartment().getId();
+
+        List<Course> coursesWithTheSameDepartmentId = courseRepository.findAllByDepartmentId(departmentId);
+
+        assertThat(coursesWithTheSameDepartmentId)
+                .isNotEmpty()
+                .isInstanceOf(ArrayList.class)
+                .hasSize(3);
+
+        assertThat(coursesWithTheSameDepartmentId.get(0).getDepartment().getId()).isEqualTo(departmentId);
+        assertThat(coursesWithTheSameDepartmentId.get(1).getDepartment().getId()).isEqualTo(departmentId);
+        assertThat(coursesWithTheSameDepartmentId.get(2).getDepartment().getId()).isEqualTo(departmentId);
+
+    }
+    @Test
+    public void findAllByDepartmentIdWithoutCoursesReturnsEmptyList() {
+
+        entityManager.remove(course);
+        entityManager.remove(enabledCourse);
+        entityManager.remove(disabledCourse);
+
+        UUID sampleUuid = UUID.randomUUID();
+
+        List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(sampleUuid);
+
+        assertThat(emptyCourseList)
+                .isInstanceOf(ArrayList.class)
+                .isEmpty();
+
+    }
+
+    @Test
+    public void findAllByDepartmentIdWithNewIdReturnsEmptyList() {
+
+        UUID sampleUuid = UUID.randomUUID();
+
+        List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(sampleUuid);
 
         assertThat(emptyCourseList)
                 .isInstanceOf(ArrayList.class)
