@@ -255,4 +255,42 @@ public class DepartmentServiceTest {
         verify(courseService, times(0)).disableAllByDepartmentId(department.getId());
     }
 
+    @Test
+    public void enable() {
+        department.setStatus(EntityStatus.DISABLED);
+        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
+                .thenReturn(Optional.of(department));
+        when(departmentRepository.save(any(Department.class)))
+                .thenReturn(department);
+
+        Department departmentEnabled = departmentService.enable(department.getCampus().getId(), department.getId());
+
+        assertThat(departmentEnabled.getStatus()).isEqualTo(EntityStatus.ENABLED);
+    }
+
+    @Test
+    public void enableWhenCampusIsDisabled() {
+        department.setStatus(EntityStatus.DISABLED);
+        department.getCampus().setStatus(EntityStatus.DISABLED);
+        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
+                .thenReturn(Optional.of(department));
+        when(campusService.enable(any(UUID.class)))
+                .thenReturn(department.getCampus());
+        when(departmentRepository.save(any(Department.class)))
+                .thenReturn(department);
+
+        Department departmentEnabled = departmentService.enable(department.getCampus().getId(), department.getId());
+
+        assertThat(departmentEnabled.getStatus()).isEqualTo(EntityStatus.ENABLED);
+    }
+
+    @Test
+    public void notEnableWhenDepartmentIsNotFound() {
+        department.setStatus(EntityStatus.DISABLED);
+        when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> departmentService.enable(department.getCampus().getId(), department.getId()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
 }
