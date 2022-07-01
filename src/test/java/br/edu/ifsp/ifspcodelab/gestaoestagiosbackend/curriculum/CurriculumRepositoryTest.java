@@ -62,4 +62,33 @@ public class CurriculumRepositoryTest {
         assertThat(curriculumList.get(0)).isEqualTo(curriculumEnabled0);
         assertThat(curriculumList.get(1)).isEqualTo(curriculumEnabled1);
     }
+
+    @Test
+    public void findByCourseIdAndStatus_ReturnsOnlyDisabledCourses() {
+        Curriculum curriculumDisabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
+        curriculumDisabled0.setStatus(EntityStatus.DISABLED);
+        Curriculum curriculumDisabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        curriculumDisabled1.setStatus(EntityStatus.DISABLED);
+        Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
+        curriculumEnabled0.setStatus(EntityStatus.ENABLED);
+        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        curriculumEnabled1.setStatus(EntityStatus.ENABLED);
+
+        entityManager.persistAndFlush(curriculumDisabled0);
+        entityManager.persistAndFlush(curriculumDisabled1);
+        entityManager.persistAndFlush(curriculumEnabled0);
+        entityManager.persistAndFlush(curriculumEnabled1);
+
+        List<Curriculum> curriculumList = curriculumRepository.findByCourseIdAndStatus(curriculum.getCourse().getId(), EntityStatus.DISABLED);
+
+        assertThat(curriculumList).hasSize(2);
+        assertThat(curriculumList).doesNotContain(curriculumEnabled0);
+        assertThat(curriculumList).doesNotContain(curriculumEnabled1);
+        assertThat(curriculumList.get(0)).isEqualTo(curriculumDisabled0);
+        assertThat(curriculumList.get(1)).isEqualTo(curriculumDisabled1);
+    }
+
+    //TODO existsByCourseId(UUID courseId);
+
+    //TODO disableAllByCourseId(UUID courseId);
 }
