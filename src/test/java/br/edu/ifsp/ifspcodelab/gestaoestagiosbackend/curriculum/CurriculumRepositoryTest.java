@@ -44,47 +44,40 @@ public class CurriculumRepositoryTest {
     }
 
     @Test
-    public void findByCourseIdAndStatus() {
+    public void findByCourseIdAndStatus_ReturnsOnlyEnabledCourses() {
         Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumEnabled0.setStatus(EntityStatus.ENABLED);
+        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculumDisabled = CurriculumFactoryUtils.sampleCurriculum(course);
         curriculumDisabled.setStatus(EntityStatus.DISABLED);
-        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumEnabled1.setStatus(EntityStatus.ENABLED);
-
         entityManager.persistAndFlush(curriculumEnabled0);
-        entityManager.persistAndFlush(curriculumDisabled);
         entityManager.persistAndFlush(curriculumEnabled1);
+        entityManager.persistAndFlush(curriculumDisabled);
 
         List<Curriculum> curriculumList = curriculumRepository.findByCourseIdAndStatus(curriculum.getCourse().getId(), EntityStatus.ENABLED);
 
-        assertThat(curriculumList).hasSize(2);
-        assertThat(curriculumList).doesNotContain(curriculumDisabled);
+        assertThat(curriculumList)
+                .hasSize(2)
+                .doesNotContain(curriculumDisabled);
         assertThat(curriculumList.get(0)).isEqualTo(curriculumEnabled0);
         assertThat(curriculumList.get(1)).isEqualTo(curriculumEnabled1);
     }
 
     @Test
     public void findByCourseIdAndStatus_ReturnsOnlyDisabledCourses() {
+        Curriculum curriculumEnabled = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculumDisabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumDisabled0.setStatus(EntityStatus.DISABLED);
         Curriculum curriculumDisabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        curriculumDisabled0.setStatus(EntityStatus.DISABLED);
         curriculumDisabled1.setStatus(EntityStatus.DISABLED);
-        Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumEnabled0.setStatus(EntityStatus.ENABLED);
-        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumEnabled1.setStatus(EntityStatus.ENABLED);
-
+        entityManager.persistAndFlush(curriculumEnabled);
         entityManager.persistAndFlush(curriculumDisabled0);
         entityManager.persistAndFlush(curriculumDisabled1);
-        entityManager.persistAndFlush(curriculumEnabled0);
-        entityManager.persistAndFlush(curriculumEnabled1);
 
         List<Curriculum> curriculumList = curriculumRepository.findByCourseIdAndStatus(curriculum.getCourse().getId(), EntityStatus.DISABLED);
 
-        assertThat(curriculumList).hasSize(2);
-        assertThat(curriculumList).doesNotContain(curriculumEnabled0);
-        assertThat(curriculumList).doesNotContain(curriculumEnabled1);
+        assertThat(curriculumList)
+                .hasSize(2)
+                .doesNotContain(curriculumEnabled);
         assertThat(curriculumList.get(0)).isEqualTo(curriculumDisabled0);
         assertThat(curriculumList.get(1)).isEqualTo(curriculumDisabled1);
     }
