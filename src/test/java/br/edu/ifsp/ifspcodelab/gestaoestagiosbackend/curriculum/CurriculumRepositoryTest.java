@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -88,7 +89,25 @@ public class CurriculumRepositoryTest {
         assertThat(curriculumList.get(1)).isEqualTo(curriculumDisabled1);
     }
 
-    //TODO existsByCourseId(UUID courseId);
+    @Test
+    public void existsByCourseId()
+    {
+        entityManager.persistAndFlush(curriculum);
+
+        boolean exists = curriculumRepository.existsByCourseId(curriculum.getCourse().getId());
+
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    public void notExistsByCourseId()
+    {
+        entityManager.persistAndFlush(curriculum);
+
+        boolean exists = curriculumRepository.existsByCourseId(UUID.randomUUID());
+
+        assertThat(exists).isFalse();
+    }
 
     //TODO disableAllByCourseId(UUID courseId);
 }
