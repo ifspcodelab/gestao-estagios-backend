@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -232,6 +231,28 @@ public class DepartmentServiceTest {
         boolean result = departmentService.existsByCampusId(department.getCampus().getId());
 
         assertThat(result).isFalse();
+    }
+
+    @Test
+    public void disableAllByCampusId() {
+        when(departmentRepository.findAllByCampusId(any(UUID.class)))
+                .thenReturn(List.of(department));
+
+        departmentService.disableAllByCampusId(department.getCampus().getId());
+
+        verify(courseService, times(1)).disableAllByDepartmentId(department.getId());
+        verify(departmentRepository, times(1)).disableAllByCampusId(department.getCampus().getId());
+    }
+
+    @Test
+    public void notDisableAllByCampusIdNotExists() {
+        when(departmentRepository.findAllByCampusId(any(UUID.class)))
+                .thenReturn(Collections.emptyList());
+
+        departmentService.disableAllByCampusId(department.getCampus().getId());
+        verify(departmentRepository, times(1)).findAllByCampusId(department.getCampus().getId());
+        verify(courseService, times(0)).disableAllByDepartmentId(department.getId());
+        verify(courseService, times(0)).disableAllByDepartmentId(department.getId());
     }
 
 }
