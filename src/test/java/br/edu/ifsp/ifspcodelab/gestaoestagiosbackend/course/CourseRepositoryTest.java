@@ -149,4 +149,39 @@ class CourseRepositoryTest {
 
     }
 
+    @Test
+    public void existsByAbbreviationAndDepartmentIdWithExistingCourseByAbbreviationAndDepartmentIdReturnsTrue() {
+
+        Boolean courseExists = courseRepository.existsByAbbreviationAndDepartmentId(course.getAbbreviation(),course.getDepartment().getId());
+
+        assertThat(courseExists).isTrue();
+
+    }
+    @Test
+    public void existsByAbbreviationAndDepartmentIdWithNonExistingCourseByAbbreviationAndDepartmentIdReturnsFalse() {
+
+        String courseAbbreviation = course.getAbbreviation();
+        UUID courseId = course.getId();
+
+        entityManager.remove(course);
+
+        Boolean courseDoesNotExists = courseRepository.existsByAbbreviationAndDepartmentId(courseAbbreviation, courseId);
+
+        assertThat(courseDoesNotExists).isFalse();
+
+    }
+
+    @Test
+    public void existsByAbbreviationAndDepartmentIdWithoutCoursesReturnsFalse() {
+
+        entityManager.remove(course);
+        entityManager.remove(course);
+        entityManager.remove(course);
+
+        Boolean courseDoesNotExists = courseRepository.existsByAbbreviationAndDepartmentId("RAN", UUID.randomUUID() );
+
+        assertThat(courseDoesNotExists).isFalse();
+
+    }
+
 }
