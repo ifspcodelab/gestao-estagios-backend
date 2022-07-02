@@ -44,7 +44,7 @@ public class CurriculumRepositoryTest {
     }
 
     @Test
-    public void findByCourseIdAndStatus_ReturnsOnlyEnabledCourses() {
+    public void findByCourseIdAndStatusReturnsOnlyEnabledCourses() {
         Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculumDisabled = CurriculumFactoryUtils.sampleCurriculum(course);
@@ -63,7 +63,7 @@ public class CurriculumRepositoryTest {
     }
 
     @Test
-    public void findByCourseIdAndStatus_ReturnsOnlyDisabledCourses() {
+    public void findByCourseIdAndStatusReturnsOnlyDisabledCourses() {
         Curriculum curriculumEnabled = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculumDisabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculumDisabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
@@ -117,7 +117,7 @@ public class CurriculumRepositoryTest {
     }
 
     @Test
-    public void disableAllByCourseId_DoesNotDisableCurriculumsFromOtherCourses()
+    public void disableAllByCourseIdDoesNotDisableCurriculumsFromOtherCourses()
     {
         Curriculum curriculum0 = CurriculumFactoryUtils.sampleCurriculum(course);
         Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculum(course);

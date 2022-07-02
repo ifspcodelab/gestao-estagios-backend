@@ -38,7 +38,7 @@ public class CourseRepositoryTest {
     @Test
     public void existsByAbbreviationAndDepartmentIdExcludedId()
     {
-        Course course0 = CourseFactoryUtils.sampleCourse(department);
+        Course course0 = course;
         Course course1 = CourseFactoryUtils.sampleCourse(department);
         entityManager.persistAndFlush(course0);
         entityManager.persistAndFlush(course1);
@@ -52,9 +52,9 @@ public class CourseRepositoryTest {
     }
 
     @Test
-    public void existsByAbbreviationAndDepartmentIdExcludedId_ReturnsFalse_WhenAbbreviationDiffers()
+    public void existsByAbbreviationAndDepartmentIdExcludedIdReturnsFalseWhenAbbreviationDiffers()
     {
-        Course course0 = CourseFactoryUtils.sampleCourse(department);
+        Course course0 = course;
         Course course1 = CourseFactoryUtils.sampleCourse(department);
         course1.setAbbreviation("TCP");
         entityManager.persistAndFlush(course0);
