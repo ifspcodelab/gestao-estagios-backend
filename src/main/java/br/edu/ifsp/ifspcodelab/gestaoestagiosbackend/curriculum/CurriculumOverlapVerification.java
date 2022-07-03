@@ -13,36 +13,74 @@ public class CurriculumOverlapVerification {
         var validityStartDate = curriculum.getValidityStartDate();
         var validityEndDate = curriculum.getValidityEndDate();
         if(!(validityEndDate == null)) {
-            if (validityStartDate.isAfter(validityEndDate)) {
+            if (validityStartDate.isAfter(validityEndDate)|| validityStartDate.isEqual(validityEndDate)){
                 throw new DateChronologyException(validityStartDate, validityEndDate);
             }
             for(Curriculum c : curriculums){
-                if(!(c.getValidityEndDate() == null) && (
-                        (validityStartDate.isAfter(c.getValidityStartDate()) && validityStartDate.isBefore(c.getValidityEndDate())) || (validityEndDate.isAfter(c.getValidityStartDate()) && validityEndDate.isBefore(c.getValidityEndDate())))
+                var comparingStartDate = c.getValidityStartDate();
+                var comparingEndDate = c.getValidityEndDate();
+                if(!(comparingEndDate == null) && (
+                        (validityStartDate.isAfter(comparingStartDate) && validityStartDate.isBefore(comparingEndDate)) || (validityEndDate.isAfter(comparingStartDate) && validityEndDate.isBefore(comparingEndDate)) || validityStartDate.isEqual(comparingStartDate) || validityStartDate.isEqual(comparingEndDate) || validityEndDate.isEqual(comparingStartDate) || validityEndDate.isEqual(comparingEndDate))
                 ){
-                    throw new TimeOverlayException(validityStartDate,validityEndDate,c.getValidityStartDate(),c.getValidityEndDate());
+                    throw new TimeOverlayException(validityStartDate,validityEndDate,comparingStartDate,comparingEndDate);
                 }
                 else if(
-                        c.getValidityEndDate() == null && (validityStartDate.isAfter(c.getValidityStartDate()) || validityEndDate.isAfter(c.getValidityStartDate()))
+                        comparingEndDate == null && (validityStartDate.isAfter(comparingStartDate) || validityEndDate.isAfter(comparingStartDate) || validityStartDate.isEqual(comparingStartDate) || validityEndDate.isEqual(comparingStartDate))
                 ){
-                    throw new TimeOverlayException(validityStartDate,validityEndDate,c.getValidityStartDate(),c.getValidityEndDate());
+                    throw new TimeOverlayException(validityStartDate,validityEndDate,comparingStartDate,LocalDate.now());
                 }
             }
         }
         else if(!(curriculums.isEmpty())){
            for(Curriculum c : curriculums){
-               if(c.getValidityEndDate() == null){
-                   throw new TimeOverlayException(validityStartDate, LocalDate.now(),c.getValidityStartDate(),LocalDate.now());
+               var comparingStartDate = c.getValidityStartDate();
+               var comparingEndDate = c.getValidityEndDate();
+               if(comparingEndDate == null){
+                   throw new TimeOverlayException(validityStartDate, LocalDate.now(),comparingStartDate,LocalDate.now());
                }
                if(
-                       (validityStartDate.isAfter(c.getValidityStartDate()) && validityStartDate.isBefore(c.getValidityEndDate())) || validityStartDate.isBefore(c.getValidityStartDate())
+                       validityStartDate.isBefore(comparingStartDate) || validityStartDate.isBefore(comparingEndDate) || validityStartDate.isEqual(comparingStartDate) || validityStartDate.isEqual(comparingEndDate)
                ){
-                   throw new TimeOverlayException(validityStartDate,validityEndDate,c.getValidityStartDate(),c.getValidityEndDate());
+                   throw new TimeOverlayException(validityStartDate,validityEndDate,comparingStartDate,comparingEndDate);
                }
            }
         }
         return true;
     }
 
-
+    public boolean checkingUpdateCurriculum(List<Curriculum> curriculums, Curriculum curriculum, UUID curriculumID){
+        var validityStartDate = curriculum.getValidityStartDate();
+        var validityEndDate = curriculum.getValidityEndDate();
+        if(!(validityEndDate == null)) {
+            if (validityStartDate.isAfter(validityEndDate) || validityStartDate.isEqual(validityEndDate)) {
+                throw new DateChronologyException(validityStartDate, validityEndDate);
+            }
+            for(Curriculum c : curriculums){
+                var comparingStartDate = c.getValidityStartDate();
+                var comparingEndDate = c.getValidityEndDate();
+                if(
+                        (!(comparingEndDate == null) && !(c.getId() == curriculumID)) && ((validityStartDate.isAfter(comparingStartDate) && validityStartDate.isBefore(comparingEndDate)) || (validityEndDate.isAfter(comparingStartDate) && validityEndDate.isBefore(comparingEndDate)) || validityStartDate.isEqual(comparingStartDate) || validityStartDate.isEqual(comparingEndDate) || validityEndDate.isEqual(comparingStartDate) || validityEndDate.isEqual(comparingEndDate))
+                ){
+                    throw  new TimeOverlayException(validityStartDate, validityEndDate, comparingStartDate, comparingEndDate);
+                }
+                else if (
+                        (comparingEndDate == null && !(c.getId() == curriculumID)) && (validityStartDate.isAfter(comparingStartDate) || validityEndDate.isAfter(comparingStartDate) || validityStartDate.isEqual(comparingStartDate) || validityEndDate.isEqual(comparingStartDate))
+                ){
+                    throw new TimeOverlayException(validityStartDate, validityEndDate,comparingStartDate,LocalDate.now());
+                }
+            }
+        }
+        else {
+            for(Curriculum c : curriculums){
+                var comparingStartDate = c.getValidityStartDate();
+                var comparingEndDate = c.getValidityEndDate();
+                if(
+                        !(c.getId() == curriculumID) && (validityStartDate.isBefore(comparingStartDate) || validityStartDate.isBefore(comparingEndDate) || validityStartDate.isEqual(comparingStartDate) || validityStartDate.isEqual(comparingEndDate))
+                ){
+                    throw new TimeOverlayException(validityStartDate,LocalDate.now(),comparingStartDate,comparingEndDate);
+                }
+            }
+        }
+        return true;
+    }
 }
