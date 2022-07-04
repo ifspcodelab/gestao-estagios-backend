@@ -13,9 +13,7 @@ public class CurriculumOverlapVerification {
         var validityStartDate = curriculum.getValidityStartDate();
         var validityEndDate = curriculum.getValidityEndDate();
         if(!(validityEndDate == null)) {
-            if (validityStartDate.isAfter(validityEndDate)|| validityStartDate.isEqual(validityEndDate)){
-                throw new DateChronologyException(validityStartDate, validityEndDate);
-            }
+            verifyDatesChronology(validityStartDate, validityEndDate);
             for(Curriculum c : curriculums){
                 var comparingStartDate = c.getValidityStartDate();
                 var comparingEndDate = c.getValidityEndDate();
@@ -52,9 +50,7 @@ public class CurriculumOverlapVerification {
         var validityStartDate = curriculum.getValidityStartDate();
         var validityEndDate = curriculum.getValidityEndDate();
         if(!(validityEndDate == null)) {
-            if (validityStartDate.isAfter(validityEndDate) || validityStartDate.isEqual(validityEndDate)) {
-                throw new DateChronologyException(validityStartDate, validityEndDate);
-            }
+            verifyDatesChronology(validityStartDate, validityEndDate);
             for(Curriculum c : curriculums){
                 var comparingStartDate = c.getValidityStartDate();
                 var comparingEndDate = c.getValidityEndDate();
@@ -82,5 +78,11 @@ public class CurriculumOverlapVerification {
             }
         }
         return true;
+    }
+
+    private void verifyDatesChronology(LocalDate startDate, LocalDate endDate){
+        if(startDate.isAfter(endDate) || startDate.isEqual(endDate)){
+            throw new DateChronologyException(startDate, endDate);
+        }
     }
 }
