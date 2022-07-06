@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class CurriculumOverlapVerification {
 
-    public boolean checkingAddCurriculum(List<Curriculum> curriculums, Curriculum curriculum){
+    public boolean checkingAddCurriculum(List<Curriculum> curriculums, CurriculumCreateDto curriculum){
         var validityStartDate = curriculum.getValidityStartDate();
         var validityEndDate = curriculum.getValidityEndDate();
         if(validityEndDate != null) {
@@ -46,10 +46,10 @@ public class CurriculumOverlapVerification {
         return true;
     }
 
-    public boolean checkingUpdateCurriculum(List<Curriculum> curriculums, Curriculum curriculum, UUID curriculumID){
+    public boolean checkingUpdateCurriculum(List<Curriculum> curriculums, CurriculumCreateDto curriculum, UUID curriculumID){
         var validityStartDate = curriculum.getValidityStartDate();
         var validityEndDate = curriculum.getValidityEndDate();
-        if(!(validityEndDate == null)) {
+        if(validityEndDate != null) {
             verifyDatesChronology(validityStartDate, validityEndDate);
             for(Curriculum c : curriculums){
                 var comparingStartDate = c.getValidityStartDate();

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +16,7 @@ import java.util.UUID;
 public class CurriculumServiceImpl implements CurriculumService {
     private CurriculumRepository curriculumRepository;
     private CourseService courseService;
+    private CurriculumOverlapVerification curriculumOverlapVerification;
 
     public CurriculumServiceImpl(CurriculumRepository curriculumRepository) {
         this.curriculumRepository = curriculumRepository;
@@ -30,8 +30,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     @Override
     public Curriculum create(UUID courseId, CurriculumCreateDto curriculumCreateDto) {
         Course course = courseService.findById(courseId);
-
-        verifyDatesBeforeCreateCurriculum(curriculumCreateDto.getValidityStartDate(),curriculumCreateDto.getValidityEndDate(), courseId);
+        List<Curriculum> curriculumList = findAll(courseId);
+        curriculumOverlapVerification.checkingAddCurriculum(curriculumList, curriculumCreateDto);
 
         return curriculumRepository.save(new Curriculum(
             curriculumCreateDto.getCode(),
@@ -67,8 +67,9 @@ public class CurriculumServiceImpl implements CurriculumService {
     public Curriculum update(UUID courseId, UUID curriculumId, CurriculumCreateDto curriculumCreateDto) {
         Course course = courseService.findById(courseId);
         getCurriculum(courseId, curriculumId);
+        List<Curriculum> curriculumList = findAll(courseId);
 
-        verifyDatesBeforeUpdateCurriculum(curriculumCreateDto.getValidityStartDate(),curriculumCreateDto.getValidityEndDate(),courseId,curriculumId);
+        curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList, curriculumCreateDto, curriculumId);
 
         Curriculum curriculumUpdated = new Curriculum(
             curriculumCreateDto.getCode(),
@@ -129,85 +130,5 @@ public class CurriculumServiceImpl implements CurriculumService {
     private Curriculum getCurriculum(UUID courseId, UUID curriculumId) {
         return curriculumRepository.findAllByCourseIdAndId(courseId, curriculumId)
             .orElseThrow(() -> new ResourceNotFoundException(ResourceName.CURRICULUM, curriculumId));
-    }
-
-
-    private void verifyDatesChronology(LocalDate startDate, LocalDate endDate){
-        if(endDate.isBefore(startDate)){
-            throw new DateChronologyException(startDate, endDate);
-        }
-    }
-
-    private void verifyDatesBeforeCreateCurriculum(LocalDate startDate, LocalDate endDate, UUID courseId){
-        List<Curriculum> existedCurriculums = curriculumRepository.findAllByCourseId(courseId);
-        if(endDate != null){
-            if(!existedCurriculums.isEmpty()){
-                verifyDatesChronology(startDate,endDate);
-                for (Curriculum c : existedCurriculums) {
-                    if(c.getValidityEndDate() == null && (startDate.isAfter(c.getValidityStartDate()) || startDate.isEqual(c.getValidityStartDate())
-                                || endDate.isAfter(c.getValidityStartDate()) || endDate.isEqual(c.getValidityStartDate()))){
-                            throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), LocalDate.now());
-                    }
-                    else if(c.getValidityEndDate() != null && (startDate.isAfter(c.getValidityStartDate()) && startDate.isBefore(c.getValidityEndDate())
-                                || endDate.isAfter(c.getValidityStartDate()) && endDate.isBefore(c.getValidityEndDate())
-                                || startDate.isEqual(c.getValidityStartDate()) || startDate.isEqual(c.getValidityEndDate())
-                                || endDate.isEqual(c.getValidityStartDate()) || endDate.isEqual(c.getValidityEndDate()))){
-                            throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), c.getValidityEndDate());
-                    }
-                }
-            }
-            else{
-                verifyDatesChronology(startDate, endDate);
-            }
-        }
-        else{
-            if(!existedCurriculums.isEmpty()){
-                for (Curriculum c : existedCurriculums){
-                   if(c.getValidityEndDate() == null){
-                       throw new TimeOverlayException(startDate, LocalDate.now(), c.getValidityStartDate(), LocalDate.now());
-                   }
-                   else{
-                       if(startDate.isBefore(c.getValidityStartDate()) || startDate.isBefore(c.getValidityEndDate()) || startDate.isEqual(c.getValidityStartDate()) || startDate.isEqual(c.getValidityEndDate())){
-                           throw new TimeOverlayException(startDate, LocalDate.now(),c.getValidityStartDate(),c.getValidityEndDate());
-                       }
-                   }
-                }
-            }
-        }
-    }
-
-    private void verifyDatesBeforeUpdateCurriculum(LocalDate startDate, LocalDate endDate, UUID courseId, UUID curriculumId){
-        List<Curriculum> existedCurriculums = curriculumRepository.findAllByCourseId(courseId);
-        if(endDate != null){
-            verifyDatesChronology(startDate,endDate);
-            for (Curriculum c : existedCurriculums) {
-                if (!curriculumId.equals(c.getId())){
-                    if (c.getValidityEndDate() == null && (startDate.isAfter(c.getValidityStartDate()) || startDate.isEqual(c.getValidityStartDate())
-                                || endDate.isAfter(c.getValidityStartDate()) || endDate.isEqual(c.getValidityStartDate()))) {
-                            throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), LocalDate.now());
-                    }
-                    else if (c.getValidityEndDate() != null && (startDate.isAfter(c.getValidityStartDate()) && startDate.isBefore(c.getValidityEndDate())
-                                    || endDate.isAfter(c.getValidityStartDate()) && endDate.isBefore(c.getValidityEndDate())
-                                    || startDate.isEqual(c.getValidityStartDate()) || startDate.isEqual(c.getValidityEndDate())
-                                    || endDate.isEqual(c.getValidityStartDate()) || endDate.isEqual(c.getValidityEndDate()))) {
-                            throw new TimeOverlayException(startDate, endDate, c.getValidityStartDate(), c.getValidityEndDate());
-                    }
-                }
-            }
-        }
-        else{
-            for (Curriculum c : existedCurriculums) {
-                if (!curriculumId.equals(c.getId())) {
-                    if (c.getValidityEndDate() == null) {
-                        throw new TimeOverlayException(startDate, LocalDate.now(), c.getValidityStartDate(), LocalDate.now());
-                    }
-                    else {
-                        if (startDate.isBefore(c.getValidityStartDate()) || startDate.isBefore(c.getValidityEndDate()) || startDate.isEqual(c.getValidityStartDate()) || startDate.isEqual(c.getValidityEndDate())) {
-                            throw new TimeOverlayException(startDate, LocalDate.now(), c.getValidityStartDate(), c.getValidityEndDate());
-                        }
-                    }
-                }
-            }
-        }
     }
 }

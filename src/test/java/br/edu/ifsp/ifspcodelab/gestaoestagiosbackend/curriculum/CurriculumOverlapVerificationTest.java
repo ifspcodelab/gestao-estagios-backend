@@ -28,9 +28,15 @@ class CurriculumOverlapVerificationTest {
     @DisplayName("Lista vazia, Adição de novo currículo, Data de início e fim definidos, Data de início anterior a data de fim")
     void checkingAddCurriculumEmptyList() {
         var curriculumList = new ArrayList<Curriculum>();
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
-        curriculum.setValidityEndDate(LocalDate.MAX);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                LocalDate.MAX
+        );
 
         Boolean result = curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum);
 
@@ -41,9 +47,15 @@ class CurriculumOverlapVerificationTest {
     @DisplayName("Lista vazia, Adição de novo currículo, Data de início e fim definidos, Data de início depois da data de fim")
     void checkingAddCurriculumEmptyWithStartDateAfterEndDate() {
         var curriculumList = new ArrayList<Curriculum>();
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MAX);
-        curriculum.setValidityEndDate(LocalDate.MIN);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX,
+                LocalDate.MIN
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(DateChronologyException.class);
@@ -54,8 +66,15 @@ class CurriculumOverlapVerificationTest {
     @DisplayName("Lista vazia, Adição de novo currículo, Apenas data de início definida")
     void checkingAddCurriculumEmptyListOnlyStartDateDefinied() {
         var curriculumList = new ArrayList<Curriculum>();
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                null
+        );
 
         Boolean result = curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum);
 
@@ -72,9 +91,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MAX.minusMonths(12));
-        curriculum.setValidityEndDate(LocalDate.MAX);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX.minusMonths(12),
+                LocalDate.MAX
+        );
 
         Boolean result = curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum);
 
@@ -91,8 +116,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MAX.minusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX.minusMonths(12),
+                null
+        );
 
         Boolean result = curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum);
 
@@ -108,9 +140,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
-        curriculum.setValidityEndDate(LocalDate.MIN.plusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                LocalDate.MIN.plusMonths(12)
+        );
 
         Boolean result = curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum);
 
@@ -126,8 +164,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                null
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -143,9 +188,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN.plusMonths(12));
-        curriculum.setValidityEndDate(LocalDate.MAX.minusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(12),
+                LocalDate.MAX.minusMonths(12)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -161,8 +212,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN.plusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(12),
+                null
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -177,9 +235,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN.plusMonths(12));
-        curriculum.setValidityEndDate(LocalDate.MAX);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(12),
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -195,8 +259,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                null
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -212,9 +283,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
-        curriculumSaved.setValidityEndDate(LocalDate.MIN.plusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                LocalDate.MIN.plusMonths(12)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -229,9 +306,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
-        curriculumSaved.setValidityEndDate(LocalDate.MIN.plusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                LocalDate.MIN.plusMonths(12)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -247,8 +330,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MAX);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX,
+                null
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -259,9 +349,15 @@ class CurriculumOverlapVerificationTest {
     @DisplayName("Lista vazia, Adição de novo currículo, Datas definidas iguais, Sobreposição de mesma data")
     void checkingAddCurriculumEmptyListStartDateEqualsEndDate() {
         var curriculumList = new ArrayList<Curriculum>();
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MAX);
-        curriculum.setValidityEndDate(LocalDate.MAX);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX,
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(DateChronologyException.class);
@@ -277,9 +373,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN.plusMonths(12));
-        curriculum.setValidityEndDate(LocalDate.MAX);
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(12),
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -294,9 +396,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculumSaved);
 
-        var curriculum = new Curriculum();
-        curriculum.setValidityStartDate(LocalDate.MIN);
-        curriculum.setValidityEndDate(LocalDate.MAX.minusMonths(12));
+        var curriculum = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                LocalDate.MAX.minusMonths(12)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingAddCurriculum(curriculumList,curriculum))
                 .isInstanceOf(TimeOverlayException.class);
@@ -317,9 +425,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MAX.minusMonths(12));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX.minusMonths(12),
+                LocalDate.MAX
+        );
 
         Boolean result = curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId());
 
@@ -341,9 +455,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MAX);
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX.minusMonths(12));
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX,
+                LocalDate.MAX.minusMonths(12)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(DateChronologyException.class);
@@ -364,8 +484,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MAX.minusMonths(12));
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX.minusMonths(12),
+                null
+        );
 
         Boolean result = curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId());
 
@@ -386,9 +513,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(10));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX.minusDays(1));
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(10),
+                LocalDate.MAX.minusDays(1)
+        );
 
         Boolean result = curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId());
 
@@ -409,9 +542,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(15));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(15),
+                LocalDate.MAX
+        );
 
         Boolean result = curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId());
 
@@ -432,8 +571,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX,
+                null
+        );
 
         Boolean result = curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId());
 
@@ -455,9 +601,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(10));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(10),
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
@@ -478,9 +630,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MAX);
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MAX,
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(DateChronologyException.class);
@@ -501,8 +659,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN,
+                null
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
@@ -522,9 +687,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(10));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(10),
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
@@ -544,9 +715,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(10));
-        curriculumUpdated.setValidityEndDate(LocalDate.MIN.plusMonths(11));
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(10),
+                LocalDate.MIN.plusMonths(11)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
@@ -566,8 +743,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(12));
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(12),
+                null
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
@@ -587,9 +771,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(10));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX.minusDays(1));
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(10),
+                LocalDate.MAX.minusDays(1)
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
@@ -610,9 +800,15 @@ class CurriculumOverlapVerificationTest {
         var curriculumList = new ArrayList<Curriculum>();
         curriculumList.add(curriculum);
         curriculumList.add(curriculumToBeUpdated);
-        var curriculumUpdated = new Curriculum();
-        curriculumUpdated.setValidityStartDate(LocalDate.MIN.plusMonths(12));
-        curriculumUpdated.setValidityEndDate(LocalDate.MAX);
+        var curriculumUpdated = new CurriculumCreateDto(
+                null,
+                null,
+                null,
+                null,
+                null,
+                LocalDate.MIN.plusMonths(12),
+                LocalDate.MAX
+        );
 
         assertThatThrownBy(() -> curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList,curriculumUpdated,curriculumToBeUpdated.getId()))
                 .isInstanceOf(TimeOverlayException.class);
