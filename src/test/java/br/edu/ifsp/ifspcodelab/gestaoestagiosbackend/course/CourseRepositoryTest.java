@@ -22,31 +22,37 @@ public class CourseRepositoryTest {
     private TestEntityManager entityManager;
     @Autowired
     private CourseRepository courseRepository;
-
-    private Department department;
-    private Course course;
+    private Campus campus;
 
     @BeforeEach
     public void setUp() {
         State state = entityManager.persistAndFlush(StateFactoryUtils.sampleState());
         City city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
-        Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
-        department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
-        course = CourseFactoryUtils.sampleCourse(department);
+        campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
     }
 
     @Test
     public void existsByAbbreviationAndDepartmentIdExcludedId()
     {
-        Course course0 = course;
-        Course course1 = CourseFactoryUtils.sampleCourse(department);
+        Department department0 = DepartmentFactoryUtils.sampleDepartment(campus);
+        Department department1 = DepartmentFactoryUtils.sampleDepartment(campus);
+        entityManager.persistAndFlush(department0);
+        entityManager.persistAndFlush(department1);
+        Course course0 = CourseFactoryUtils.sampleCourse(department0);
+        Course course1 = CourseFactoryUtils.sampleCourse(department0);
+        Course course2 = CourseFactoryUtils.sampleCourse(department1);
+        course0.setAbbreviation("TADS");
+        course1.setAbbreviation("INF");
+        course2.setAbbreviation("TADS");
         entityManager.persistAndFlush(course0);
         entityManager.persistAndFlush(course1);
+        entityManager.persistAndFlush(course2);
 
+        course1.setAbbreviation("TADS");
         boolean exists = courseRepository.existsByAbbreviationAndDepartmentIdExcludedId(
-                course0.getAbbreviation(),
-                course0.getDepartment().getId(),
-                course0.getId());
+                course1.getAbbreviation(),
+                course1.getDepartment().getId(),
+                course1.getId());
 
         assertThat(exists).isTrue();
     }
@@ -54,16 +60,25 @@ public class CourseRepositoryTest {
     @Test
     public void existsByAbbreviationAndDepartmentIdExcludedIdReturnsFalseWhenAbbreviationDiffers()
     {
-        Course course0 = course;
-        Course course1 = CourseFactoryUtils.sampleCourse(department);
-        course1.setAbbreviation("TCP");
+        Department department0 = DepartmentFactoryUtils.sampleDepartment(campus);
+        Department department1 = DepartmentFactoryUtils.sampleDepartment(campus);
+        entityManager.persistAndFlush(department0);
+        entityManager.persistAndFlush(department1);
+        Course course0 = CourseFactoryUtils.sampleCourse(department0);
+        Course course1 = CourseFactoryUtils.sampleCourse(department0);
+        Course course2 = CourseFactoryUtils.sampleCourse(department1);
+        course0.setAbbreviation("TADS");
+        course1.setAbbreviation("INF");
+        course2.setAbbreviation("TADS");
         entityManager.persistAndFlush(course0);
         entityManager.persistAndFlush(course1);
+        entityManager.persistAndFlush(course2);
 
+        course1.setAbbreviation("INF2");
         boolean exists = courseRepository.existsByAbbreviationAndDepartmentIdExcludedId(
-                course0.getAbbreviation(),
-                course0.getDepartment().getId(),
-                course0.getId());
+                course1.getAbbreviation(),
+                course1.getDepartment().getId(),
+                course1.getId());
 
         assertThat(exists).isFalse();
     }
