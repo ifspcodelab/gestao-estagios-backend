@@ -45,10 +45,9 @@ public class CurriculumRepositoryTest {
 
     @Test
     public void findByCourseIdAndStatusReturnsOnlyEnabledCourses() {
-        Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
-        Curriculum curriculumDisabled = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumDisabled.setStatus(EntityStatus.DISABLED);
+        Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculumEnabled(course);
+        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculumEnabled(course);
+        Curriculum curriculumDisabled = CurriculumFactoryUtils.sampleCurriculumDisabled(course);
         entityManager.persistAndFlush(curriculumEnabled0);
         entityManager.persistAndFlush(curriculumEnabled1);
         entityManager.persistAndFlush(curriculumDisabled);
@@ -57,18 +56,15 @@ public class CurriculumRepositoryTest {
 
         assertThat(curriculumList)
                 .hasSize(2)
-                .doesNotContain(curriculumDisabled);
-        assertThat(curriculumList.get(0)).isEqualTo(curriculumEnabled0);
-        assertThat(curriculumList.get(1)).isEqualTo(curriculumEnabled1);
+                .extracting(Curriculum::getStatus)
+                .containsExactlyInAnyOrder(EntityStatus.ENABLED, EntityStatus.ENABLED);
     }
 
     @Test
     public void findByCourseIdAndStatusReturnsOnlyDisabledCourses() {
-        Curriculum curriculumEnabled = CurriculumFactoryUtils.sampleCurriculum(course);
-        Curriculum curriculumDisabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        Curriculum curriculumDisabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumDisabled0.setStatus(EntityStatus.DISABLED);
-        curriculumDisabled1.setStatus(EntityStatus.DISABLED);
+        Curriculum curriculumEnabled = CurriculumFactoryUtils.sampleCurriculumEnabled(course);
+        Curriculum curriculumDisabled0 = CurriculumFactoryUtils.sampleCurriculumDisabled(course);
+        Curriculum curriculumDisabled1 = CurriculumFactoryUtils.sampleCurriculumDisabled(course);
         entityManager.persistAndFlush(curriculumEnabled);
         entityManager.persistAndFlush(curriculumDisabled0);
         entityManager.persistAndFlush(curriculumDisabled1);
@@ -77,9 +73,8 @@ public class CurriculumRepositoryTest {
 
         assertThat(curriculumList)
                 .hasSize(2)
-                .doesNotContain(curriculumEnabled);
-        assertThat(curriculumList.get(0)).isEqualTo(curriculumDisabled0);
-        assertThat(curriculumList.get(1)).isEqualTo(curriculumDisabled1);
+                .extracting(Curriculum::getStatus)
+                .containsExactlyInAnyOrder(EntityStatus.DISABLED, EntityStatus.DISABLED);
     }
 
     @Test
