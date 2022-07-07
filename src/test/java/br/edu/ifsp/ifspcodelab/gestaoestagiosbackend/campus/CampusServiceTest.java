@@ -36,8 +36,6 @@ public class CampusServiceTest {
     private DepartmentService departmentService;
     private CampusServiceImpl campusService;
 
-    private State state;
-
     private City city;
 
     private Campus campus;
@@ -47,7 +45,7 @@ public class CampusServiceTest {
         campusService = new CampusServiceImpl(campusRepository);
         campusService.setCityService(cityService);
         campusService.setDepartmentService(departmentService);
-        state = StateFactoryUtils.sampleState();
+        State state = StateFactoryUtils.sampleState();
         city = CityFactoryUtils.sampleCity(state);
         campus = CampusFactoryUtils.sampleCampus(city);
     }
@@ -163,6 +161,7 @@ public class CampusServiceTest {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
 
         campusService.delete(campus.getId());
+
         verify(campusRepository, times(1)).deleteById(campus.getId());
     }
 
