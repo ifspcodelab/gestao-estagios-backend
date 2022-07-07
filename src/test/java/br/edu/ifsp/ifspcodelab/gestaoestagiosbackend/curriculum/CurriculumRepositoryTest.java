@@ -4,7 +4,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.Campus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus.CampusFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +29,6 @@ public class CurriculumRepositoryTest {
     @Autowired
     private CurriculumRepository curriculumRepository;
 
-    private Curriculum curriculum;
     private Course course;
 
     @BeforeEach
@@ -41,62 +38,40 @@ public class CurriculumRepositoryTest {
         Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
         Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
         course = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department));
-        curriculum = CurriculumFactoryUtils.sampleCurriculum(course);
     }
 
     @Test
-    public void findByCourseIdAndStatus() {
-        Curriculum curriculumEnabled0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumEnabled0.setStatus(EntityStatus.ENABLED);
-        Curriculum curriculumDisabled = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumDisabled.setStatus(EntityStatus.DISABLED);
-        Curriculum curriculumEnabled1 = CurriculumFactoryUtils.sampleCurriculum(course);
-        curriculumEnabled1.setStatus(EntityStatus.ENABLED);
+    public void findAllByCourseIdWithCurriculumsWithCourseIdReturnsListOfCurriculums() {
+        Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        Curriculum curriculum2 = CurriculumFactoryUtils.sampleCurriculum(course);
+        entityManager.persistAndFlush(course);
+        entityManager.persistAndFlush(curriculum1);
+        entityManager.persistAndFlush(curriculum2);
 
-        entityManager.persistAndFlush(curriculumEnabled0);
-        entityManager.persistAndFlush(curriculumDisabled);
-        entityManager.persistAndFlush(curriculumEnabled1);
-
-        List<Curriculum> curriculumList = curriculumRepository.findByCourseIdAndStatus(curriculum.getCourse().getId(), EntityStatus.ENABLED);
-
-        assertThat(curriculumList).hasSize(2);
-        assertThat(curriculumList).doesNotContain(curriculumDisabled);
-        assertThat(curriculumList.get(0)).isEqualTo(curriculumEnabled0);
-        assertThat(curriculumList.get(1)).isEqualTo(curriculumEnabled1);
-    }
-
-    @Test
-    public void findAllByCourseIdWithCourseIdReturnsCurriculumListWithCourseId() {
-        UUID courseId = course.getId();
-
-        entityManager.persistAndFlush(curriculum);
-
-        List<Curriculum> curriculumList = curriculumRepository.findAllByCourseId(courseId);
+        List<Curriculum> curriculumList = curriculumRepository.findAllByCourseId(course.getId());
 
         assertThat(curriculumList)
-                .isNotEmpty()
-                .isInstanceOf(ArrayList.class)
-                .hasSize(1);
-
-        assertThat(curriculumList.get(0).getCourse().getId()).isEqualTo(courseId);
+                .hasSize(2)
+                .extracting(Curriculum::getCourse)
+                .containsExactlyInAnyOrder(course, course);
     }
-    @Test
-    public void findAllByCourseIdWithCourseIdNotInCurriculumCoursesReturnsEmptyList() {
-        entityManager.persistAndFlush(curriculum);
 
-        List<Curriculum> curriculumList = curriculumRepository.findAllByCourseId(UUID.randomUUID());
+    @Test
+    public void findAllByCourseIdWithNewCourseIdReturnsEmptyList() {
+        entityManager.persistAndFlush(CurriculumFactoryUtils.sampleCurriculum(course));
+        UUID newCourseId = UUID.randomUUID();
+
+        List<Curriculum> curriculumList = curriculumRepository.findAllByCourseId(newCourseId);
 
         assertThat(curriculumList)
-                .isInstanceOf(ArrayList.class)
                 .isEmpty();
     }
 
     @Test
-    public void findAllByCourseIdWithoutCurriculumsReturnsEmptyList() {
+    public void findAllByCourseIdWithoutPersistedCurriculumsReturnsEmptyList() {
         List<Curriculum> curriculumList = curriculumRepository.findAllByCourseId(UUID.randomUUID());
 
         assertThat(curriculumList)
-                .isInstanceOf(ArrayList.class)
                 .isEmpty();
     }
 }

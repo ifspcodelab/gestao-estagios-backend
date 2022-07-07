@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,139 +29,143 @@ class CourseRepositoryTest {
     @Autowired
     private CourseRepository courseRepository;
 
-    Course course;
-    Course enabledCourse;
-    Course disabledCourse;
+    Campus campus;
+    Department department;
 
     @BeforeEach
     public void setUp() {
         State state = entityManager.persistAndFlush(StateFactoryUtils.sampleState());
         City city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
-        Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
-        Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
-        course = CourseFactoryUtils.sampleCourse(department);
-        entityManager.persistAndFlush(course);
-        enabledCourse = CourseFactoryUtils.sampleCourse(department);
-        enabledCourse.setStatus(EntityStatus.ENABLED);
-        entityManager.persistAndFlush(enabledCourse);
-        disabledCourse = CourseFactoryUtils.sampleCourse(department);
-        disabledCourse.setStatus(EntityStatus.DISABLED);
-        entityManager.persistAndFlush(disabledCourse);
-    }
-
-    @Test
-    public void saveNewCourse() {
-        Course courseFound = entityManager.find(Course.class, course.getId());
-
-        assertThat(courseFound).isNotNull();
-        assertThat(courseFound.getId()).isEqualTo(course.getId());
-        assertThat(courseFound.getName()).isEqualTo(course.getName());
-        assertThat(courseFound.getAbbreviation()).isEqualTo(course.getAbbreviation());
-        assertThat(courseFound.getNumberOfPeriods()).isEqualTo(course.getNumberOfPeriods());
-        assertThat(courseFound.getDepartment()).isEqualTo(course.getDepartment());
+        campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
+        department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
     }
 
     @Test
     public void findAllByStatusWithArgumentEnabledReturnsOnlyEnabledCourses() {
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourseEnabled(department));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourseEnabled(department));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourseDisabled(department));
+
         List<Course> enabledCourses = courseRepository.findAllByStatus(EntityStatus.ENABLED);
 
         assertThat(enabledCourses)
-                .isNotEmpty()
-                .isInstanceOf(ArrayList.class)
-                .doesNotContain(disabledCourse);
+                .hasSize(2)
+                .extracting(Course::getStatus)
+                .containsExactlyInAnyOrder(EntityStatus.ENABLED, EntityStatus.ENABLED);
     }
 
     @Test
     public void findAllByStatusWithArgumentDisabledReturnsOnlyDisabledCourses() {
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourseEnabled(department));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourseEnabled(department));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourseDisabled(department));
+
         List<Course> disabledCourses = courseRepository.findAllByStatus(EntityStatus.DISABLED);
 
         assertThat(disabledCourses)
-                .isNotEmpty()
-                .isInstanceOf(ArrayList.class)
-                .doesNotContain(enabledCourse);
+                .hasSize(1)
+                .extracting(Course::getStatus)
+                .containsExactlyInAnyOrder(EntityStatus.DISABLED);
     }
 
     @Test
-    public void findAllByStatusWithoutCoursesReturnsAnEmptyList() {
-        entityManager.remove(course);
-        entityManager.remove(enabledCourse);
-        entityManager.remove(disabledCourse);
-
+    public void findAllByStatusWithoutPersistedCoursesReturnsAnEmptyList() {
         List<Course> emptyCourseList = courseRepository.findAllByStatus(EntityStatus.ENABLED);
 
         assertThat(emptyCourseList)
-                .isInstanceOf(ArrayList.class)
-                .isEmpty();
+            .isEmpty();
     }
 
     @Test
-    public void findAllByDepartmentIdWithDepartmentIdReturnsCourseListWithTheSameDepartmentId() {
-        UUID departmentId = course.getDepartment().getId();
+    public void findAllByDepartmentIdWithExistentDepartmentIdReturnsCourseList() {
+        Department department1 = DepartmentFactoryUtils.sampleDepartment(campus);
+        Department department2 = DepartmentFactoryUtils.sampleDepartment(campus);
+        entityManager.persistAndFlush(department1);
+        entityManager.persistAndFlush(department2);
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department2));
 
-        List<Course> coursesWithTheSameDepartmentId = courseRepository.findAllByDepartmentId(departmentId);
+        List<Course> coursesWithTheSameDepartmentId = courseRepository.findAllByDepartmentId(department1.getId());
 
         assertThat(coursesWithTheSameDepartmentId)
-                .isNotEmpty()
-                .isInstanceOf(ArrayList.class)
-                .hasSize(3);
-
-        assertThat(coursesWithTheSameDepartmentId.get(0).getDepartment().getId()).isEqualTo(departmentId);
-        assertThat(coursesWithTheSameDepartmentId.get(1).getDepartment().getId()).isEqualTo(departmentId);
-        assertThat(coursesWithTheSameDepartmentId.get(2).getDepartment().getId()).isEqualTo(departmentId);
+                .hasSize(2)
+                .extracting(Course::getDepartment)
+                .containsExactlyInAnyOrder(department1, department1);
     }
+
     @Test
-    public void findAllByDepartmentIdWithoutCoursesReturnsEmptyList() {
-        entityManager.remove(course);
-        entityManager.remove(enabledCourse);
-        entityManager.remove(disabledCourse);
+    public void findAllByDepartmentIdWithoutPersistedCoursesReturnsEmptyList() {
+        UUID sampleUUID = UUID.randomUUID();
 
-        UUID sampleUuid = UUID.randomUUID();
-
-        List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(sampleUuid);
+        List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(sampleUUID);
 
         assertThat(emptyCourseList)
-                .isInstanceOf(ArrayList.class)
                 .isEmpty();
     }
 
     @Test
-    public void findAllByDepartmentIdWithNewIdReturnsEmptyList() {
-        UUID sampleUuid = UUID.randomUUID();
+    public void findAllByDepartmentIdWithNewDepartmentIdReturnsEmptyList() {
+        Department department1 = DepartmentFactoryUtils.sampleDepartment(campus);
+        Department department2 = DepartmentFactoryUtils.sampleDepartment(campus);
+        entityManager.persistAndFlush(department1);
+        entityManager.persistAndFlush(department2);
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department2));
 
-        List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(sampleUuid);
+        UUID newDepartmentId = UUID.randomUUID();
+
+        List<Course> emptyCourseList = courseRepository.findAllByDepartmentId(newDepartmentId);
 
         assertThat(emptyCourseList)
-                .isInstanceOf(ArrayList.class)
                 .isEmpty();
     }
 
     @Test
-    public void existsByAbbreviationAndDepartmentIdWithExistingCourseByAbbreviationAndDepartmentIdReturnsTrue() {
-        Boolean courseExists = courseRepository.existsByAbbreviationAndDepartmentId(course.getAbbreviation(),course.getDepartment().getId());
+    public void existsByAbbreviationAndDepartmentIdWithExistentCourseReturnsTrue() {
+        Department department1 = DepartmentFactoryUtils.sampleDepartment(campus);
+        Department department2 = DepartmentFactoryUtils.sampleDepartment(campus);
+        entityManager.persistAndFlush(department1);
+        entityManager.persistAndFlush(department2);
+        Course course1 = CourseFactoryUtils.sampleCourse(department1);
+        Course course2 = CourseFactoryUtils.sampleCourse(department1);
+        Course course3 = CourseFactoryUtils.sampleCourse(department2);
+
+        entityManager.persistAndFlush(course1);
+        entityManager.persistAndFlush(course2);
+        entityManager.persistAndFlush(course3);
+
+        Boolean courseExists = courseRepository.existsByAbbreviationAndDepartmentId(course1.getAbbreviation(), course1.getDepartment().getId());
 
         assertThat(courseExists).isTrue();
     }
+
     @Test
-    public void existsByAbbreviationAndDepartmentIdWithNonExistingCourseByAbbreviationAndDepartmentIdReturnsFalse() {
-        String courseAbbreviation = course.getAbbreviation();
-        UUID courseId = course.getId();
+    public void existsByAbbreviationAndDepartmentIdWithoutExistentCourseReturnsFalse() {
+        Department department1 = DepartmentFactoryUtils.sampleDepartment(campus);
+        Department department2 = DepartmentFactoryUtils.sampleDepartment(campus);
+        entityManager.persistAndFlush(department1);
+        entityManager.persistAndFlush(department2);
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department2));
 
-        entityManager.remove(course);
+        String courseAbbreviation = "XY";
+        UUID departmentId = UUID.randomUUID();
 
-        Boolean courseDoesNotExists = courseRepository.existsByAbbreviationAndDepartmentId(courseAbbreviation, courseId);
+        Boolean courseExists = courseRepository.existsByAbbreviationAndDepartmentId(courseAbbreviation, departmentId);
 
-        assertThat(courseDoesNotExists).isFalse();
+        assertThat(courseExists).isFalse();
     }
 
     @Test
-    public void existsByAbbreviationAndDepartmentIdWithoutCoursesReturnsFalse() {
-        entityManager.remove(course);
-        entityManager.remove(course);
-        entityManager.remove(course);
+    public void existsByAbbreviationAndDepartmentIdWithoutPersistedCoursesReturnsFalse() {
+        UUID departmentUUID = department.getId();
 
-        Boolean courseDoesNotExists = courseRepository.existsByAbbreviationAndDepartmentId("RAN", UUID.randomUUID() );
+        Boolean courseExists = courseRepository.existsByAbbreviationAndDepartmentId("TC", departmentUUID);
 
-        assertThat(courseDoesNotExists).isFalse();
+        assertThat(courseExists).isFalse();
     }
 
 }
