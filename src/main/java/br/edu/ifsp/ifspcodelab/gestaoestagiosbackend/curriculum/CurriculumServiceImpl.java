@@ -2,8 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.*;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,7 @@ import java.util.UUID;
 public class CurriculumServiceImpl implements CurriculumService {
     private CurriculumRepository curriculumRepository;
     private CourseService courseService;
+    private CurriculumOverlapVerification curriculumOverlapVerification;
 
     public CurriculumServiceImpl(CurriculumRepository curriculumRepository) {
         this.curriculumRepository = curriculumRepository;
@@ -30,6 +30,8 @@ public class CurriculumServiceImpl implements CurriculumService {
     @Override
     public Curriculum create(UUID courseId, CurriculumCreateDto curriculumCreateDto) {
         Course course = courseService.findById(courseId);
+        List<Curriculum> curriculumList = findAll(courseId);
+        curriculumOverlapVerification.checkingAddCurriculum(curriculumList, curriculumCreateDto);
 
         return curriculumRepository.save(new Curriculum(
             curriculumCreateDto.getCode(),
@@ -37,6 +39,8 @@ public class CurriculumServiceImpl implements CurriculumService {
             curriculumCreateDto.getInternshipCourseLoad(),
             curriculumCreateDto.getInternshipStartCriteria(),
             curriculumCreateDto.getInternshipAllowedActivities(),
+            curriculumCreateDto.getValidityStartDate(),
+            curriculumCreateDto.getValidityEndDate(),
             course
         ));
     }
@@ -69,6 +73,9 @@ public class CurriculumServiceImpl implements CurriculumService {
     public Curriculum update(UUID courseId, UUID curriculumId, CurriculumCreateDto curriculumCreateDto) {
         Course course = courseService.findById(courseId);
         getCurriculum(courseId, curriculumId);
+        List<Curriculum> curriculumList = findAll(courseId);
+
+        curriculumOverlapVerification.checkingUpdateCurriculum(curriculumList, curriculumCreateDto, curriculumId);
 
         Curriculum curriculumUpdated = new Curriculum(
             curriculumCreateDto.getCode(),
@@ -76,6 +83,8 @@ public class CurriculumServiceImpl implements CurriculumService {
             curriculumCreateDto.getInternshipCourseLoad(),
             curriculumCreateDto.getInternshipStartCriteria(),
             curriculumCreateDto.getInternshipAllowedActivities(),
+            curriculumCreateDto.getValidityStartDate(),
+            curriculumCreateDto.getValidityEndDate(),
             course
         );
         curriculumUpdated.setId(curriculumId);

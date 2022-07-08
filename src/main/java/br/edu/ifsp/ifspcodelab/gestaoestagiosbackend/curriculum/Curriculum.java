@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +23,8 @@ public class Curriculum {
     private Integer internshipCourseLoad;
     private String internshipStartCriteria;
     private String internshipAllowedActivities;
+    private LocalDate validityStartDate;
+    private LocalDate validityEndDate;
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 
@@ -34,6 +37,8 @@ public class Curriculum {
         Integer internshipCourseLoad,
         String internshipStartCriteria,
         String internshipAllowedActivities,
+        LocalDate validityStartDate,
+        LocalDate validityEndDate,
         Course course
     ) {
         this.id = UUID.randomUUID();
@@ -42,6 +47,8 @@ public class Curriculum {
         this.internshipCourseLoad = internshipCourseLoad;
         this.internshipStartCriteria = internshipStartCriteria;
         this.internshipAllowedActivities = internshipAllowedActivities;
+        this.validityStartDate = validityStartDate;
+        this.validityEndDate = validityEndDate;
         this.status = EntityStatus.ENABLED;
         this.course = course;
     }

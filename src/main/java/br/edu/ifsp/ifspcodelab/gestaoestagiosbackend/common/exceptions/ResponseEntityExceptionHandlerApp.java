@@ -213,4 +213,36 @@ public class ResponseEntityExceptionHandlerApp extends ResponseEntityExceptionHa
                 HttpStatus.CONFLICT
         );
     }
+
+    @ExceptionHandler(DateChronologyException.class)
+    public ResponseEntity<ProblemDetail> dateCronology(DateChronologyException exception) {
+        return new ResponseEntity<>(
+                new ProblemDetail(
+                        "the date " +
+                                exception.getStartDate().toString() +
+                                " should be before the date " +
+                                exception.getEndDate().toString(),
+                        Collections.emptyList()
+                ),
+                HttpStatus.CONFLICT
+        );
+    }
+
+    @ExceptionHandler(TimeOverlayException.class)
+    public ResponseEntity<ProblemDetail> dateOverlay(TimeOverlayException exception) {
+        return new ResponseEntity<>(
+                new ProblemDetail(
+                        "the time between " +
+                                exception.getStartDate().toString() +
+                                " and " +
+                                exception.getEndDate().toString() +
+                                " overlaps with the time between " +
+                                exception.getOverlaidStartDate().toString() +
+                                " and " +
+                                exception.getOverlaidEndDate().toString(),
+                        Collections.emptyList()
+                ),
+                HttpStatus.CONFLICT
+        );
+    }
 }
