@@ -29,16 +29,17 @@ public class CurriculumRepositoryTest {
 
     @Autowired
     private CurriculumRepository curriculumRepository;
+    private Department department;
+    private Course course;
 
     private Curriculum curriculum;
-    private Course course;
 
     @BeforeEach
     public void setUp() {
         State state = entityManager.persistAndFlush(StateFactoryUtils.sampleState());
         City city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
         Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
-        Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
         course = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department));
         curriculum = CurriculumFactoryUtils.sampleCurriculum(course);
     }
@@ -100,28 +101,25 @@ public class CurriculumRepositoryTest {
     @Test
     public void disableAllByCourseId()
     {
-        Curriculum curriculum0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculum(course);
+        Course course0 = CourseFactoryUtils.sampleCourse(department);
+        Course course1 = CourseFactoryUtils.sampleCourse(department);
+        Curriculum curriculum0 = CurriculumFactoryUtils.sampleCurriculumEnabled(course0);
+        Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculumEnabled(course0);
+        Curriculum curriculum2 = CurriculumFactoryUtils.sampleCurriculumEnabled(course1);
+        entityManager.persistAndFlush(course0);
+        entityManager.persistAndFlush(course1);
         entityManager.persistAndFlush(curriculum0);
         entityManager.persistAndFlush(curriculum1);
+        entityManager.persistAndFlush(curriculum2);
 
-        curriculumRepository.disableAllByCourseId(curriculum.getCourse().getId());
+        curriculumRepository.disableAllByCourseId(course0.getId());
+        entityManager.clear();
+        List<Curriculum> curriculumList = entityManager.getEntityManager().createQuery("select c from Curriculum c", Curriculum.class).getResultList();
 
-        assertThat(curriculum0.getStatus().equals(EntityStatus.DISABLED));
-        assertThat(curriculum1.getStatus().equals(EntityStatus.DISABLED));
-    }
-
-    @Test
-    public void disableAllByCourseIdDoesNotDisableCurriculumsFromOtherCourses()
-    {
-        Curriculum curriculum0 = CurriculumFactoryUtils.sampleCurriculum(course);
-        Curriculum curriculum1 = CurriculumFactoryUtils.sampleCurriculum(course);
-        entityManager.persistAndFlush(curriculum0);
-        entityManager.persistAndFlush(curriculum1);
-
-        curriculumRepository.disableAllByCourseId(UUID.randomUUID());
-
-        assertThat(curriculum0.getStatus().equals(EntityStatus.ENABLED));
-        assertThat(curriculum1.getStatus().equals(EntityStatus.ENABLED));
+        assertThat(curriculumList)
+                .hasSize(3)
+                .filteredOn(c -> c.getStatus().equals(EntityStatus.DISABLED))
+                .extracting(Curriculum::getId)
+                .containsExactly(curriculum0.getId(), curriculum1.getId());
     }
 }
