@@ -35,9 +35,7 @@ public class CampusServiceTest {
     @Mock
     private DepartmentService departmentService;
     private CampusServiceImpl campusService;
-
     private City city;
-
     private Campus campus;
 
     @BeforeEach
@@ -53,21 +51,15 @@ public class CampusServiceTest {
     @Test
     public void createCampus() {
         Optional<City> optionalCity = Optional.of(city);
-        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
         when(cityService.findById(any(UUID.class))).thenReturn(optionalCity);
+        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
 
         Campus campusCreated = campusService.create(sampleCampusCreateDto(campus));
 
-        verify(campusRepository, times(1)).save(any(Campus.class));
         verify(cityService, times(1)).findById(any(UUID.class));
+        verify(campusRepository, times(1)).save(any(Campus.class));
 
-        assertThat(campusCreated).isNotNull();
-        assertThat(campusCreated.getId()).isNotNull();
-        assertThat(campusCreated.getName()).isEqualTo(campus.getName());
-        assertThat(campusCreated.getAbbreviation()).isEqualTo(campus.getAbbreviation());
-        assertThat(campusCreated.getInitialRegistrationPattern()).isEqualTo(campus.getInitialRegistrationPattern());
-        assertThat(campusCreated.getAddress()).isEqualTo(campus.getAddress());
-        assertThat(campusCreated.getInternshipSector()).isEqualTo(campus.getInternshipSector());
+        assertThat(campusCreated).isEqualTo(campus);
     }
 
     @Test
@@ -121,6 +113,69 @@ public class CampusServiceTest {
     }
 
     @Test
+    public void updateCampus() {
+
+        Optional<City> optionalCity = Optional.of(city);
+
+        when(cityService.findById(any(UUID.class))).thenReturn(optionalCity);
+        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        Campus campusUpdate = campusService.update(campus.getId(), sampleCampusCreateDto(campus));
+
+        verify(cityService, times(1)).findById(any(UUID.class));
+        verify(campusRepository, times(1)).save(any(Campus.class));
+
+        assertThat(campusUpdate).isEqualTo(campus);
+        assertThat(campusUpdate.getId()).isEqualTo(campus.getId());
+    }
+
+    @Test
+    public void updateCampusAlreadyExistsByAbbreviationExcludedId() {
+        when(campusRepository.existsByAbbreviationExcludedId(any(String.class), any(UUID.class))).thenReturn(true);
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        assertThatThrownBy(() -> campusService.update(campus.getId(), sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByAbbreviationException.class);
+    }
+
+    @Test
+    public void updateCampusAlreadyExistsByInitialRegistrationPatternExcludedId() {
+        when(campusRepository.existsByInitialRegistrationPatternExcludedId(any(String.class), any(UUID.class))).thenReturn(true);
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        assertThatThrownBy(() -> campusService.update(campus.getId(), sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByInitialRegistrationPatternException.class);
+    }
+
+    @Test
+    public void updateCampusAlreadyExistsByEmailExcludedId() {
+        when(campusRepository.existsByEmailExcludedId(any(String.class), any(UUID.class))).thenReturn(true);
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        assertThatThrownBy(() -> campusService.update(campus.getId(), sampleCampusCreateDto(campus)))
+                .isInstanceOf(CampusAlreadyExistsByEmailException.class);
+    }
+
+    @Test
+    public void updateCampusCityIsEmpty() {
+        when(cityService.findById(any(UUID.class))).thenReturn(Optional.empty());
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        assertThatThrownBy(() -> campusService.update(campus.getId(), sampleCampusCreateDto(campus)))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    public void deleteCampus() {
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        campusService.delete(campus.getId());
+
+        verify(campusRepository, times(1)).deleteById(campus.getId());
+    }
+
+    @Test
     public void findAllByStatus() {
         when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(List.of(campus));
 
@@ -154,15 +209,6 @@ public class CampusServiceTest {
 
         assertThatThrownBy(() -> campusService.findById(campus.getId()))
                 .isInstanceOf(ResourceNotFoundException.class);
-    }
-
-    @Test
-    public void deleteCampus() {
-        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
-
-        campusService.delete(campus.getId());
-
-        verify(campusRepository, times(1)).deleteById(campus.getId());
     }
 
     @Test
