@@ -48,7 +48,8 @@ public class CurriculumRepositoryTest {
 
         assertThat(result)
                 .isPresent()
-                .map(Curriculum::getId)
+                .get()
+                .extracting(Curriculum::getId)
                 .isEqualTo(curriculum.getId());
     }
 
@@ -61,5 +62,4 @@ public class CurriculumRepositoryTest {
 
         assertThat(result).isEmpty();
     }
-
 }
