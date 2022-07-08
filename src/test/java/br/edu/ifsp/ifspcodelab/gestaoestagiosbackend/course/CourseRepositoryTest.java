@@ -14,10 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
 import java.util.List;
 import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -27,41 +25,53 @@ public class CourseRepositoryTest {
     @Autowired
     private CourseRepository courseRepository;
 
+    private Campus campus;
+    private Department department;
     private Course course;
 
     @BeforeEach
     public void setUp() {
         State state = entityManager.persistAndFlush(StateFactoryUtils.sampleState());
         City city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
-        Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
-        Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
-        course = CourseFactoryUtils.sampleCourse(department);
+        campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
+        department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
     }
 
     @Test
     public void disableAllByDepartmentId() {
-        entityManager.persistAndFlush(course);
+        Department department1 = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        Department department2 = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        Course course3 = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department2));
 
-        courseRepository.disableAllByDepartmentId(course.getDepartment().getId());
-        entityManager.clear();
-        Course course1 = entityManager.find(Course.class, course.getId());
+        courseRepository.disableAllByDepartmentId(department1.getId());
 
-        assertThat(course1.getStatus()).isEqualTo(EntityStatus.DISABLED);
+        List<Course> courses = courseRepository.findAllByStatus(EntityStatus.ENABLED);
+        assertThat(courses)
+                .hasSize(1)
+                .contains(course3);
     }
 
     @Test
     public void notDisableAllByDepartmentId() {
-        entityManager.persistAndFlush(course);
+        Department department1 = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        Department department2 = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        Course course1 = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        Course course2 = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        Course course3 = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department2));
 
         courseRepository.disableAllByDepartmentId(UUID.randomUUID());
-        entityManager.clear();
-        Course course1 = entityManager.find(Course.class, course.getId());
 
-        assertThat(course1.getStatus()).isEqualTo(EntityStatus.ENABLED);
+        List<Course> courses = courseRepository.findAllByStatus(EntityStatus.ENABLED);
+        assertThat(courses)
+                .hasSize(3)
+                .contains(course1, course2, course3);
     }
 
     @Test
     public void existsByDepartmentId() {
+        course = CourseFactoryUtils.sampleCourse(department);
         entityManager.persistAndFlush(course);
 
         boolean result = courseRepository.existsByDepartmentId(course.getDepartment().getId());
@@ -71,6 +81,7 @@ public class CourseRepositoryTest {
 
     @Test
     public void notExistsByDepartmentId() {
+        course = CourseFactoryUtils.sampleCourse(department);
         entityManager.persistAndFlush(course);
 
         boolean result = courseRepository.existsByDepartmentId(UUID.randomUUID());
@@ -80,18 +91,26 @@ public class CourseRepositoryTest {
 
     @Test
     public void findByIdIn() {
-        entityManager.persistAndFlush(course);
-        List<UUID> coursesIds = List.of(course.getId());
+        Department department1 = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        Course course1 = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        Course course2 = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        List<UUID> coursesIds = List.of(course1.getId(), course2.getId());
 
         List<Course> result = courseRepository.findByIdIn(coursesIds);
 
-        assertThat(result).hasSize(1);
+        assertThat(result)
+                .hasSize(2)
+                .contains(course1, course2);
     }
 
     @Test
     public void isEmptyFindByIdIn() {
-        entityManager.persistAndFlush(course);
-        List<UUID> coursesIds = List.of(UUID.randomUUID());
+        Department department1 = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department1));
+        List<UUID> coursesIds = List.of(UUID.randomUUID(), UUID.randomUUID());
 
         List<Course> result = courseRepository.findByIdIn(coursesIds);
 

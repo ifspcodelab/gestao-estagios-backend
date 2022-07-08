@@ -15,10 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
 import java.util.Optional;
 import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -29,6 +27,7 @@ public class CurriculumRepositoryTest {
     @Autowired
     private CurriculumRepository curriculumRepository;
 
+    private Course course;
     private Curriculum curriculum;
 
     @BeforeEach
@@ -37,21 +36,25 @@ public class CurriculumRepositoryTest {
         City city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
         Campus campus = entityManager.persistAndFlush(CampusFactoryUtils.sampleCampus(city));
         Department department = entityManager.persistAndFlush(DepartmentFactoryUtils.sampleDepartment(campus));
-        Course course = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department));
-        curriculum = CurriculumFactoryUtils.sampleCurriculum(course);
+        course = entityManager.persistAndFlush(CourseFactoryUtils.sampleCourse(department));
     }
 
     @Test
     public void findAllByCourseIdAndId() {
+        curriculum = CurriculumFactoryUtils.sampleCurriculum(course);
         entityManager.persistAndFlush(curriculum);
 
         Optional<Curriculum> result = curriculumRepository.findAllByCourseIdAndId(curriculum.getCourse().getId(), curriculum.getId());
 
-        assertThat(result.get().getId()).isEqualTo(curriculum.getId());
+        assertThat(result)
+                .isPresent()
+                .map(Curriculum::getId)
+                .isEqualTo(curriculum.getId());
     }
 
     @Test
     public void isEmptyFindAllByCourseIdAndId() {
+        curriculum = CurriculumFactoryUtils.sampleCurriculum(course);
         entityManager.persistAndFlush(curriculum);
 
         Optional<Curriculum> result = curriculumRepository.findAllByCourseIdAndId(UUID.randomUUID(), curriculum.getId());
