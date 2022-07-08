@@ -15,25 +15,11 @@ public class CurriculumFactoryUtils {
     }
 
     public static Curriculum sampleCurriculumEnabled(Course course){
-        String code = "1001";
-        Integer courseLoad = 1001;
-        Integer internshipCourseLoad = 360;
-        String internshipStartCriteria = "Test internship start criteria";
-        String internshipAllowedActivities = "Test internship allowed activities";
-
-        var curriculum = new Curriculum(code, courseLoad, internshipCourseLoad, internshipStartCriteria, internshipAllowedActivities, course);
-        curriculum.setStatus(EntityStatus.ENABLED);
-        return curriculum;
+        return sampleCurriculum(course);
     }
 
     public static Curriculum sampleCurriculumDisabled(Course course){
-        String code = "1001";
-        Integer courseLoad = 1001;
-        Integer internshipCourseLoad = 360;
-        String internshipStartCriteria = "Test internship start criteria";
-        String internshipAllowedActivities = "Test internship allowed activities";
-
-        var curriculum = new Curriculum(code, courseLoad, internshipCourseLoad, internshipStartCriteria, internshipAllowedActivities, course);
+        var curriculum = sampleCurriculum(course);
         curriculum.setStatus(EntityStatus.DISABLED);
         return curriculum;
     }
