@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,19 +20,18 @@ public class CampusRepositoryTest {
     private TestEntityManager entityManager;
     @Autowired
     private CampusRepository campusRepository;
-
-    private Campus campus;
     private City city;
 
     @BeforeEach
     public void setUp() {
         State state = entityManager.persistAndFlush(StateFactoryUtils.sampleState());
         city = entityManager.persistAndFlush(CityFactoryUtils.sampleCity(state));
-        campus = CampusFactoryUtils.sampleCampus(city);
     }
 
     @Test
     public void saveNewCampus() {
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
+
         campusRepository.save(campus);
         Campus campusFound = entityManager.find(Campus.class, campus.getId());
 
@@ -54,25 +52,24 @@ public class CampusRepositoryTest {
 
     @Test
     public void findAllByStatusShouldReturnOnlyEnabledCampusesWhenSpecifiedStatusIsEnabled() {
-        Campus campusEnabled = campus;
+        Campus campusEnabled =  CampusFactoryUtils.sampleCampus(city);
         Campus campusEnabled2 = CampusFactoryUtils.sampleCampus(city);
-        Campus campusDisabled = CampusFactoryUtils.sampleCampus(city);
-        campusDisabled.setStatus(EntityStatus.DISABLED);
+        Campus campusDisabled = CampusFactoryUtils.sampleCampusDisabled(city);
         entityManager.persistAndFlush(campusEnabled);
         entityManager.persistAndFlush(campusEnabled2);
         entityManager.persistAndFlush(campusDisabled);
 
         List<Campus> campuses = campusRepository.findAllByStatus(EntityStatus.ENABLED);
 
-        assertThat(campuses).hasSize(2);
-        assertThat(campuses.get(0).getId()).isEqualTo(campusEnabled.getId());
-        assertThat(campuses.get(1).getId()).isEqualTo(campusEnabled2.getId());
+        assertThat(campuses)
+                .hasSize(2)
+                .extracting(Campus::getId)
+                .containsExactlyInAnyOrder(campusEnabled.getId(), campusEnabled2.getId());
     }
 
     @Test
     public void findAllByStatusShouldReturnEmptyListWhenThereIsNotCampusWithEnabledStatus() {
-        campus.setStatus(EntityStatus.DISABLED);
-        Campus campusDisabled = campus;
+        Campus campusDisabled = CampusFactoryUtils.sampleCampusDisabled(city);
         entityManager.persistAndFlush(campusDisabled);
 
         List<Campus> campuses = campusRepository.findAllByStatus(EntityStatus.ENABLED);
@@ -82,25 +79,24 @@ public class CampusRepositoryTest {
 
     @Test
     public void findAllByStatusShouldReturnOnlyDisabledCampusesWhenSpecifiedStatusIsDisabled() {
-        Campus campusDisabled = CampusFactoryUtils.sampleCampus(city);
-        campusDisabled.setStatus(EntityStatus.DISABLED);
-        Campus campusDisabled2 = CampusFactoryUtils.sampleCampus(city);
-        campusDisabled2.setStatus(EntityStatus.DISABLED);
-        Campus campusEnabled = campus;
+        Campus campusDisabled = CampusFactoryUtils.sampleCampusDisabled(city);
+        Campus campusDisabled2 = CampusFactoryUtils.sampleCampusDisabled(city);
+        Campus campusEnabled = CampusFactoryUtils.sampleCampus(city);
         entityManager.persistAndFlush(campusDisabled);
         entityManager.persistAndFlush(campusDisabled2);
         entityManager.persistAndFlush(campusEnabled);
 
         List<Campus> campuses = campusRepository.findAllByStatus(EntityStatus.DISABLED);
 
-        assertThat(campuses).hasSize(2);
-        assertThat(campuses.get(0).getId()).isEqualTo(campusDisabled.getId());
-        assertThat(campuses.get(1).getId()).isEqualTo(campusDisabled2.getId());
+        assertThat(campuses)
+                .hasSize(2)
+                .extracting(Campus::getId)
+                .containsExactlyInAnyOrder(campusDisabled.getId(), campusDisabled2.getId());
     }
 
     @Test
     public void findAllByStatusShouldReturnEmptyListWhenThereIsNotCampusWithDisabledStatus() {
-        Campus campusEnabled = campus;
+        Campus campusEnabled = CampusFactoryUtils.sampleCampus(city);
         entityManager.persistAndFlush(campusEnabled);
 
         List<Campus> campuses = campusRepository.findAllByStatus(EntityStatus.DISABLED);
@@ -110,6 +106,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void existsByAbbreviationShouldReturnTrueWhenThereIsCampusWithSpecifiedAbbreviation() {
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
         entityManager.persistAndFlush(campus);
 
         boolean result = campusRepository.existsByAbbreviation("TCS");
@@ -119,6 +116,7 @@ public class CampusRepositoryTest {
 
     @Test
     public void existsByAbbreviationShouldReturnFalseWhenThereIsNotCampusWithSpecifiedAbbreviation() {
+        Campus campus = CampusFactoryUtils.sampleCampus(city);
         entityManager.persistAndFlush(campus);
 
         boolean result = campusRepository.existsByAbbreviation("SPO");

@@ -34,9 +34,8 @@ public class DepartmentServiceTest {
     @Mock
     private CourseService courseService;
     private DepartmentServiceImpl departmentService;
-    private Department department;
-
     private Campus campus;
+    private City city;
 
     @BeforeEach
     public void setUp() {
@@ -44,22 +43,23 @@ public class DepartmentServiceTest {
        departmentService.setCampusService(campusService);
        departmentService.setCourseService(courseService);
        State state = StateFactoryUtils.sampleState();
-       City city = CityFactoryUtils.sampleCity(state);
+       city = CityFactoryUtils.sampleCity(state);
        campus = CampusFactoryUtils.sampleCampus(city);
-       department = new Department("Departamento A","DPA", campus);
     }
 
     @Test
     public void createDepartment() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campus1);
         when(departmentRepository.existsByAbbreviationAndCampusId(anyString(), any(UUID.class)))
                 .thenReturn(false);
         when(departmentRepository.save(any(Department.class)))
                 .thenReturn(department);
 
-        var departmentCreated = departmentService.create(campus.getId(), departmentCreateDto);
+        var departmentCreated = departmentService.create(campus1.getId(), departmentCreateDto);
 
         verify(departmentRepository, times(1)).save(any(Department.class));
         assertThat(departmentCreated).isNotNull();
@@ -70,11 +70,12 @@ public class DepartmentServiceTest {
 
     @Test
     public void notCreateDepartmentAlreadyExistsByAbbreviationAndCampusId() {
+        Campus campus1 = campus;
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
         when(departmentRepository.existsByAbbreviationAndCampusId(anyString(), any(UUID.class)))
                 .thenReturn(true);
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campus1);
 
         assertThatThrownBy(() -> departmentService.create(campus.getId(), departmentCreateDto))
                 .isInstanceOf(DepartmentAlreadyExistsByAbbreviationAndCampusIdException.class);
@@ -82,17 +83,22 @@ public class DepartmentServiceTest {
 
     @Test
     public void notCreateDepartmentWithDisabledCampus() {
-        campus.setStatus(EntityStatus.DISABLED);
+        City city1 = city;
+        Campus campusDisabled = CampusFactoryUtils.sampleCampusDisabled(city1);
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campusDisabled);
 
-        assertThatThrownBy(() -> departmentService.create(campus.getId(), departmentCreateDto))
+        assertThatThrownBy(() -> departmentService.create(campusDisabled.getId(), departmentCreateDto))
                 .isInstanceOf(ResourceReferentialIntegrityException.class);
     }
 
     @Test
     public void findAll() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
+        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
+
         when(departmentRepository.findAllByCampusId(any(UUID.class)))
                 .thenReturn(List.of(department));
 
@@ -103,16 +109,19 @@ public class DepartmentServiceTest {
 
     @Test
     public void findAllEmpty() {
+        Campus campus1 = campus;
         when(departmentRepository.findAllByCampusId(any(UUID.class)))
                 .thenReturn(Collections.emptyList());
 
-        List<Department> departments = departmentService.findAll(campus.getId());
+        List<Department> departments = departmentService.findAll(campus1.getId());
 
         assertThat(departments).isEmpty();
     }
 
     @Test
     public void findById() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(departmentRepository.findById(any(UUID.class))).thenReturn(Optional.of(department));
 
         Department departmentFound = departmentService.findById(department.getId());
@@ -123,6 +132,8 @@ public class DepartmentServiceTest {
 
     @Test
     public void findByIdNotFound() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(departmentRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> departmentService.findById(department.getId()))
@@ -131,10 +142,12 @@ public class DepartmentServiceTest {
 
     @Test
     public void findByCampusIdAndId() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.of(department));
 
-        Department departmentFound = departmentService.findByCampusIdAndId(campus.getId(), department.getId());
+        Department departmentFound = departmentService.findByCampusIdAndId(campus1.getId(), department.getId());
 
         assertThat(departmentFound).isNotNull();
         assertThat(departmentFound.getId()).isEqualTo(department.getId());
@@ -142,19 +155,23 @@ public class DepartmentServiceTest {
 
     @Test
     public void notFindByCampusIdAndId() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> departmentService.findByCampusIdAndId(campus.getId(), department.getId()))
+        assertThatThrownBy(() -> departmentService.findByCampusIdAndId(campus1.getId(), department.getId()))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     public void updateDepartment() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         Department departmentReturnedByRepository = new Department("Departamento B","DPB", department.getCampus());
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento B", "DPB");
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(department.getCampus());
+                .thenReturn(campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.of(department));
         when(departmentRepository.existsByAbbreviationAndCampusIdExcludedId(
@@ -166,7 +183,7 @@ public class DepartmentServiceTest {
                 .thenReturn(departmentReturnedByRepository);
 
         Department departmentUpdated = departmentService.update(
-            campus.getId(),
+            campus1.getId(),
             department.getId(),
             departmentCreateDto
         );
@@ -178,14 +195,16 @@ public class DepartmentServiceTest {
 
     @Test
     public void notUpdateDepartmentNotFound() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento B", "DPB");
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> departmentService.update(
-                campus.getId(),
+                campus1.getId(),
                 department.getId(),
                 departmentCreateDto
         )).isInstanceOf(ResourceNotFoundException.class);
@@ -193,9 +212,11 @@ public class DepartmentServiceTest {
 
     @Test
     public void notUpdateDepartmentAlreadyExistsByAbbreviationAndCampusIdExcludedId() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento B", "DPB");
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.of(department));
         when(departmentRepository.existsByAbbreviationAndCampusIdExcludedId(
@@ -205,7 +226,7 @@ public class DepartmentServiceTest {
                 .thenReturn(true);
 
         assertThatThrownBy(() -> departmentService.update(
-                campus.getId(),
+                campus1.getId(),
                 department.getId(),
                 departmentCreateDto
         )).isInstanceOf(DepartmentAlreadyExistsByAbbreviationAndCampusIdException.class);
@@ -213,6 +234,8 @@ public class DepartmentServiceTest {
 
     @Test
     public void setStatus() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         EntityUpdateStatusDto entityUpdateStatusDto = new EntityUpdateStatusDto();
         entityUpdateStatusDto.setStatus(EntityStatus.ENABLED);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
@@ -220,13 +243,15 @@ public class DepartmentServiceTest {
         when(departmentRepository.save(any(Department.class)))
                 .thenReturn(department);
 
-        Department departmentWithUpdatedStatus = departmentService.setStatus(campus.getId(), department.getId(), entityUpdateStatusDto);
+        Department departmentWithUpdatedStatus = departmentService.setStatus(campus1.getId(), department.getId(), entityUpdateStatusDto);
 
         assertThat(departmentWithUpdatedStatus.getStatus()).isEqualTo(entityUpdateStatusDto.getStatus());
     }
 
     @Test
     public void setStatusWhenDepartmentIsDisabled() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         EntityUpdateStatusDto entityUpdateStatusDto = new EntityUpdateStatusDto();
         entityUpdateStatusDto.setStatus(EntityStatus.DISABLED);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
@@ -234,7 +259,7 @@ public class DepartmentServiceTest {
         when(departmentRepository.save(any(Department.class)))
                 .thenReturn(department);
 
-        Department departmentWithUpdatedStatus = departmentService.setStatus(campus.getId(), department.getId(), entityUpdateStatusDto);
+        Department departmentWithUpdatedStatus = departmentService.setStatus(campus1.getId(), department.getId(), entityUpdateStatusDto);
 
         verify(courseService,times(1)).disableAllByDepartmentId(department.getId());
         assertThat(departmentWithUpdatedStatus.getStatus()).isEqualTo(entityUpdateStatusDto.getStatus());
@@ -242,118 +267,136 @@ public class DepartmentServiceTest {
 
     @Test
     public void notSetStatusWhenDepartmentIsNotFound() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         EntityUpdateStatusDto entityUpdateStatusDto = new EntityUpdateStatusDto();
         entityUpdateStatusDto.setStatus(EntityStatus.ENABLED);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> departmentService.setStatus(campus.getId(), department.getId(), entityUpdateStatusDto))
+        assertThatThrownBy(() -> departmentService.setStatus(campus1.getId(), department.getId(), entityUpdateStatusDto))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     public void deleteDepartment() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.of(department));
         when(courseService.existsByDepartmentId(any(UUID.class)))
                 .thenReturn(false);
 
-        departmentService.delete(campus.getId(), department.getId());
+        departmentService.delete(campus1.getId(), department.getId());
 
         verify(departmentRepository, times(1)).deleteById(department.getId());
     }
 
     @Test
     public void notDeleteDepartmentNotFound() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(campusService.findById(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campus1);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> departmentService.delete(campus.getId(), department.getId()))
+        assertThatThrownBy(() -> departmentService.delete(campus1.getId(), department.getId()))
             .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     public void existsByCampusId() {
-       when(departmentRepository.existsByCampusId(any(UUID.class)))
+        Campus campus1 = campus;
+        when(departmentRepository.existsByCampusId(any(UUID.class)))
                .thenReturn(true);
 
-       boolean result = departmentService.existsByCampusId(campus.getId());
+        boolean result = departmentService.existsByCampusId(campus1.getId());
 
-       assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
     public void departmentNotExistsByCampusId() {
+        Campus campus1 = campus;
         when(departmentRepository.existsByCampusId(any(UUID.class)))
                 .thenReturn(false);
 
-        boolean result = departmentService.existsByCampusId(campus.getId());
+        boolean result = departmentService.existsByCampusId(campus1.getId());
 
         assertThat(result).isFalse();
     }
 
     @Test
     public void disableAllByCampusId() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(departmentRepository.findAllByCampusId(any(UUID.class)))
                 .thenReturn(List.of(department));
 
-        departmentService.disableAllByCampusId(campus.getId());
+        departmentService.disableAllByCampusId(campus1.getId());
 
         verify(courseService, times(1)).disableAllByDepartmentId(department.getId());
-        verify(departmentRepository, times(1)).disableAllByCampusId(campus.getId());
+        verify(departmentRepository, times(1)).disableAllByCampusId(campus1.getId());
     }
 
     @Test
     public void notDisableAllByCampusIdNotExists() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         when(departmentRepository.findAllByCampusId(any(UUID.class)))
                 .thenReturn(Collections.emptyList());
 
-        departmentService.disableAllByCampusId(department.getCampus().getId());
-        verify(departmentRepository, times(1)).findAllByCampusId(department.getCampus().getId());
+        departmentService.disableAllByCampusId(campus1.getId());
+
+        verify(departmentRepository, times(1)).findAllByCampusId(campus1.getId());
         verify(courseService, times(0)).disableAllByDepartmentId(department.getId());
         verify(courseService, times(0)).disableAllByDepartmentId(department.getId());
     }
 
     @Test
     public void enable() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         department.setStatus(EntityStatus.DISABLED);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.of(department));
         when(departmentRepository.save(any(Department.class)))
                 .thenReturn(department);
 
-        Department departmentEnabled = departmentService.enable(campus.getId(), department.getId());
+        Department departmentEnabled = departmentService.enable(campus1.getId(), department.getId());
 
         assertThat(departmentEnabled.getStatus()).isEqualTo(EntityStatus.ENABLED);
     }
 
     @Test
     public void enableWhenCampusIsDisabled() {
+        Campus campusDisabled = CampusFactoryUtils.sampleCampusDisabled(city);
+        Department department = new Department("Departamento A","DPA", campusDisabled);
         department.setStatus(EntityStatus.DISABLED);
-        campus.setStatus(EntityStatus.DISABLED);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.of(department));
         when(campusService.enable(any(UUID.class)))
-                .thenReturn(campus);
+                .thenReturn(campusDisabled);
         when(departmentRepository.save(any(Department.class)))
                 .thenReturn(department);
 
-        Department departmentEnabled = departmentService.enable(campus.getId(), department.getId());
+        Department departmentEnabled = departmentService.enable(campusDisabled.getId(), department.getId());
 
         assertThat(departmentEnabled.getStatus()).isEqualTo(EntityStatus.ENABLED);
     }
 
     @Test
     public void notEnableWhenDepartmentIsNotFound() {
+        Campus campus1 = campus;
+        Department department = new Department("Departamento A","DPA", campus1);
         department.setStatus(EntityStatus.DISABLED);
         when(departmentRepository.findByCampusIdAndId(any(UUID.class), any(UUID.class)))
                 .thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> departmentService.enable(campus.getId(), department.getId()))
+        assertThatThrownBy(() -> departmentService.enable(campus1.getId(), department.getId()))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
