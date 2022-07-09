@@ -167,6 +167,25 @@ public class CampusServiceTest {
     }
 
     @Test
+    public void enableCampus(){
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
+        campus.setStatus(EntityStatus.DISABLED);
+
+        campus = campusService.enable(campus.getId());
+
+        assertThat(campus.getStatus()).isEqualTo(EntityStatus.ENABLED);
+    }
+
+    @Test
+    public void ThrowExceptionWhenEnableCampusNotFound(){
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> campusService.enable(campus.getId()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
     public void deleteCampus() {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
 
