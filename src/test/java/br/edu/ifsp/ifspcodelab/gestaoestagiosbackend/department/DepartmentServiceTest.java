@@ -97,8 +97,6 @@ public class DepartmentServiceTest {
     public void findAll() {
         Campus campus1 = campus;
         Department department = new Department("Departamento A","DPA", campus1);
-        DepartmentCreateDto departmentCreateDto = new DepartmentCreateDto("Departamento A", "DPA");
-
         when(departmentRepository.findAllByCampusId(any(UUID.class)))
                 .thenReturn(List.of(department));
 
