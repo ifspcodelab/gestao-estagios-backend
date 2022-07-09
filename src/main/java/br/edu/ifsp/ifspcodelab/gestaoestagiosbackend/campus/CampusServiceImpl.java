@@ -28,6 +28,11 @@ public class CampusServiceImpl implements CampusService {
     }
 
     @Autowired
+    public void setCampusRepository(CampusRepository campusRepository) {
+        this.campusRepository = campusRepository;
+    }
+
+    @Autowired
     public void setCityService(CityService cityService) {
         this.cityService = cityService;
     }
@@ -39,11 +44,11 @@ public class CampusServiceImpl implements CampusService {
 
     @Override
     public Campus create(CampusCreateDto campusCreateDto) {
-        if (campusRepository.existsByAbbreviation(campusCreateDto.getAbbreviation())) {
-            throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
+        if (campusRepository.existsByAbbreviation(campusCreateDto.getAbbreviation().toUpperCase())) {
+            throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation().toUpperCase());
         }
-        if (campusRepository.existsByInitialRegistrationPattern(campusCreateDto.getInitialRegistrationPattern())){
-            throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern());
+        if (campusRepository.existsByInitialRegistrationPattern(campusCreateDto.getInitialRegistrationPattern().toUpperCase())){
+            throw new CampusAlreadyExistsByInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern().toUpperCase());
         }
         if (campusRepository.existsByInternshipSectorEmail(campusCreateDto.getInternshipSector().getEmail())) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
@@ -74,11 +79,11 @@ public class CampusServiceImpl implements CampusService {
     @Override
     public Campus update(UUID id, CampusCreateDto campusCreateDto) {
         getCampus(id);
-        if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation(), id)) {
-            throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation());
+        if (campusRepository.existsByAbbreviationExcludedId(campusCreateDto.getAbbreviation().toUpperCase(), id)) {
+            throw new CampusAlreadyExistsByAbbreviationException(campusCreateDto.getAbbreviation().toUpperCase());
         }
-        if (campusRepository.existsByInitialRegistrationPatternExcludedId(campusCreateDto.getInitialRegistrationPattern(), id)){
-            throw new CampusAlreadyExistsbyInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern());
+        if (campusRepository.existsByInitialRegistrationPatternExcludedId(campusCreateDto.getInitialRegistrationPattern().toUpperCase(), id)){
+            throw new CampusAlreadyExistsByInitialRegistrationPatternException(campusCreateDto.getInitialRegistrationPattern().toUpperCase());
         }
         if (campusRepository.existsByEmailExcludedId(campusCreateDto.getInternshipSector().getEmail(), id)) {
             throw new CampusAlreadyExistsByEmailException(campusCreateDto.getInternshipSector().getEmail());
@@ -126,8 +131,8 @@ public class CampusServiceImpl implements CampusService {
     private Campus toCampus(CampusCreateDto campusCreateDto, City city) {
         return new Campus(
             campusCreateDto.getName(),
-            campusCreateDto.getAbbreviation(),
-            campusCreateDto.getInitialRegistrationPattern(),
+            campusCreateDto.getAbbreviation().toUpperCase(),
+            campusCreateDto.getInitialRegistrationPattern().toUpperCase(),
             toAddress(campusCreateDto.getAddress(), city),
             toInternshipSector(campusCreateDto.getInternshipSector())
         );
