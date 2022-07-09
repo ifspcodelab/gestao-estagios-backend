@@ -113,6 +113,42 @@ public class CampusServiceTest {
     }
 
     @Test
+    public void findAllByStatus() {
+        when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(List.of(campus));
+
+        List<Campus> campusFound = campusService.findAllByStatus(campus.getStatus());
+
+        assertThat(campusFound).hasSize(1);
+    }
+
+    @Test
+    public void findAllByStatusIsEmpty() {
+        when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(Collections.emptyList());
+
+        List<Campus> campuses = campusService.findAllByStatus(campus.getStatus());
+
+        assertThat(campuses).isEmpty();
+    }
+
+    @Test
+    public void findById() {
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+
+        Campus campusFound = campusService.findById(campus.getId());
+
+        assertThat(campusFound).isNotNull();
+        assertThat(campusFound.getId()).isEqualTo(campus.getId());
+    }
+
+    @Test
+    public void findByIdNotFound() {
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> campusService.findById(campus.getId()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
     public void updateCampus() {
 
         Optional<City> optionalCity = Optional.of(city);
@@ -167,67 +203,12 @@ public class CampusServiceTest {
     }
 
     @Test
-    public void enableCampus(){
-        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
-        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
-        campus.setStatus(EntityStatus.DISABLED);
-
-        campus = campusService.enable(campus.getId());
-
-        assertThat(campus.getStatus()).isEqualTo(EntityStatus.ENABLED);
-    }
-
-    @Test
-    public void ThrowExceptionWhenEnableCampusNotFound(){
-        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> campusService.enable(campus.getId()))
-                .isInstanceOf(ResourceNotFoundException.class);
-    }
-
-    @Test
     public void deleteCampus() {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
 
         campusService.delete(campus.getId());
 
         verify(campusRepository, times(1)).deleteById(campus.getId());
-    }
-
-    @Test
-    public void findAllByStatus() {
-        when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(List.of(campus));
-
-        List<Campus> campusFound = campusService.findAllByStatus(campus.getStatus());
-
-        assertThat(campusFound).hasSize(1);
-    }
-
-    @Test
-    public void findAllByStatusIsEmpty() {
-        when(campusRepository.findAllByStatus(any(EntityStatus.class))).thenReturn(Collections.emptyList());
-
-        List<Campus> campuses = campusService.findAllByStatus(campus.getStatus());
-
-        assertThat(campuses).isEmpty();
-    }
-
-    @Test
-    public void findById() {
-        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
-
-        Campus campusFound = campusService.findById(campus.getId());
-
-        assertThat(campusFound).isNotNull();
-        assertThat(campusFound.getId()).isEqualTo(campus.getId());
-    }
-
-    @Test
-    public void findByIdNotFound() {
-        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> campusService.findById(campus.getId()))
-                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -243,6 +224,25 @@ public class CampusServiceTest {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> campusService.delete(campus.getId()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    public void enableCampus() {
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+        when(campusRepository.save(any(Campus.class))).thenReturn(campus);
+        campus.setStatus(EntityStatus.DISABLED);
+
+        campus = campusService.enable(campus.getId());
+
+        assertThat(campus.getStatus()).isEqualTo(EntityStatus.ENABLED);
+    }
+
+    @Test
+    public void ThrowExceptionWhenEnableCampusNotFound() {
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> campusService.enable(campus.getId()))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
