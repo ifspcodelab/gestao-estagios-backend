@@ -3,6 +3,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.campus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.City;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityFactoryUtils;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.city.CityService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
@@ -185,6 +186,39 @@ public class CampusServiceTest {
     }
 
     @Test
+    public void setStatus(){
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+        EntityUpdateStatusDto campusUpdateStatusDto = new EntityUpdateStatusDto();
+        campusUpdateStatusDto.setStatus(EntityStatus.ENABLED);
+
+        campusService.setStatus(campus.getId(), campusUpdateStatusDto);
+
+        verify(campusRepository, times (1)).save(campus);
+    }
+
+    @Test
+    public void setStatusDisabledCallDisableAllByCampusId(){
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
+        EntityUpdateStatusDto campusUpdateStatusDto = new EntityUpdateStatusDto();
+        campusUpdateStatusDto.setStatus(EntityStatus.DISABLED);
+
+        campusService.setStatus(campus.getId(), campusUpdateStatusDto);
+
+        verify(departmentService, times(1)).disableAllByCampusId(campus.getId());
+        verify(campusRepository, times (1)).save(campus);
+    }
+
+    @Test
+    public void doNotSetStatusWhenCampusNotFound(){
+        when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+        EntityUpdateStatusDto campusUpdateStatusDto = new EntityUpdateStatusDto();
+        campusUpdateStatusDto.setStatus(EntityStatus.ENABLED);
+
+        assertThatThrownBy(() -> campusService.setStatus(campus.getId(), campusUpdateStatusDto))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
     public void updateCampusAlreadyExistsByEmailExcludedId() {
         when(campusRepository.existsByEmailExcludedId(any(String.class), any(UUID.class))).thenReturn(true);
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.of(campus));
@@ -201,6 +235,7 @@ public class CampusServiceTest {
         assertThatThrownBy(() -> campusService.update(campus.getId(), sampleCampusCreateDto(campus)))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
+
 
     @Test
     public void deleteCampus() {
@@ -239,7 +274,7 @@ public class CampusServiceTest {
     }
 
     @Test
-    public void ThrowExceptionWhenEnableCampusNotFound() {
+    public void throwExceptionWhenEnableCampusNotFound() {
         when(campusRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> campusService.enable(campus.getId()))
