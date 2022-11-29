@@ -12,6 +12,7 @@ import java.util.UUID;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, UUID> {
     boolean existsByAbbreviationAndCampusId(String abbreviation, UUID campusId);
+    boolean existsByNameAndCampusId(String name, UUID campusId);
     long countAllByCampusId(UUID campusId);
     List<Department> findAllByCampusId(UUID campusId);
     Optional<Department> findByCampusIdAndId(UUID campusId, UUID departmentId);
