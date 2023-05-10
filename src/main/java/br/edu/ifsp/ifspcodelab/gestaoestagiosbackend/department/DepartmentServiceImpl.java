@@ -70,6 +70,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         );
     }
 
+//    @Override
+//    public List<Department> findAllByCampusIdAndStatus(UUID campusID, EntityStatus status){
+//      return departmentRepository.findAllByCampusIdAndStatus(status);
+//    }
+
     @Override
     public Department findByCampusIdAndId(UUID campusId, UUID departmentId) {
         campusService.findById(campusId);
