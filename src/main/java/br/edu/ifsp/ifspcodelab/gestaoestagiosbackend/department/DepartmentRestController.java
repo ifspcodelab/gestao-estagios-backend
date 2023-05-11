@@ -28,16 +28,8 @@ public class DepartmentRestController {
         return ResponseEntity.created(uri).body(departmentMapper.to(department));
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<DepartmentDto>> index(@PathVariable UUID campusId) {
-//        List<DepartmentDto> departments = departmentService.findAll(campusId).stream()
-//            .map(departmentMapper::to)
-//            .collect(Collectors.toList());
-//        return ResponseEntity.ok(departments);
-//    }//alterar esse metodo
-
-    @GetMapping //novo metodo criado
-    public ResponseEntity<List<DepartmentDto>> index(@RequestParam(required = false) UUID campusId, EntityStatus status){
+    @GetMapping
+    public ResponseEntity<List<DepartmentDto>> index(@PathVariable UUID campusId, @RequestParam(required = false) EntityStatus status){
         List<DepartmentDto> departments;
         if (status != null){
             departments = departmentService.findAllByCampusIdAndStatus(campusId, status).stream()

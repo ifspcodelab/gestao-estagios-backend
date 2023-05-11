@@ -11,7 +11,6 @@ public interface DepartmentService {
     Department create(UUID campusId, DepartmentCreateDto departmentCreateDto);
     List<Department> findAll(UUID campusId);
     Department findById(UUID departmentId);
-
     Department findByCampusIdAndId(UUID campusId, UUID departmentId);
     Department update(UUID campusId, UUID id, DepartmentCreateDto departmentCreateDto);
     Department setStatus(UUID campusId, UUID id, EntityUpdateStatusDto departmentUpdateStatusDto);
@@ -19,6 +18,5 @@ public interface DepartmentService {
     boolean existsByCampusId(UUID campusId);
     void disableAllByCampusId(UUID campusId);
     Department enable(UUID campusId, UUID departmentId);
-
     List<Department> findAllByCampusIdAndStatus(UUID campusId, EntityStatus status);
 }
