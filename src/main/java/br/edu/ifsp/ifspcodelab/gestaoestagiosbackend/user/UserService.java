@@ -18,7 +18,7 @@ public interface UserService {
     boolean existsByEmailExcludedId(String email, UUID id);
     boolean existsByRegistrationExcludeId(String registration, UUID id);
     Optional<User> findById(UUID id);
-    User findByRegistration(String registration);
+    User findByRegistrationIgnoreCase(String registration);
     void save(User user);
     void delete(UUID id);
     void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto);
