@@ -70,10 +70,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         );
     }
 
-//    @Override
-//    public List<Department> findAllByCampusIdAndStatus(UUID campusID, EntityStatus status){
-//      return departmentRepository.findAllByCampusIdAndStatus(status);
-//    }
+    @Override
+    public List<Department> findAllByCampusIdAndStatus(UUID campusID, EntityStatus status){
+      return departmentRepository.findAllByCampusIdAndStatus(campusID, status);
+    }
 
     @Override
     public Department findByCampusIdAndId(UUID campusId, UUID departmentId) {
