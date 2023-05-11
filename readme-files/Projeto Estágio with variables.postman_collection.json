@@ -1,0 +1,3800 @@
+{
+	"info": {
+		"_postman_id": "b4f48ef2-08d8-4759-b777-c40f78959855",
+		"name": "Projeto Estágio with variables",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15702412",
+		"_collection_link": "https://winter-escape-693575.postman.co/workspace/gestao-estagio-backend~5ec6fe29-8189-4199-a749-d73e2c8a0fb5/collection/15702412-b4f48ef2-08d8-4759-b777-c40f78959855?action=share&creator=15702412&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "States",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/states",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"states"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Cities",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/states/sp/cities",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"states",
+										"sp",
+										"cities"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Campuses",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "pt-BR",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBQUEiLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9BRFZJU09SIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvdjEvbG9naW4iLCJleHAiOjE2MzI1MDg4NDh9.Jp05PZjUYZuKRuST_ewfzKZPUKU_T4C0W-T8DxDbck0",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/campuses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"São Paulo3\",\r\n    \"abbreviation\": \"GRZ\",\r\n    \"initialRegistrationPattern\": \"GR\",\r\n    \"address\": {\r\n        \"postalCode\": \"12345678\",\r\n        \"street\": \"Rua Vicente\",\r\n        \"neighborhood\": \"neighborhood\",\r\n        \"city\": \"São Paulo\",\r\n        \"cityId\": \"9d7abb88-5ed6-4dec-af41-f06f976d3874\",\r\n        \"state\": \"São Paulo\",\r\n        \"number\": \"123\",\r\n        \"complement\": \"complement\"\r\n    },\r\n    \"internshipSector\": {\r\n        \"telephone\": \"4443-1235\",\r\n        \"email\": \"gru.ifsp@email.com\",\r\n        \"website\": \"http://spo.ifsp.gov.br\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+											"   var json = JSON.parse(responseBody);\r",
+											"   postman.setEnvironmentVariable('campusFrancoDaRochaId', json.id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "pt-BR",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Franco da Rocha\",\r\n    \"abbreviation\": \"FCA\",\r\n    \"initialRegistrationPattern\": \"FC\",\r\n    \"address\": {\r\n        \"postalCode\": \"07813070\",\r\n        \"street\": \"Rua Vicente\",\r\n        \"neighborhood\": \"neighborhood\",\r\n        \"cityId\": \"644343e9-8023-4384-acf0-b6d6281da245\",\r\n        \"number\": \"123\",\r\n        \"complement\": null\r\n    },\r\n    \"internshipSector\": {\r\n        \"telephone\": \"4443-1234\",\r\n        \"email\": \"fco2.ifsp@email.com\",\r\n        \"website\": \"http://spo.ifsp.gov.br\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusCampinasId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusCampinasId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBQUEiLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9BRFZJU09SIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvdjEvbG9naW4iLCJleHAiOjE2MzI1MDU1NTF9.bLIcSGkgpBOp72wvXa0B2jSue-z7joyQtTtDDgGFxeU",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}/departments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}",
+										"departments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}/departments/{{departmentInformaticaETurismoId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}",
+										"departments",
+										"{{departmentInformaticaETurismoId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"dep\",\r\n    \"abbreviation\": \"DTD\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}/departments/{{departmentInformaticaETurismoId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}",
+										"departments",
+										"{{departmentInformaticaETurismoId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}/departments/{{departmentInformaticaETurismoId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}",
+										"departments",
+										"{{departmentInformaticaETurismoId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Computação\",\r\n    \"abbreviation\": \"DCC\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusFrancoDaRochaId}}/departments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusFrancoDaRochaId}}",
+										"departments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/campuses/{{campusSaoPauloId}}/departments/{{departmentConstrucaoCivilId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"{{campusSaoPauloId}}",
+										"departments",
+										"{{departmentConstrucaoCivilId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc2MTcwMX0.kOGsX_G3JBoEQVrUIpNhxr3K58NzbxBOb3VUF8ZIMQY",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTadsId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTadsId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Técnico em\",\r\n    \"abbreviation\": \"TENS\",\r\n    \"numberOfPeriods\": 6,\r\n    \"departmentId\": \"{{departmentInformaticaETurismoId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "en-US",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Sistemas de Informação\",\r\n    \"abbreviation\": \"SI\",\r\n    \"numberOfPeriods\": 8,\r\n    \"departmentId\": \"{{departmentInformaticaETurismoId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTurId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTurId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "400",
+					"item": [
+						{
+							"name": "Create-BlankName",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"\",\r\n    \"abbreviation\": \"TADS\",\r\n    \"numberOfPeriods\": 6,\r\n    \"departmentId\": \"{{departmentInformaticaETurismoId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create-Abbreviation>10",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Análise e Desenvolvimento de Sistemas\",\r\n    \"abbreviation\": \"TADSSSSSSSS\",\r\n    \"numberOfPeriods\": 6,\r\n    \"departmentId\": \"{{departmentInformaticaETurismoId}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Curriculums",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}/curriculums",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}",
+										"curriculums"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}/curriculums/{{curriculum1434Id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}",
+										"curriculums",
+										"{{curriculum1434Id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "en-US",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"AAAAA\",\r\n    \"courseLoad\": 2600,\r\n    \"internshipCourseLoad\": 360,\r\n    \"internshipStartCriteria\": \"Tem q encontrar um estágio\",\r\n    \"internshipAllowedActivities\": \"Servir café, limpar o chão etc etc 2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}/curriculums/{{curriculum1434Id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}",
+										"curriculums",
+										"{{curriculum1434Id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}/curriculums/{{curriculum1434Id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}",
+										"curriculums",
+										"{{curriculum1434Id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "en-US",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"MATRIZ\",\r\n    \"courseLoad\": 2600,\r\n    \"internshipCourseLoad\": 360,\r\n    \"internshipStartCriteria\": \"Tem q encontrar um estágio\",\r\n    \"internshipAllowedActivities\": \"Servir café, limpar o chão etc etc\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}/curriculums",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}",
+										"curriculums"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTadsId}}/curriculums/{{curriculum1435Id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTadsId}}",
+										"curriculums",
+										"{{curriculum1435Id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc2Mjc0NH0.MAs1WKhirxPs6yMq3soIgmm529Y7VPIcc7J3IO3HwzY",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show By Registration",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/SP7778889",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"SP7778889"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "forget password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/SP7778889",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"SP7778889"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Redefine password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"NovaSenha1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/users/{{userMachadoId}}/redefine",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"{{userMachadoId}}",
+										"redefine"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Advisors",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/advisors",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Index By Course Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/courses/{{courseTecnicoIntegradoInformaticaId}}/advisors",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"{{courseTecnicoIntegradoInformaticaId}}",
+										"advisors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/advisors/{{advisorXavierId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors",
+										"{{advisorXavierId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show By User Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/users/{{userXavierId}}/advisors",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"{{userXavierId}}",
+										"advisors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Fyodor Dostoevsky\",\r\n    \"email\": \"fyodor.dostoevsky@ifsp.edu.br\",\r\n    \"coursesIds\": [\r\n        \"{{courseTecnicoIntegradoInformaticaId}}\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/advisors/{{advisorXavierId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors",
+										"{{advisorXavierId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc2OTUyN30.ZOh7eSdeMqY0SMORw6Qkg3McuPdG-yCScTRGtbaqSJU",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \r\n    \"registration\": \"SP8889991\",\r\n    \"name\": \"Socrates\",\r\n    \"email\": \"socrates@ifsp.edu.br\",\r\n    \"roles\": [\r\n        \"ROLE_ADMIN\",\r\n        \"ROLE_ADVISOR\"\r\n    ],\r\n    \"coursesIds\": [\r\n        \"{{courseTecnicoIntegradoInformaticaId}}\"\r\n    ] \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/advisors",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Activate",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"a ser implementado no back\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/advisors/{{advisorXavierId}}/activate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors",
+										"{{advisorXavierId}}",
+										"activate"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students/{{studentMachadoId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students",
+										"{{studentMachadoId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show By User Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/{{userMachadoId}}/students",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"{{userMachadoId}}",
+										"students"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": \"{{userMachadoId}}\",\r\n    \"registration\": \"SB4564564\",\r\n    \"name\": \"Carolina de Jesus\",\r\n    \"email\": \"carolina.jesus@aluno.ifsp.edu.br\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/students",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"registration\": \"SP1231231\",\r\n    \"name\": \"Monteiro Lobato\",\r\n    \"password\": \"Senha1234\",\r\n    \"email\": \"monteiro.lobato@aluno.ifsp.edu.br\",\r\n    \"curriculumId\": \"{{curriculum1434Id}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/students",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Activate",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students/{{studentMachadoId}}/activate",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students",
+										"{{studentMachadoId}}",
+										"activate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students/{{studentClarisseId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students",
+										"{{studentClarisseId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Advisor Requests",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/advisor-requests/{{advisorRequestId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisor-requests",
+										"{{advisorRequestId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Index by advisor id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/advisors/{{advisorXavierId}}/advisor-requests",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors",
+										"{{advisorXavierId}}",
+										"advisor-requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Index by student id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students/{{studentMachadoId}}/advisor-requests",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students",
+										"{{studentMachadoId}}",
+										"advisor-requests"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"internshipType\": \"REQUIRED_OR_NOT\",\r\n    \"details\": \"oi\",\r\n    \"studentId\": \"1cf551d9-8652-4085-96fe-09cf1fbfe04d\",\r\n    \"curriculumId\": \"32c4dcbe-9769-4cc5-a1fb-2bcc9d38e12f\",\r\n    \"advisorId\": \"df8abb04-9c8f-40a3-ae99-557e20215d07\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/advisor-requests",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisor-requests"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Requests Appraisals",
+			"item": [
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"details\": \"Google meet etc tal\",\r\n    \"isDeferred\": true,\r\n    \"meetingDate\": \"2021-10-30T16:45:00Z\",\r\n    \"sendEmailToAdvisor\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/advisor-requests/{{advisorRequestId}}/appraisals",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisor-requests",
+										"{{advisorRequestId}}",
+										"appraisals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Internships",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index By Student Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/students/{{studentMachadoId}}/internships",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"students",
+										"{{studentMachadoId}}",
+										"internships"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Index By Advisor Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/advisors/{{advisorXavierId}}/internships",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"advisors",
+										"{{advisorXavierId}}",
+										"internships"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Initial Dispatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/activity-plans/{{activityPlanId}}/initial-dispatch",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"activity-plans",
+										"{{activityPlanId}}",
+										"initial-dispatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show Final Dispatch",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/final-dispatch",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"final-dispatch"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/update-status",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"update-status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Final documentation",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/final-documentation",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"final-documentation"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Activity Plans",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    // \"companyName\": \"Twitter\",\r\n    \"internshipStartDate\": \"2021-12-22\",\r\n    \"internshipEndDate\": \"2022-07-03\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/activity-plans/{{activityPlanId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"activity-plans",
+										"{{activityPlanId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Appraise",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+											"   var json = JSON.parse(responseBody);\r",
+											"   postman.setEnvironmentVariable('monthlyReportId', json.internship.monthlyReports[0].id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"Muito bom\",\r\n    \"isRequired\": true \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/activity-plans/{{activityPlanId}}/appraisal",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"activity-plans",
+										"{{activityPlanId}}",
+										"appraisal"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/activity_plan.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/activity-plans",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"activity-plans"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Monthly Reports",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Send Attachment",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/monthly-reports/{{monthlyReportId}}/attachments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"monthly-reports",
+										"{{monthlyReportId}}",
+										"attachments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Draft Monthly Report Submissions",
+			"item": [
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+											"   var json = JSON.parse(responseBody);\r",
+											"   postman.setEnvironmentVariable('draftMonthlyReportId', json.id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/monthly-reports/{{monthlyReportId}}/drafts",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"monthly-reports",
+										"{{monthlyReportId}}",
+										"drafts"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"reportStartDate\": \"2021-11-19\",\r\n    \"reportEndDate\": \"2021-11-30\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/monthly-reports/{{monthlyReportId}}/drafts/{{draftMonthlyReportId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"monthly-reports",
+										"{{monthlyReportId}}",
+										"drafts",
+										"{{draftMonthlyReportId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Appraise",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"Tudo de acordo!\",\r\n    \"numberOfApprovedHours\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/monthly-reports/{{monthlyReportId}}/drafts/{{draftMonthlyReportId}}/appraisals",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"monthly-reports",
+										"{{monthlyReportId}}",
+										"drafts",
+										"{{draftMonthlyReportId}}",
+										"appraisals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Final Monthly Report Submissions",
+			"item": [
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+											"   var json = JSON.parse(responseBody);\r",
+											"   postman.setEnvironmentVariable('finalMonthlyReportId', json.id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/monthly-reports/{{monthlyReportId}}/finals",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"monthly-reports",
+										"{{monthlyReportId}}",
+										"finals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Appraise",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"legal\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/monthly-reports/{{monthlyReportId}}/finals/{{finalMonthlyReportId}}/appraisals",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"monthly-reports",
+										"{{monthlyReportId}}",
+										"finals",
+										"{{finalMonthlyReportId}}",
+										"appraisals"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Realization term",
+			"item": [
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+											"   var json = JSON.parse(responseBody);\r",
+											"   postman.setEnvironmentVariable('realizationTermId', json.id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/realization-terms",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"realization-terms"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"internshipStartDate\": \"2021-11-09\",\r\n    \"internshipEndDate\": \"2022-11-09\" \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/realization-terms/{{realizationTermId}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"realization-terms",
+										"{{realizationTermId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Appraisal (accept)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"top\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/realization-terms/{{realizationTermId}}/appraisal",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"realization-terms",
+										"{{realizationTermId}}",
+										"appraisal"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Appraisal (reject)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"REJECTED\",\r\n    \"details\": \"vc escreveu seu nome errado\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/internships/{{internshipId}}/realization-terms/{{realizationTermId}}/appraisal",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"internships",
+										"{{internshipId}}",
+										"realization-terms",
+										"{{realizationTermId}}",
+										"appraisal"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Parameters",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/parameters",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"parameters"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"requiredOrNot\": \"alo\",\n    \"projectEquivalence\": \"tudo bom?\",\n    \"professionalEnjoyment\": \"hey\",\n    \"advisorRequestDeadline\": 7,\n    \"projectEquivalenceMessage\": \"tudo bom\",\n    \"internshipRequiredOrNotMessage\": \"ola\",\n    \"monthlyReportDraftSubmissionDeadlineMonths\": 12,\n    \"activityPlanAppraisalDeadline\": 180,\n    \"monthlyReportFileSizeMegabytes\": 100,\n    \"monthlyReportAppraisalDeadlineDays\": 180,\n    \"initialDispatchHtml\": \"hello\",\n    \"finalDispatchHtml\": \"bye\",\n    \"activityPlanLink\": \"https://spo.ifsp.edu.br\",\n    \"monthlyReportDraftAppraisalDeadlineDays\": 180,\n    \"activityPlanFileSizeMegabytes\": 100,\n    \"professionalValidationMessage\": \"ok\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/parameters",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"parameters"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Final Documentation",
+			"item": [],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (responseCode.code >= 200 && responseCode.code < 300) {\r",
+							"   var json = JSON.parse(responseBody);\r",
+							"   postman.setEnvironmentVariable('token', json.access_token);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"registration\": \"SP1234567\",\r\n    \"password\": \"Senha1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api/v1"
+		}
+	]
+}

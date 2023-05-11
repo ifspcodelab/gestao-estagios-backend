@@ -1,0 +1,2422 @@
+{
+	"info": {
+		"_postman_id": "1ebe3785-ae61-4708-aecf-ec78a5c160fe",
+		"name": "Projeto Estágio without variables",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15702412",
+		"_collection_link": "https://winter-escape-693575.postman.co/workspace/gestao-estagio-backend~5ec6fe29-8189-4199-a749-d73e2c8a0fb5/collection/15702412-1ebe3785-ae61-4708-aecf-ec78a5c160fe?action=share&creator=15702412&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "States",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/states",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"states"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cities",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/states/sp/cities",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"states",
+								"sp",
+								"cities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Campuses",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Index",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "pt-BR",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBQUEiLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9BRFZJU09SIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvdjEvbG9naW4iLCJleHAiOjE2MzI1MDg4NDh9.Jp05PZjUYZuKRuST_ewfzKZPUKU_T4C0W-T8DxDbck0",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/campuses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"f81663cf-6e3b-41c5-9138-3177c3411895"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"São Paulo3\",\r\n    \"abbreviation\": \"GRZ\",\r\n    \"initialRegistrationPattern\": \"GR\",\r\n    \"address\": {\r\n        \"postalCode\": \"12345678\",\r\n        \"street\": \"Rua Vicente\",\r\n        \"neighborhood\": \"neighborhood\",\r\n        \"city\": \"São Paulo\",\r\n        \"cityId\": \"9d7abb88-5ed6-4dec-af41-f06f976d3874\",\r\n        \"state\": \"São Paulo\",\r\n        \"number\": \"123\",\r\n        \"complement\": \"complement\"\r\n    },\r\n    \"internshipSector\": {\r\n        \"telephone\": \"4443-1235\",\r\n        \"email\": \"gru.ifsp@email.com\",\r\n        \"website\": \"http://spo.ifsp.gov.br\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"f81663cf-6e3b-41c5-9138-3177c3411895"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Status",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"DISABLED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"f81663cf-6e3b-41c5-9138-3177c3411895"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "noauth"
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "201",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "pt-BR",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Franco da Rocha\",\r\n    \"abbreviation\": \"FCA\",\r\n    \"initialRegistrationPattern\": \"FC\",\r\n    \"address\": {\r\n        \"postalCode\": \"07813070\",\r\n        \"street\": \"Rua Vicente\",\r\n        \"neighborhood\": \"neighborhood\",\r\n        \"cityId\": \"644343e9-8023-4384-acf0-b6d6281da245\",\r\n        \"number\": \"123\",\r\n        \"complement\": null\r\n    },\r\n    \"internshipSector\": {\r\n        \"telephone\": \"4443-1234\",\r\n        \"email\": \"fco2.ifsp@email.com\",\r\n        \"website\": \"http://spo.ifsp.gov.br\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/campuses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "204",
+					"item": [
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/campuses/4f79f04f-1c6a-4855-b4c9-88d39a21f8ee",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"campuses",
+										"4f79f04f-1c6a-4855-b4c9-88d39a21f8ee"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Departments",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Computação\",\r\n    \"abbreviation\": \"DCC\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/campuses/c6a0598b-95e8-47ef-b9aa-9172f5d5c605/departments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"campuses",
+								"c6a0598b-95e8-47ef-b9aa-9172f5d5c605",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBQUEiLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9BRFZJU09SIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9hcGkvdjEvbG9naW4iLCJleHAiOjE2MzI1MDU1NTF9.bLIcSGkgpBOp72wvXa0B2jSue-z7joyQtTtDDgGFxeU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895/departments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"campuses",
+								"f81663cf-6e3b-41c5-9138-3177c3411895",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895/departments/f3eba3a2-157a-4703-9fd7-ec295c763b59",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"campuses",
+								"f81663cf-6e3b-41c5-9138-3177c3411895",
+								"departments",
+								"f3eba3a2-157a-4703-9fd7-ec295c763b59"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"dep\",\r\n    \"abbreviation\": \"DTD\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895/departments/f3eba3a2-157a-4703-9fd7-ec295c763b59",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"campuses",
+								"f81663cf-6e3b-41c5-9138-3177c3411895",
+								"departments",
+								"f3eba3a2-157a-4703-9fd7-ec295c763b59"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Status",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895/departments/f3eba3a2-157a-4703-9fd7-ec295c763b59",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"campuses",
+								"f81663cf-6e3b-41c5-9138-3177c3411895",
+								"departments",
+								"f3eba3a2-157a-4703-9fd7-ec295c763b59"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/campuses/f81663cf-6e3b-41c5-9138-3177c3411895/departments/6d67af90-0e67-42a7-b0af-7c4c088901be",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"campuses",
+								"f81663cf-6e3b-41c5-9138-3177c3411895",
+								"departments",
+								"6d67af90-0e67-42a7-b0af-7c4c088901be"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "200",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept-Language",
+										"value": "en-US",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Sistemas de Informação\",\r\n    \"abbreviation\": \"SI\",\r\n    \"numberOfPeriods\": 8,\r\n    \"departmentId\": \"f3eba3a2-157a-4703-9fd7-ec295c763b59\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc2MTcwMX0.kOGsX_G3JBoEQVrUIpNhxr3K58NzbxBOb3VUF8ZIMQY",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/5e08889e-e14a-4158-927d-f849aa838ba3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"5e08889e-e14a-4158-927d-f849aa838ba3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Técnico em\",\r\n    \"abbreviation\": \"TENS\",\r\n    \"numberOfPeriods\": 6,\r\n    \"departmentId\": \"f3eba3a2-157a-4703-9fd7-ec295c763b59\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"116c2ce3-e082-49e7-b2c8-3d9c4cb73003"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Status",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"116c2ce3-e082-49e7-b2c8-3d9c4cb73003"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses/86ef07e5-ef05-4b9f-a1dc-7e3c502b78b0",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses",
+										"86ef07e5-ef05-4b9f-a1dc-7e3c502b78b0"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "400",
+					"item": [
+						{
+							"name": "Create-BlankName",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"\",\r\n    \"abbreviation\": \"TADS\",\r\n    \"numberOfPeriods\": 6,\r\n    \"departmentId\": \"0a475974-0dc2-458a-9b51-37a1787e4646\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create-Abbreviation>10",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Análise e Desenvolvimento de Sistemas\",\r\n    \"abbreviation\": \"TADSSSSSSSS\",\r\n    \"numberOfPeriods\": 6,\r\n    \"departmentId\": \"0a475974-0dc2-458a-9b51-37a1787e4646\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/courses",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"courses"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Curriculums",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"MATRIZ\",\r\n    \"courseLoad\": 2600,\r\n    \"internshipCourseLoad\": 360,\r\n    \"internshipStartCriteria\": \"Tem q encontrar um estágio\",\r\n    \"internshipAllowedActivities\": \"Servir café, limpar o chão etc etc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003/curriculums",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+								"curriculums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003/curriculums",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+								"curriculums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003/curriculums/30472217-b2eb-43dd-9d0c-1a2c536bb56d",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+								"curriculums",
+								"30472217-b2eb-43dd-9d0c-1a2c536bb56d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "en-US",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"AAAAA\",\r\n    \"courseLoad\": 2600,\r\n    \"internshipCourseLoad\": 360,\r\n    \"internshipStartCriteria\": \"Tem q encontrar um estágio\",\r\n    \"internshipAllowedActivities\": \"Servir café, limpar o chão etc etc 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003/curriculums/30472217-b2eb-43dd-9d0c-1a2c536bb56d",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+								"curriculums",
+								"30472217-b2eb-43dd-9d0c-1a2c536bb56d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Status",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ENABLED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003/curriculums/30472217-b2eb-43dd-9d0c-1a2c536bb56d",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+								"curriculums",
+								"30472217-b2eb-43dd-9d0c-1a2c536bb56d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/courses/5e08889e-e14a-4158-927d-f849aa838ba3/curriculums/3bcbabf1-d86b-4fab-b991-8b2e6b3041c8",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"5e08889e-e14a-4158-927d-f849aa838ba3",
+								"curriculums",
+								"3bcbabf1-d86b-4fab-b991-8b2e6b3041c8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc2Mjc0NH0.MAs1WKhirxPs6yMq3soIgmm529Y7VPIcc7J3IO3HwzY",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show By Registration",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/SP7778889",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"SP7778889"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forget password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/SP7778889",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"SP7778889"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Redefine password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"NovaSenha1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{userMachadoId}}/redefine",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{userMachadoId}}",
+								"redefine"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Advisors",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc2OTUyN30.ZOh7eSdeMqY0SMORw6Qkg3McuPdG-yCScTRGtbaqSJU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \r\n    \"registration\": \"SP8889991\",\r\n    \"name\": \"Socrates\",\r\n    \"email\": \"socrates@ifsp.edu.br\",\r\n    \"roles\": [\r\n        \"ROLE_ADMIN\",\r\n        \"ROLE_ADVISOR\"\r\n    ],\r\n    \"coursesIds\": [\r\n        \"116c2ce3-e082-49e7-b2c8-3d9c4cb73003\"\r\n    ] \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/advisors",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/advisors",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index By Course Id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/courses/116c2ce3-e082-49e7-b2c8-3d9c4cb73003/advisors",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"courses",
+								"116c2ce3-e082-49e7-b2c8-3d9c4cb73003",
+								"advisors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show By User Id Copy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/e1ecabc6-2ba8-4599-924f-62f1747df896/advisors",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"e1ecabc6-2ba8-4599-924f-62f1747df896",
+								"advisors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX0FEVklTT1IiXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMjc3MzE0MX0.RbjyKCAgrRAi9dy_zuAg99VXb9E7L3K44xwEg_YkqKw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/advisors/df8abb04-9c8f-40a3-ae99-557e20215d07",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors",
+								"df8abb04-9c8f-40a3-ae99-557e20215d07"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Fyodor Dostoevsky\",\r\n    \"email\": \"fyodor.dostoevsky@ifsp.edu.br\",\r\n    \"coursesIds\": [\r\n        \"116c2ce3-e082-49e7-b2c8-3d9c4cb73003\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/advisors/df8abb04-9c8f-40a3-ae99-557e20215d07",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors",
+								"df8abb04-9c8f-40a3-ae99-557e20215d07"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"senhaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/advisors/df8abb04-9c8f-40a3-ae99-557e20215d07/activate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors",
+								"df8abb04-9c8f-40a3-ae99-557e20215d07",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"registration\": \"SP1231231\",\r\n    \"name\": \"Monteiro Lobato\",\r\n    \"password\": \"Senha1234\",\r\n    \"email\": \"monteiro.lobato@aluno.ifsp.edu.br\",\r\n    \"curriculumId\": \"30472217-b2eb-43dd-9d0c-1a2c536bb56d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/2011364e-0b51-49ab-8729-b44580c9e68a",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students",
+								"2011364e-0b51-49ab-8729-b44580c9e68a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show By User Id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/e5f71e1c-82fb-44ae-a28f-a14abe6be0c1/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"e5f71e1c-82fb-44ae-a28f-a14abe6be0c1",
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"e5f71e1c-82fb-44ae-a28f-a14abe6be0c1\",\r\n    \"registration\": \"SB4564564\",\r\n    \"name\": \"Carolina de Jesus\",\r\n    \"email\": \"carolina.jesus@aluno.ifsp.edu.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/students",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/700196f0-a727-4484-99aa-51baaf45f31f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students",
+								"700196f0-a727-4484-99aa-51baaf45f31f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/2011364e-0b51-49ab-8729-b44580c9e68a/activate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students",
+								"2011364e-0b51-49ab-8729-b44580c9e68a",
+								"activate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTUDEyMyIsInJvbGVzIjpbIlJPTEVfQURNSU4iXSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2FwaS92MS9sb2dpbiIsImV4cCI6MTYzMzExNDQxOX0.QkpnuYSUGk7ty8_wM_89wo5sKfkBqrc3bc5GLgGyMeQ",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Advisor Requests",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"internshipType\": \"REQUIRED_OR_NOT\",\r\n    \"details\": \"oi\",\r\n    \"studentId\": \"1cf551d9-8652-4085-96fe-09cf1fbfe04d\",\r\n    \"curriculumId\": \"32c4dcbe-9769-4cc5-a1fb-2bcc9d38e12f\",\r\n    \"advisorId\": \"df8abb04-9c8f-40a3-ae99-557e20215d07\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/advisor-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisor-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/advisor-requests/f0421bd8-6672-4be5-9d60-7ba525315937",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisor-requests",
+								"f0421bd8-6672-4be5-9d60-7ba525315937"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index by advisor id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/advisors/df8abb04-9c8f-40a3-ae99-557e20215d07/advisor-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors",
+								"df8abb04-9c8f-40a3-ae99-557e20215d07",
+								"advisor-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index by student id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/2011364e-0b51-49ab-8729-b44580c9e68a/advisor-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students",
+								"2011364e-0b51-49ab-8729-b44580c9e68a",
+								"advisor-requests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Requests Appraisals",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"details\": \"Google meet etc tal\",\r\n    \"isDeferred\": true,\r\n    \"meetingDate\": \"2021-10-30T16:45:00Z\",\r\n    \"sendEmailToAdvisor\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/advisor-requests/f0421bd8-6672-4be5-9d60-7ba525315937/appraisals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisor-requests",
+								"f0421bd8-6672-4be5-9d60-7ba525315937",
+								"appraisals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Internships",
+			"item": [
+				{
+					"name": "Index By Student Id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/students/2011364e-0b51-49ab-8729-b44580c9e68a/internships",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"students",
+								"2011364e-0b51-49ab-8729-b44580c9e68a",
+								"internships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index By Advisor Id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/advisors/df8abb04-9c8f-40a3-ae99-557e20215d07/internships",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"advisors",
+								"df8abb04-9c8f-40a3-ae99-557e20215d07",
+								"internships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Initial Dispatch",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/activity-plans/524bda2e-41c2-446b-9261-230531e7c387/initial-dispatch",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"activity-plans",
+								"524bda2e-41c2-446b-9261-230531e7c387",
+								"initial-dispatch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Final Dispatch",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/final-dispatch",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"final-dispatch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/update-status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"update-status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Final documentation",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/final-documentation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"final-documentation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activity Plans",
+			"item": [
+				{
+					"name": "Create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/activity_plan.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/activity-plans",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"activity-plans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"companyName\": \"Twitter\",\r\n    \"internshipStartDate\": \"2021-12-22\",\r\n    \"internshipEndDate\": \"2022-07-03\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/activity-plans/524bda2e-41c2-446b-9261-230531e7c387",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"activity-plans",
+								"524bda2e-41c2-446b-9261-230531e7c387"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appraise",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"Muito bom\",\r\n    \"isRequired\": true \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/activity-plans/524bda2e-41c2-446b-9261-230531e7c387/appraisal",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"activity-plans",
+								"524bda2e-41c2-446b-9261-230531e7c387",
+								"appraisal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Monthly Reports",
+			"item": [
+				{
+					"name": "Send Attachment",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/monthly-reports/e5216566-d290-41ac-8c21-c7017929666a/attachments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"monthly-reports",
+								"e5216566-d290-41ac-8c21-c7017929666a",
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Draft Monthly Report Submissions",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/monthly-reports/b28d5309-e8eb-473c-be24-c9f1f86a444a/drafts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"monthly-reports",
+								"b28d5309-e8eb-473c-be24-c9f1f86a444a",
+								"drafts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reportStartDate\": \"2021-11-19\",\r\n    \"reportEndDate\": \"2021-11-30\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/monthly-reports/b28d5309-e8eb-473c-be24-c9f1f86a444a/drafts/16fe1bb3-8bcb-4ca3-af15-53d6a7a5c72f",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"monthly-reports",
+								"b28d5309-e8eb-473c-be24-c9f1f86a444a",
+								"drafts",
+								"16fe1bb3-8bcb-4ca3-af15-53d6a7a5c72f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appraise",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"Tudo de acordo!\",\r\n    \"numberOfApprovedHours\": 20\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/monthly-reports/b28d5309-e8eb-473c-be24-c9f1f86a444a/drafts/16fe1bb3-8bcb-4ca3-af15-53d6a7a5c72f/appraisals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"monthly-reports",
+								"b28d5309-e8eb-473c-be24-c9f1f86a444a",
+								"drafts",
+								"16fe1bb3-8bcb-4ca3-af15-53d6a7a5c72f",
+								"appraisals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Final Monthly Report Submissions",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/monthly-reports/b28d5309-e8eb-473c-be24-c9f1f86a444a/finals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"monthly-reports",
+								"b28d5309-e8eb-473c-be24-c9f1f86a444a",
+								"finals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appraise",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"legal\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/monthly-reports/b28d5309-e8eb-473c-be24-c9f1f86a444a/finals/2a04fd8c-c29c-4683-a1fd-f9e8d08a2364/appraisals",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"monthly-reports",
+								"b28d5309-e8eb-473c-be24-c9f1f86a444a",
+								"finals",
+								"2a04fd8c-c29c-4683-a1fd-f9e8d08a2364",
+								"appraisals"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Realization term",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/rsp/Documents/gestao_de_estagio_5/monthly_report.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/realization-terms",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"realization-terms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"internshipStartDate\": \"2021-11-09\",\r\n    \"internshipEndDate\": \"2022-11-09\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/realization-terms/500a439f-d5b0-4c7b-99fa-69b20fa23b31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"realization-terms",
+								"500a439f-d5b0-4c7b-99fa-69b20fa23b31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appraisal (accept)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"ACCEPTED\",\r\n    \"details\": \"top\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/realization-terms/500a439f-d5b0-4c7b-99fa-69b20fa23b31/appraisal",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"realization-terms",
+								"500a439f-d5b0-4c7b-99fa-69b20fa23b31",
+								"appraisal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Appraisal (reject)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"REJECTED\",\r\n    \"details\": \"vc escreveu seu nome errado\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/internships/708af3e2-f02e-4f2e-b01b-0757a7ac5728/realization-terms/3ec49389-f09a-471f-8b5a-0d587aed5332/appraisal",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"internships",
+								"708af3e2-f02e-4f2e-b01b-0757a7ac5728",
+								"realization-terms",
+								"3ec49389-f09a-471f-8b5a-0d587aed5332",
+								"appraisal"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "noauth"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Parameters",
+			"item": [
+				{
+					"name": "Get",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/parameters",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parameters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"requiredOrNot\": \"alo\",\n    \"projectEquivalence\": \"tudo bom?\",\n    \"professionalEnjoyment\": \"hey\",\n    \"advisorRequestDeadline\": 7,\n    \"projectEquivalenceMessage\": \"tudo bom\",\n    \"internshipRequiredOrNotMessage\": \"ola\",\n    \"monthlyReportDraftSubmissionDeadlineMonths\": 12,\n    \"activityPlanAppraisalDeadline\": 180,\n    \"monthlyReportFileSizeMegabytes\": 100,\n    \"monthlyReportAppraisalDeadlineDays\": 180,\n    \"initialDispatchHtml\": \"hello\",\n    \"finalDispatchHtml\": \"bye\",\n    \"activityPlanLink\": \"https://spo.ifsp.edu.br\",\n    \"monthlyReportDraftAppraisalDeadlineDays\": 180,\n    \"activityPlanFileSizeMegabytes\": 100,\n    \"professionalValidationMessage\": \"ok\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/parameters",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"parameters"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Final Documentation",
+			"item": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"registration\": \"SP1234567\",\r\n    \"password\": \"Senha1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api/v1"
+		}
+	]
+}
