@@ -2,6 +2,7 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorCreateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorUpdateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
@@ -32,9 +33,16 @@ public class AdvisorRestController {
 
     @GetMapping("api/v1/advisors")
     public ResponseEntity<List<AdvisorDto>> index() {
-        return ResponseEntity.ok(advisorService.findAll().stream()
-            .map(advisorMapper::to).
-            collect(Collectors.toList()));
+       List<Advisor> enabledAdvisors = advisorService.findAll()
+               .stream()
+               .filter(advisor -> advisor.getUser().getIsActivated() == EntityStatus.ENABLED)
+               .collect(Collectors.toList());
+
+        List<AdvisorDto> advisorDtos = enabledAdvisors.stream()
+                .map(advisorMapper::to)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(advisorDtos);
     }
 
     @GetMapping("api/v1/courses/{id}/advisors")

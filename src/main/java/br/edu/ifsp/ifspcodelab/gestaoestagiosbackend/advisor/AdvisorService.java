@@ -16,3 +16,4 @@ public interface AdvisorService {
     Set<Course> getCourses(List<UUID> coursesIds);
     Advisor setStatus(UUID id, EntityUpdateStatusDto advisorUpdateStatusDto);
 }
+
