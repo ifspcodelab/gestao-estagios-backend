@@ -25,4 +25,5 @@ public interface UserService {
     void activateStudent(UUID idStudent);
     User sendMailPassword(String registration);
     void changePassword(UUID id, UserUpdatePasswordDto userUpdatePasswordDto);
+    void deactivateAdvisor(UUID id);
 }

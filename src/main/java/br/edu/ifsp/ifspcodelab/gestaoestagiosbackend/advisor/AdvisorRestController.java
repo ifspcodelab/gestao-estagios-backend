@@ -67,6 +67,12 @@ public class AdvisorRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("api/v1/advisors/{id}/deactivate")
+    public ResponseEntity<Void> deactivate(@PathVariable UUID id) {
+        userService.deactivateAdvisor(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("api/v1/advisors/{id}")
     public ResponseEntity<AdvisorDto> patch(@PathVariable UUID id,
                                             @Valid @RequestBody EntityUpdateStatusDto advisorUpdateStatusDto) {

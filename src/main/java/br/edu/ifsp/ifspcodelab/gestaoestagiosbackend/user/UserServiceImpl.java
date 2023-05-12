@@ -228,6 +228,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(advisor.getUser());
     }
 
+    public void deactivateAdvisor(UUID idAdvisor) {
+        Advisor advisor = advisorService.findById(idAdvisor);
+        advisor.getUser().setIsActivated(EntityStatus.DISABLED);
+
+        userRepository.save(advisor.getUser());
+    }
+
     @Override
     public void activateStudent(UUID idStudent) {
         Student student = studentService.findById(idStudent);
