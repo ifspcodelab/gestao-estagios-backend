@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request.AdvisorRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class RequestAppraisal {
 
     private Instant meetingDate;
 
+    @JsonIgnore
     @OneToOne
     private AdvisorRequest advisorRequest;
 

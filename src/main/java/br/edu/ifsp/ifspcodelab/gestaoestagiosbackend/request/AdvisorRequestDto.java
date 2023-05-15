@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.AdvisorDtoSimplified;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal.RequestAppraisal;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumDto;
@@ -23,4 +24,5 @@ public class AdvisorRequestDto {
     private StudentDtoSimplified student;
     private AdvisorDtoSimplified advisor;
     private CurriculumDto curriculum;
+    private RequestAppraisal requestAppraisal;
 }
