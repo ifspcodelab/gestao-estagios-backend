@@ -6,7 +6,6 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.Student;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
