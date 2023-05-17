@@ -9,6 +9,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.CurriculumServic
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.Department;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,8 +63,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findAll() {
-        return courseRepository.findAll();
+    public List<Course> findAll(Sort sortOrder) {
+        return courseRepository.findAll(sortOrder);
     }
 
     @Override
