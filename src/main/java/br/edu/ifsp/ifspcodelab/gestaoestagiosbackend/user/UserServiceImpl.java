@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         );
         User user = userRepository.save(userCreated);
 
-        Advisor advisor = advisorService.create(new Advisor(userCreated, courses));
+        Advisor advisor = advisorService.create(new Advisor(userCreated, courses, EntityStatus.ENABLED));
 
         MailDto email = MailDto.builder()
                 .title("Bem vindo(a)!!")
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ResourcesNotFoundException(ResourceName.COURSE, userAdvisorUpdateDto.getCoursesIds());
         }
 
-        Advisor advisorUpdated = new Advisor(advisor.getUser(), new HashSet<>(courses));
+        Advisor advisorUpdated = new Advisor(advisor.getUser(), new HashSet<>(courses), advisor.getIsActivated());
         advisorUpdated.setId(id);
 
         User userUpdated = advisorUpdated.getUser();
@@ -216,23 +216,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void delete(UUID id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto) {
-        Advisor advisor = advisorService.findById(idAdvisor);
-
-        advisor.getUser().setIsActivated(EntityStatus.ENABLED);
-        advisor.getUser().setPassword(passwordEncoder.encode(userUpdatePasswordDto.getPassword()));
-
-        userRepository.save(advisor.getUser());
-    }
-
-    public void deactivateAdvisor(UUID idAdvisor) {
-        Advisor advisor = advisorService.findById(idAdvisor);
-        advisor.getUser().setIsActivated(EntityStatus.DISABLED);
-
-        userRepository.save(advisor.getUser());
     }
 
     @Override

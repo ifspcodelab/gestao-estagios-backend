@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
@@ -9,10 +10,7 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AdvisorServiceImpl implements AdvisorService {
@@ -40,6 +38,24 @@ public class AdvisorServiceImpl implements AdvisorService {
     @Override
     public Advisor create(Advisor advisor) {
         return advisorRepository.save(advisor);
+    }
+
+    public void activateAdvisor (UUID idAdvisor) {
+        Optional <Advisor> advisorOptional = advisorRepository.findById(idAdvisor);
+
+        Advisor advisor = advisorOptional.get();
+
+        advisor.setIsActivated(EntityStatus.ENABLED);
+        advisorRepository.save(advisor);
+    }
+
+    public void deactivateAdvisor(UUID idAdvisor) {
+        Optional <Advisor> advisorOptional = advisorRepository.findById(idAdvisor);
+
+        Advisor advisor = advisorOptional.get();
+
+        advisor.setIsActivated(EntityStatus.DISABLED);
+        advisorRepository.save(advisor);
     }
 
     @Override

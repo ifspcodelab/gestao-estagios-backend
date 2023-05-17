@@ -21,9 +21,7 @@ public interface UserService {
     User findByRegistration(String registration);
     void save(User user);
     void delete(UUID id);
-    void activateAdvisor(UUID idAdvisor, UserUpdatePasswordDto userUpdatePasswordDto);
     void activateStudent(UUID idStudent);
     User sendMailPassword(String registration);
     void changePassword(UUID id, UserUpdatePasswordDto userUpdatePasswordDto);
-    void deactivateAdvisor(UUID id);
 }
