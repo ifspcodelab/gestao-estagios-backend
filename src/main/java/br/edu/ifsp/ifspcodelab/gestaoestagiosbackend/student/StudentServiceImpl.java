@@ -85,4 +85,9 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.deleteById(id);
         userService.delete(student.get().getUser().getId());
     }
+
+    @Override
+    public boolean existsByCurriculumId(UUID curriculumId) {
+        return studentRepository.existsByCurriculumId(curriculumId);
+    }
 }

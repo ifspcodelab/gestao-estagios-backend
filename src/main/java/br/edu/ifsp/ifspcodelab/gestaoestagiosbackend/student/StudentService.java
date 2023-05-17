@@ -12,4 +12,5 @@ public interface StudentService {
     Student findByUserId(UUID userId);
     UserDto update(UserDto userDto);
     void delete(UUID id);
+    boolean existsByCurriculumId(UUID curriculumId);
 }

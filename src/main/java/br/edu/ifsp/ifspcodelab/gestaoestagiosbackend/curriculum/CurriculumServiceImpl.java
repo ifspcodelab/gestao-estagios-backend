@@ -4,8 +4,10 @@ import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateSta
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceName;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceNotFoundException;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.exceptions.ResourceReferentialIntegrityException;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.CourseService;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import java.util.UUID;
 public class CurriculumServiceImpl implements CurriculumService {
     private CurriculumRepository curriculumRepository;
     private CourseService courseService;
+    private StudentService studentService;
 
     public CurriculumServiceImpl(CurriculumRepository curriculumRepository) {
         this.curriculumRepository = curriculumRepository;
@@ -25,6 +28,11 @@ public class CurriculumServiceImpl implements CurriculumService {
     @Autowired
     public void setCourseService(CourseService courseService) {
         this.courseService = courseService;
+    }
+
+    @Autowired
+    public void setStudentService(StudentService studentService) {
+        this.studentService = studentService;
     }
 
     @Override
@@ -112,6 +120,9 @@ public class CurriculumServiceImpl implements CurriculumService {
     public void delete(UUID courseId, UUID curriculumId) {
         courseService.findById(courseId);
         getCurriculum(courseId, curriculumId);
+        if (studentService.existsByCurriculumId(curriculumId)) {
+            throw new ResourceReferentialIntegrityException(ResourceName.STUDENT, ResourceName.CURRICULUM);
+        }
         curriculumRepository.deleteById(curriculumId);
     }
 
