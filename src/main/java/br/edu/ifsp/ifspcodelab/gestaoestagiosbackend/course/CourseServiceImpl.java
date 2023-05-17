@@ -63,12 +63,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> findAll() {
-        return courseRepository.findAll();
+        return courseRepository.findAllByOrderByNameAsc();
     }
 
     @Override
     public List<Course> findAllByStatus(EntityStatus status) {
-        return courseRepository.findAllByStatus(status);
+        return courseRepository.findAllByStatusOrderByNameAsc(status);
     }
 
     @Override
