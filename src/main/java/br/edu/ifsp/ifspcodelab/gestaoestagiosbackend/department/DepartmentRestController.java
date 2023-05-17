@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,17 @@ public class DepartmentRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DepartmentDto>> index(@PathVariable UUID campusId) {
-        List<DepartmentDto> departments = departmentService.findAll(campusId).stream()
-            .map(departmentMapper::to)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<DepartmentDto>> index(@PathVariable UUID campusId, @RequestParam(required = false) EntityStatus status){
+        List<DepartmentDto> departments;
+        if (status != null){
+            departments = departmentService.findAllByCampusIdAndStatus(campusId, status).stream()
+                    .map(departmentMapper::to)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(departments);
+        }
+        departments = departmentService.findAll(campusId).stream()
+                .map(departmentMapper::to)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(departments);
     }
 

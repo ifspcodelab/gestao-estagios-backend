@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,4 +17,5 @@ public interface DepartmentService {
     boolean existsByCampusId(UUID campusId);
     void disableAllByCampusId(UUID campusId);
     Department enable(UUID campusId, UUID departmentId);
+    List<Department> findAllByCampusIdAndStatus(UUID campusId, EntityStatus status);
 }
