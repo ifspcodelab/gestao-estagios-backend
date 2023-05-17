@@ -1,6 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.request;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor.Advisor;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.appraisal.RequestAppraisal;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.InternshipType;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.RequestStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.curriculum.Curriculum;
@@ -45,6 +46,9 @@ public class AdvisorRequest {
 
     @OneToOne
     private Advisor advisor;
+
+    @OneToOne(mappedBy = "advisorRequest", fetch = FetchType.EAGER)
+    private RequestAppraisal requestAppraisal;
 
     public AdvisorRequest(Instant expiresAt, InternshipType internshipType, String details, Student student, Curriculum curriculum, Advisor advisor) {
         this.id = UUID.randomUUID();
