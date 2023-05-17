@@ -2,7 +2,6 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.department;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
-import org.apache.commons.lang3.function.Failable;
 
 import java.util.List;
 import java.util.UUID;
