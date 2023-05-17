@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByRegistration(String registration);
     @Query("select count(u) > 0 from User u where u.registration = ?1 and u.id <> ?2")
     boolean existsByRegistrationExcludeId(String registration, UUID id);
-    Optional<User> findByRegistration(String registration);
+    Optional<User> findByRegistrationIgnoreCase(String registration);
 }

@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String registration) throws UsernameNotFoundException {
-        User user = this.findByRegistration(registration);
+        User user = this.findByRegistrationIgnoreCase(registration);
         return user;
     }
 
@@ -203,8 +203,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findByRegistration(String registration) {
-        return userRepository.findByRegistration(registration)
+    public User findByRegistrationIgnoreCase(String registration) {
+        return userRepository.findByRegistrationIgnoreCase(registration)
             .orElseThrow(() -> new UsernameNotFoundException("User not found with registration " + registration));
     }
 
@@ -239,7 +239,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User sendMailPassword(String registration) {
-        User user = findByRegistration(registration);
+        User user = findByRegistrationIgnoreCase(registration);
 
         MailDto email = MailDto.builder()
             .title("Redefinição de senha")

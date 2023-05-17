@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("{registration}")
     public ResponseEntity<UserDto> show(@PathVariable String registration) {
-        return ResponseEntity.ok(userMapper.to(userService.findByRegistration(registration)));
+        return ResponseEntity.ok(userMapper.to(userService.findByRegistrationIgnoreCase(registration)));
     }
 
     @PutMapping("{id}")
