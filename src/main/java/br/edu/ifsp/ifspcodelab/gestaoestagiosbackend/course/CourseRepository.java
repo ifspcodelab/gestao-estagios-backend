@@ -20,6 +20,7 @@ public interface CourseRepository extends JpaRepository<Course, UUID> {
     boolean existsByDepartmentId(UUID departmentId);
     List<Course> findAllByDepartmentId(UUID departmentId);
     List<Course> findByIdIn(List<UUID> coursesIds);
-    List<Course> findAllByStatus(EntityStatus status);
+    List<Course> findAllByStatusOrderByNameAsc(EntityStatus status);
+    List<Course> findAllByOrderByNameAsc();
 
 }

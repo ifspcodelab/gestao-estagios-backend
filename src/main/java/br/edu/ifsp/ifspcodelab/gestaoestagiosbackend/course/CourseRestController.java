@@ -3,7 +3,6 @@ package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -40,7 +39,7 @@ public class CourseRestController {
             return ResponseEntity.ok(courses);
         }
 
-        courses = courseService.findAll(Sort.by("name")).stream()
+        courses = courseService.findAll().stream()
                 .map(courseMapper::to)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(courses);
