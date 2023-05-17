@@ -19,5 +19,6 @@ public interface CampusRepository extends JpaRepository<Campus, UUID> {
     boolean existsByAbbreviationExcludedId(String abbreviation, UUID id);
     @Query ("select count(c) > 0 from Campus c where c.initialRegistrationPattern = ?1 and c.id <> ?2")
     boolean existsByInitialRegistrationPatternExcludedId(String initialRegistrationPattern, UUID id);
-    List<Campus> findAllByStatus(EntityStatus status);
+    List<Campus> findAllByStatusOrderByNameAsc(EntityStatus status);
+    List<Campus> findAllByOrderByNameAsc();
 }

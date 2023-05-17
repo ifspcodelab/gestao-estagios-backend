@@ -58,13 +58,13 @@ public class CampusServiceImpl implements CampusService {
     }
 
     @Override
-    public List<Campus> findAll(Sort sortOrder) {
-        return campusRepository.findAll(sortOrder);
+    public List<Campus> findAll() {
+        return campusRepository.findAllByOrderByNameAsc();
     }
 
     @Override
     public List<Campus> findAllByStatus(EntityStatus status) {
-        return campusRepository.findAllByStatus(status);
+        return campusRepository.findAllByStatusOrderByNameAsc(status);
     }
 
     @Override

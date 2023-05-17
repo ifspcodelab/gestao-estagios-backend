@@ -39,7 +39,7 @@ public class CampusRestController {
             return ResponseEntity.ok(campuses);
         }
 
-        campuses = campusService.findAll(Sort.by("name")).stream()
+        campuses = campusService.findAll().stream()
             .map(campusMapper::to)
             .collect(Collectors.toList());
         return ResponseEntity.ok(campuses);
