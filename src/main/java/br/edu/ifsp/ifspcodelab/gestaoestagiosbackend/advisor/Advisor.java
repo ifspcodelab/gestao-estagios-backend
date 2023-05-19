@@ -1,5 +1,6 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.course.Course;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.User;
 import lombok.Getter;
@@ -24,9 +25,13 @@ public class Advisor {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Course> courses;
 
-    public Advisor(User user, Set<Course> courses) {
+    @Enumerated(EnumType.STRING)
+    private EntityStatus isActivated;
+
+    public Advisor(User user, Set<Course> courses, EntityStatus status) {
         this.id = UUID.randomUUID();
         this.user = user;
         this.courses = courses;
+        this.isActivated = status;
     }
 }

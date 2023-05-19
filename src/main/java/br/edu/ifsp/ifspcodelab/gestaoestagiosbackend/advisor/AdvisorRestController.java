@@ -1,7 +1,7 @@
 package br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.advisor;
 
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.EntityUpdateStatusDto;
-import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.dtos.UserUpdatePasswordDto;
+import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.common.enums.EntityStatus;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorCreateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserAdvisorUpdateDto;
 import br.edu.ifsp.ifspcodelab.gestaoestagiosbackend.user.UserService;
@@ -32,9 +32,13 @@ public class AdvisorRestController {
 
     @GetMapping("api/v1/advisors")
     public ResponseEntity<List<AdvisorDto>> index() {
-        return ResponseEntity.ok(advisorService.findAll().stream()
-            .map(advisorMapper::to).
-            collect(Collectors.toList()));
+       List<Advisor> enabledAdvisors = advisorService.findAll();
+
+        List<AdvisorDto> advisorDtos = enabledAdvisors.stream()
+                .map(advisorMapper::to)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(advisorDtos);
     }
 
     @GetMapping("api/v1/courses/{id}/advisors")
@@ -62,8 +66,14 @@ public class AdvisorRestController {
     }
 
     @PatchMapping("api/v1/advisors/{id}/activate")
-    public ResponseEntity<Void> activate(@PathVariable UUID id, @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) {
-        userService.activateAdvisor(id, userUpdatePasswordDto);
+    public ResponseEntity<Void> activate(@PathVariable UUID id) {
+        advisorService.activateAdvisor(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("api/v1/advisors/{id}/deactivate")
+    public ResponseEntity<Void> deactivate(@PathVariable UUID id) {
+        advisorService.deactivateAdvisor(id);
         return ResponseEntity.noContent().build();
     }
 

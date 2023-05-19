@@ -15,4 +15,7 @@ public interface AdvisorService {
     Advisor findByUserId(UUID userId);
     Set<Course> getCourses(List<UUID> coursesIds);
     Advisor setStatus(UUID id, EntityUpdateStatusDto advisorUpdateStatusDto);
+    void activateAdvisor(UUID idAdvisor);
+    void deactivateAdvisor(UUID idAdvisor);
 }
+
