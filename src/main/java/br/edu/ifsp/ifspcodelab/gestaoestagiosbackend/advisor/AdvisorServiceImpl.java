@@ -41,18 +41,14 @@ public class AdvisorServiceImpl implements AdvisorService {
     }
 
     public void activateAdvisor (UUID idAdvisor) {
-        Optional <Advisor> advisorOptional = advisorRepository.findById(idAdvisor);
-
-        Advisor advisor = advisorOptional.get();
+        Advisor advisor = findById(idAdvisor);
 
         advisor.setIsActivated(EntityStatus.ENABLED);
         advisorRepository.save(advisor);
     }
 
     public void deactivateAdvisor(UUID idAdvisor) {
-        Optional <Advisor> advisorOptional = advisorRepository.findById(idAdvisor);
-
-        Advisor advisor = advisorOptional.get();
+        Advisor advisor = findById(idAdvisor);
 
         advisor.setIsActivated(EntityStatus.DISABLED);
         advisorRepository.save(advisor);

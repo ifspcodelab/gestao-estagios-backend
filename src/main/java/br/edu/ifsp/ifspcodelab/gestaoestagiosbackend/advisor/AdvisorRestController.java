@@ -32,10 +32,7 @@ public class AdvisorRestController {
 
     @GetMapping("api/v1/advisors")
     public ResponseEntity<List<AdvisorDto>> index() {
-       List<Advisor> enabledAdvisors = advisorService.findAll()
-               .stream()
-               .filter(advisor -> advisor.getIsActivated() == EntityStatus.ENABLED)
-               .collect(Collectors.toList());
+       List<Advisor> enabledAdvisors = advisorService.findAll();
 
         List<AdvisorDto> advisorDtos = enabledAdvisors.stream()
                 .map(advisorMapper::to)
